@@ -1,0 +1,636 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Procedura Completa: Pulizia e Installazione Office / Microsoft 365 su PC Windows 11 Home</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    @page {
+      size: A4 portrait;
+      margin: 12mm 12mm 12mm 12mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 8.8pt;
+      line-height: 1.48;
+      color: #1e293b;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ── HEADER ── */
+    .doc-header {
+      background: linear-gradient(135deg, #064e3b 0%, #047857 55%, #059669 100%);
+      color: #ffffff;
+      padding: 18px 22px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 10px rgba(15,23,42,0.12);
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.22);
+      backdrop-filter: blur(4px);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 7.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+    }
+    .header-title {
+      font-size: 14.5pt;
+      font-weight: 800;
+      line-height: 1.25;
+      margin: 0 0 6px 0;
+      color: #ffffff;
+    }
+    .header-subtitle {
+      font-size: 8.8pt;
+      color: #e2e8f0;
+      margin: 0;
+      font-weight: 400;
+      line-height: 1.4;
+    }
+    .header-meta {
+      margin-top: 10px;
+      display: flex;
+      gap: 16px;
+      font-size: 7.5pt;
+      color: #cbd5e1;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 6px;
+      flex-wrap: wrap;
+    }
+
+    /* ── SECTION HEADERS (fasi) ── */
+    .phase-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 14px 0 8px 0;
+      page-break-after: avoid;
+    }
+    .phase-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 4px 14px;
+      border-radius: 20px;
+      font-size: 7.5pt;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.9px;
+      white-space: nowrap;
+    }
+    .phase-badge-orange {
+      background: #fff7ed;
+      color: #c2410c;
+      border: 1.5px solid #fed7aa;
+    }
+    .phase-badge-green {
+      background: #f0fdf4;
+      color: #15803d;
+      border: 1.5px solid #bbf7d0;
+    }
+    .phase-badge-blue {
+      background: #eff6ff;
+      color: #1d4ed8;
+      border: 1.5px solid #bfdbfe;
+    }
+    .phase-line {
+      flex: 1;
+      height: 1.5px;
+      background: #e2e8f0;
+    }
+    .phase-label {
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    /* ── CALLOUTS ── */
+    .callout-case {
+      background: #f8fafc;
+      border-left: 4px solid #3b82f6;
+      border-radius: 0 6px 6px 0;
+      padding: 8px 12px;
+      margin-bottom: 11px;
+      font-size: 8.3pt;
+      page-break-inside: avoid;
+    }
+    .callout-case-title {
+      font-weight: 700;
+      color: #1d4ed8;
+      margin-bottom: 4px;
+      text-transform: uppercase;
+      font-size: 7.5pt;
+      letter-spacing: 0.5px;
+    }
+
+    .callout-step {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 4px solid #16a34a;
+      border-radius: 0 6px 6px 0;
+      padding: 9px 13px;
+      margin-bottom: 10px;
+      page-break-inside: avoid;
+    }
+    .callout-step-title {
+      font-weight: 700;
+      color: #15803d;
+      font-size: 8.8pt;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #16a34a;
+      color: #ffffff;
+      min-width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 8pt;
+      font-weight: 700;
+      padding: 0 3px;
+    }
+
+    /* pre-check: arancione */
+    .callout-pre {
+      background: #fff7ed;
+      border: 1px solid #fed7aa;
+      border-left: 4px solid #ea580c;
+      border-radius: 0 6px 6px 0;
+      padding: 9px 13px;
+      margin-bottom: 10px;
+      page-break-inside: avoid;
+    }
+    .callout-pre-title {
+      font-weight: 700;
+      color: #c2410c;
+      font-size: 8.8pt;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .pre-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #ea580c;
+      color: #ffffff;
+      min-width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 8pt;
+      font-weight: 700;
+      padding: 0 3px;
+    }
+
+    /* post-install: blu */
+    .callout-post {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid #2563eb;
+      border-radius: 0 6px 6px 0;
+      padding: 9px 13px;
+      margin-bottom: 10px;
+      page-break-inside: avoid;
+    }
+    .callout-post-title {
+      font-weight: 700;
+      color: #1d4ed8;
+      font-size: 8.8pt;
+      margin-bottom: 5px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .post-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #2563eb;
+      color: #ffffff;
+      min-width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      font-size: 8pt;
+      font-weight: 700;
+      padding: 0 3px;
+    }
+
+    .callout-warn {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-left: 4px solid #d97706;
+      border-radius: 0 6px 6px 0;
+      padding: 7px 11px;
+      margin-bottom: 8px;
+      font-size: 8.2pt;
+      color: #92400e;
+      page-break-inside: avoid;
+    }
+    .callout-warn-title {
+      font-weight: 700;
+      color: #b45309;
+      font-size: 7.8pt;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    /* ── CODE ── */
+    .code-box {
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.8pt;
+      padding: 8px 12px;
+      border-radius: 6px;
+      margin: 6px 0 8px 0;
+      white-space: pre-wrap;
+      word-break: break-all;
+    }
+    .highlight {
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 1px 4px;
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.9pt;
+      font-weight: 600;
+    }
+
+    /* ── TABLE ── */
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 11px 15px;
+      margin-bottom: 12px;
+      page-break-inside: avoid;
+    }
+    .card-title {
+      font-size: 9.8pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin-top: 0;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      border-bottom: 1px solid #f1f5f9;
+      padding-bottom: 4px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 7.7pt;
+      margin: 6px 0 10px 0;
+    }
+    th {
+      background-color: #0f172a;
+      color: #ffffff;
+      padding: 5px 8px;
+      text-align: left;
+      font-weight: 600;
+    }
+    td {
+      padding: 5px 8px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td { background-color: #f8fafc; }
+
+    /* ── LAYOUT ── */
+    .page-break { page-break-before: always; }
+    ul, ol { margin: 4px 0 6px 0; padding-left: 18px; }
+    li { margin-bottom: 2.5px; }
+    p { margin: 4px 0 6px 0; }
+
+    .footer {
+      text-align: center;
+      font-size: 7.2pt;
+      color: #94a3b8;
+      margin-top: 14px;
+      padding-top: 6px;
+      border-top: 1px solid #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ═══════════ HEADER ═══════════ -->
+  <div class="doc-header">
+    <div class="header-badge">Procedura Operativa 02 &bull; Supporto Consumer &amp; Home Computing</div>
+    <h1 class="header-title">Pulizia Completa e Installazione di Office / Microsoft 365 su PC Windows 11 Home</h1>
+    <p class="header-subtitle">
+      Procedura unificata: verifiche pre-installazione, pulizia profonda con SaRA e OSPP, deployment tramite Office Deployment Tool (ODT) e risoluzione dei problemi post-installazione più comuni su PC privati.
+    </p>
+    <div class="header-meta">
+      <div><strong>Ambiente Target:</strong> Windows 11 Home (22H2 / 23H2 / 24H2) &bull; PC Privati</div>
+      <div><strong>Licenze:</strong> ~90% Microsoft 365 Personal &bull; ~10% Office Home &amp; Student a vita</div>
+      <div><strong>Canale:</strong> Microsoft CDN Ufficiale &bull; Strumenti: SaRA, OSPP.VBS, ODT</div>
+    </div>
+  </div>
+
+  <div class="callout-case">
+    <div class="callout-case-title">Come utilizzare questo documento</div>
+    <p style="margin: 2px 0;">
+      Seguire le tre fasi nell'ordine indicato. La <strong>Fase 1</strong> contiene i controlli da effettuare <em>prima</em> di avviare qualsiasi operazione: risolvere eventuali blocchi in questa fase evita di dover ripetere la procedura. La <strong>Fase 2</strong> &egrave; la procedura standard di pulizia e reinstallazione. La <strong>Fase 3</strong> raccoglie i problemi che possono presentarsi <em>dopo</em> l'installazione e le relative soluzioni.
+    </p>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════
+       FASE 1 — VERIFICHE PRE-INSTALLAZIONE
+  ════════════════════════════════════════════ -->
+  <div class="phase-header">
+    <span class="phase-badge phase-badge-orange">Fase 1</span>
+    <span class="phase-label">Verifiche Pre-Installazione</span>
+    <div class="phase-line"></div>
+  </div>
+
+  <!-- PRE-CHECK A: Modalità S -->
+  <div class="callout-pre">
+    <div class="callout-pre-title"><span class="pre-badge">A</span> Verificare che il PC non sia in Modalità S (Windows 11 S-Mode)</div>
+    <p><strong>Sintomo:</strong> Doppio clic su <code>setup.exe</code> o su SaRA non produce nulla oppure compare l'avviso: <em>"Puoi scaricare solo app verificate da Microsoft Store"</em>.</p>
+    <p><strong>Causa:</strong> Molti notebook economici consumer (HP Stream, Lenovo IdeaPad, Asus Vivobook, Acer) escono di fabbrica con Windows 11 Home in S-Mode, che blocca qualsiasi eseguibile Win32.</p>
+    <p><strong>Soluzione:</strong> Uscire dalla Modalit&agrave; S (operazione gratuita e definitiva):</p>
+    <ol>
+      <li>Aprire <strong>Impostazioni</strong> (<code>Win + I</code>) &rarr; <strong>Sistema</strong> &rarr; <strong>Attivazione</strong>.</li>
+      <li>Espandere <strong>Modalit&agrave; S</strong> &rarr; cliccare su <strong>Apri lo Store</strong>.</li>
+      <li>Nella pagina dello Store <em>"Esci dalla modalità S"</em> cliccare su <strong>Ottieni / Installa</strong> e attendere la conferma.</li>
+    </ol>
+  </div>
+
+  <!-- PRE-CHECK B: Windows Update -->
+  <div class="callout-pre">
+    <div class="callout-pre-title"><span class="pre-badge">B</span> Completare gli Aggiornamenti Windows e Riavviare il PC</div>
+    <p><strong>Perch&eacute; farlo prima:</strong> Se Windows ha aggiornamenti in attesa di riavvio, il servizio <code>ClickToRunSvc</code> di Office viene respinto e l'installazione fallisce con errori <strong>0-1018, 30015-11, 30015-13</strong>. Gli utenti privati tendono a tenere il PC in sospensione per settimane.</p>
+    <ol>
+      <li>Andare in <strong>Impostazioni &rarr; Windows Update</strong> e installare tutti gli aggiornamenti disponibili.</li>
+      <li>Eseguire un <strong>riavvio completo</strong> (non arresto rapido): tenere premuto <code>Maiusc</code> mentre si clicca su <em>Riavvia</em>.</li>
+      <li>Verificare che dopo il riavvio non vi siano ulteriori aggiornamenti in sospeso prima di procedere.</li>
+    </ol>
+  </div>
+
+  <!-- PRE-CHECK C: Connessione di rete -->
+  <div class="callout-pre">
+    <div class="callout-pre-title"><span class="pre-badge">C</span> Verificare la Connessione: Disattivare "Connessione a Consumo"</div>
+    <p><strong>Sintomo:</strong> Il download di Office si blocca allo 0% o scompare subito con errore <strong>30125-4</strong>.</p>
+    <p><strong>Causa più comune (Wi-Fi domestica):</strong> Windows 11 Home a volte imposta la rete come <em>"A consumo"</em> (Metered), sospendendo i download pesanti (~3 GB) del servizio Click-to-Run. Accade soprattutto con router 4G/5G a SIM o se il flag &egrave; stato impostato in passato.</p>
+    <p><strong>Causa secondaria (hotspot cellulare):</strong> Se il PC usa il tethering dello smartphone, Windows imposta automaticamente la connessione come <em>"A consumo"</em>.</p>
+    <ol>
+      <li>Andare in <strong>Impostazioni &rarr; Rete e Internet &rarr; Wi-Fi</strong> &rarr; cliccare sul nome della rete.</li>
+      <li>Impostare <strong>Connessione a consumo</strong> su <strong>Disattivato</strong>.</li>
+      <li>Se si usa un hotspot mobile instabile, valutare di passare a una rete Wi-Fi stabile prima di procedere.</li>
+    </ol>
+  </div>
+
+  <!-- PRE-CHECK D: Antivirus -->
+  <div class="callout-pre">
+    <div class="callout-pre-title"><span class="pre-badge">D</span> Sospendere Temporaneamente la Protezione dell'Antivirus</div>
+    <p><strong>Sintomo:</strong> Download Click-to-Run bloccato con errori <strong>30183-2016, 30088-4</strong> oppure il processo si chiude da solo allo 0&ndash;2%.</p>
+    <p><strong>Causa:</strong> I moduli di scansione HTTPS degli antivirus preinstallati (McAfee, Norton, Kaspersky) intercettano e corrompono i file cabinet (<code>.cab</code>) scaricati dal CDN Microsoft (<code>officecdn.microsoft.com</code>).</p>
+    <div class="callout-warn">
+      <div class="callout-warn-title">&#9888; Importante</div>
+      Non disinstallare l'antivirus. &Egrave; sufficiente sospenderne la protezione per i 5&ndash;15 minuti necessari all'installazione, per poi riattivarla immediatamente dopo.
+    </div>
+    <p><strong>Come sospendere la protezione:</strong></p>
+    <ul>
+      <li><strong>McAfee:</strong> Clic destro sull'icona nella barra &rarr; <em>Modifica impostazioni</em> &rarr; <em>Protezione in tempo reale</em> &rarr; <strong>Disattiva</strong> (fino al prossimo riavvio).</li>
+      <li><strong>Norton:</strong> Clic destro sull'icona nella barra &rarr; <em>Disabilita protezione antivirus automatica</em> &rarr; durata minima disponibile.</li>
+      <li><strong>Kaspersky:</strong> Clic destro sull'icona nella barra &rarr; <em>Sospendi protezione</em> &rarr; selezionare la durata.</li>
+    </ul>
+  </div>
+
+
+  <div class="page-break"></div>
+
+
+  <!-- ═══════════════════════════════════════════
+       FASE 2 — PULIZIA E INSTALLAZIONE
+  ════════════════════════════════════════════ -->
+  <div class="phase-header">
+    <span class="phase-badge phase-badge-green">Fase 2</span>
+    <span class="phase-label">Pulizia Profonda e Installazione Pulita</span>
+    <div class="phase-line"></div>
+  </div>
+
+  <!-- STEP 1: SaRA -->
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">1</span> Disinstallazione Profonda con Microsoft SaRA (OffScrub)</div>
+    <ol>
+      <li>Scaricare lo strumento ufficiale di pulizia Microsoft:
+        <div class="code-box">https://aka.ms/SaRA_OfficeUninstallScrub</div>
+      </li>
+      <li>Avviare l'eseguibile <span class="highlight">SetupProd_OffScrub.exe</span>.</li>
+      <li>Selezionare la versione di Office rilevata sul computer e confermare la rimozione forzata.</li>
+      <li>Lo script effettua la bonifica automatica di:
+        <ul>
+          <li>Tutti i file binari Click-to-Run in <span class="highlight">C:\Program Files\Microsoft Office</span>.</li>
+          <li>Chiavi di registro orfane in <span class="highlight">HKLM\SOFTWARE\Microsoft\Office</span> e <span class="highlight">HKCU\Software\Microsoft\Office</span>.</li>
+          <li>Servizi di aggiornamento residui (<span class="highlight">ClickToRunSvc</span>).</li>
+        </ul>
+      </li>
+      <li>Riavviare il computer al termine della procedura.</li>
+    </ol>
+  </div>
+
+  <!-- STEP 2: OSPP -->
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">2</span> Rimozione Manuale Licenze Residue con Script OSPP.VBS</div>
+    <p style="font-size: 8pt; margin-bottom: 6px;">
+      Se il PC ha avuto in passato una versione di Office, la vecchia licenza (token KMS o MAK) resta memorizzata nel repository delle licenze di Windows. Rimuoverla manualmente da Prompt dei Comandi come Amministratore:
+    </p>
+    <ol>
+      <li>Aprire il <strong>Prompt dei comandi come Amministratore</strong> (tasto destro &rarr; Esegui come amministratore).</li>
+      <li>Posizionarsi nella cartella del gestore licenze Office:
+        <div class="code-box">cd "C:\Program Files\Microsoft Office\Office16"
+(oppure se Office era a 32 bit: cd "C:\Program Files (x86)\Microsoft Office\Office16")</div>
+      </li>
+      <li>Interrogare lo stato delle licenze memorizzate:
+        <div class="code-box">cscript ospp.vbs /dstatus</div>
+      </li>
+      <li>Cercare la riga: <span class="highlight">Last 5 characters of installed product key: XXXXX</span></li>
+      <li>Disinstallare la licenza residua:
+        <div class="code-box">cscript ospp.vbs /unpkey:XXXXX</div>
+        <em>(ripetere il comando se sono presenti pi&ugrave; licenze installate).</em>
+      </li>
+      <li>Aprire <strong>Gestione Credenziali di Windows</strong> (da Start cercare <em>Gestione credenziali</em>) &rarr; <strong>Credenziali Windows</strong> ed eliminare tutte le voci generiche che iniziano per <span class="highlight">MicrosoftOffice16_Data:...</span>.</li>
+    </ol>
+  </div>
+
+  <!-- STEP 3: ODT -->
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">3</span> Installazione Pulita tramite Office Deployment Tool (ODT)</div>
+    <ol>
+      <li>Scaricare l'<strong>Office Deployment Tool</strong> dal Microsoft Download Center:
+        <div class="code-box">https://www.microsoft.com/en-us/download/details.aspx?id=49117</div>
+      </li>
+      <li>Creare una cartella <span class="highlight">C:\OfficeSetup</span> ed estrarre al suo interno il file <span class="highlight">setup.exe</span>.</li>
+      <li>Creare nella stessa cartella il file <span class="highlight">configuration.xml</span> con il seguente codice (esempio per Microsoft 365 64-bit in italiano):
+        <div class="code-box">&lt;Configuration&gt;
+  &lt;Add OfficeClientEdition="64" Channel="Current"&gt;
+    &lt;Product ID="O365PersonalRetail"&gt;
+      &lt;Language ID="it-it" /&gt;
+      &lt;ExcludeApp ID="Access" /&gt;
+      &lt;ExcludeApp ID="OneDrive" /&gt;
+    &lt;/Product&gt;
+  &lt;/Add&gt;
+  &lt;Display Level="Full" AcceptEULA="TRUE" /&gt;
+&lt;/Configuration&gt;</div>
+        <em>Per Office Home &amp; Student 2024: <span class="highlight">HomeStudent2024Retail</span></em>
+      </li>
+      <li>Dal Prompt comandi amministratore, avviare l'installazione diretta dal CDN Microsoft:
+        <div class="code-box">cd C:\OfficeSetup
+setup.exe /configure configuration.xml</div>
+      </li>
+      <li>Al termine, aprire Word o Excel e accedere con l'account Microsoft a cui &egrave; associato l'abbonamento M365 (o inserire il Product Key per le versioni a vita).</li>
+      <li>Riattivare la protezione dell'antivirus sospesa nella Fase 1 &mdash; Punto D.</li>
+    </ol>
+  </div>
+
+
+  <div class="page-break"></div>
+
+
+  <!-- ═══════════════════════════════════════════
+       FASE 3 — PROBLEMI POST-INSTALLAZIONE
+  ════════════════════════════════════════════ -->
+  <div class="phase-header">
+    <span class="phase-badge phase-badge-blue">Fase 3</span>
+    <span class="phase-label">Problemi Post-Installazione</span>
+    <div class="phase-line"></div>
+  </div>
+
+  <!-- POST A: App Store duplicata -->
+  <div class="callout-post">
+    <div class="callout-post-title"><span class="post-badge">A</span> Office apre versioni web o compare il banner "Prova scaduta" (App Store OEM duplicata)</div>
+    <p><strong>Sintomo:</strong> I file <code>.docx</code> e <code>.xlsx</code> vengono aperti da una versione web ridotta oppure compare il banner rosso <em>"La versione di prova di Microsoft 365 &egrave; scaduta"</em>, anche con abbonamento M365 attivo.</p>
+    <p><strong>Causa:</strong> Quasi tutti i PC Windows 11 nuovi hanno preinstallata dal produttore l'app dello Store <em>"Microsoft 365 (Office)"</em> come trial. Il tool SaRA rimuove la versione Click-to-Run ma non i pacchetti OEM di tipo Desktop Bridge / UWP, che continuano a catturare le estensioni di file.</p>
+    <ol>
+      <li>Andare in <strong>Impostazioni &rarr; App &rarr; App installate</strong>, cercare <code>Microsoft 365</code> e disinstallare l'app con l'icona moderna dello Store.</li>
+      <li>Aprire <strong>PowerShell come Amministratore</strong> ed eseguire la bonifica totale:
+        <div class="code-box">Get-AppxPackage -AllUsers *officehub* | Remove-AppxPackage
+Get-AppxPackage -AllUsers *Microsoft.Office.Desktop* | Remove-AppxPackage
+Get-AppxProvisionedPackage -Online | Where-Object DisplayName -like "*Office*" | Remove-AppxProvisionedPackage -Online</div>
+      </li>
+      <li>Verificare le app predefinite in <em>Impostazioni &rarr; App &rarr; App predefinite</em> e selezionare la versione Click-to-Run per Word ed Excel.</li>
+    </ol>
+  </div>
+
+  <!-- POST B: Account Microsoft errato -->
+  <div class="callout-post">
+    <div class="callout-post-title"><span class="post-badge">B</span> "Questo account non ha ancora Office" o Errori TPM 80090016 / CAA50021</div>
+    <p><strong>Causa:</strong> L'abbonamento M365 &egrave; associato a un account Microsoft diverso da quello usato sul PC, oppure sul PC &egrave; presente un account scolastico configurato con l'opzione <em>"Consenti all'organizzazione di gestire il dispositivo"</em>, che crea conflitti con il broker di autenticazione.</p>
+    <ol>
+      <li>Verificare l'account corretto su <strong>account.microsoft.com/services</strong> &rarr; sezione <em>Abbonamenti</em>.</li>
+      <li>Se presente un account scuola/lavoro in conflitto: <strong>Impostazioni &rarr; Account &rarr; Accedi all'azienda o all'istituto di istruzione</strong> &rarr; <strong>Disconnetti</strong>.</li>
+      <li>Aprire <strong>Pannello di controllo &rarr; Gestione credenziali &rarr; Credenziali Windows</strong> ed eliminare tutte le voci che iniziano per <span class="highlight">MicrosoftOffice16_Data:...</span> e <span class="highlight">Identity...</span>.</li>
+      <li>In caso di errore TPM <code>80090016</code>, eliminare la cartella del broker di autenticazione:
+        <div class="code-box">%LOCALAPPDATA%\Packages\Microsoft.AAD.BrokerPlugin_cw5n1h2txyewy</div>
+      </li>
+      <li>Aprire Word &rarr; <strong>Account</strong> &rarr; <strong>Cambia account</strong> e inserire l'email corretta a cui &egrave; associato l'abbonamento M365.</li>
+    </ol>
+  </div>
+
+  <!-- POST C: Smart App Control -->
+  <div class="callout-post">
+    <div class="callout-post-title"><span class="post-badge">C</span> Smart App Control Blocca setup.exe o ospp.vbs</div>
+    <p><strong>Sintomo:</strong> Popup blu o rosso: <em>"Smart App Control ha bloccato questa app perch&eacute; potrebbe essere pericolosa"</em>.</p>
+    <p><strong>Causa:</strong> Smart App Control &egrave; attivo di default nelle installazioni pulite di Windows 11 23H2/24H2 e blocca i file scaricati dal browser a cui viene applicato il flag <code>Zone.Identifier</code> (Mark of the Web).</p>
+    <ol>
+      <li>Clic destro sul file scaricato (es. <code>officedeploymenttool.exe</code>) &rarr; <strong>Propriet&agrave;</strong>.</li>
+      <li>In basso nella scheda <em>Generale</em>, spuntare <strong>Annulla blocco</strong> &rarr; <em>Applica</em> &rarr; <em>OK</em>.</li>
+      <li>In alternativa, sbloccare l'intera cartella via PowerShell:
+        <div class="code-box">Unblock-File -Path C:\OfficeSetup\*.*</div>
+      </li>
+    </ol>
+  </div>
+
+
+  <!-- ═══════════════════════════════════════════
+       TABELLA SINOTTICA
+  ════════════════════════════════════════════ -->
+  <div class="card">
+    <div class="card-title">&#128203; Riepilogo Rapido &mdash; Codici Errore e Soluzioni</div>
+    <table>
+      <thead>
+        <tr>
+          <th style="width: 16%;">Codice / Sintomo</th>
+          <th style="width: 16%;">Fase</th>
+          <th style="width: 30%;">Causa Tipica</th>
+          <th style="width: 38%;">Azione Risolutiva</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="highlight">Blocco setup.exe</span></td>
+          <td>Pre-installazione A</td>
+          <td>PC in S-Mode di fabbrica.</td>
+          <td>Impostazioni &rarr; Sistema &rarr; Attivazione &rarr; Esci dalla Modalit&agrave; S via Store.</td>
+        </tr>
+        <tr>
+          <td><span class="highlight">0-1018 / 30015-11</span></td>
+          <td>Pre-installazione B</td>
+          <td>Windows Update pendente o riavvio mancante.</td>
+          <td>Completare aggiornamenti e riavviare (<code>Maiusc + Riavvia</code>).</td>
+        </tr>
+        <tr>
+          <td><span class="highlight">30125-4</span></td>
+          <td>Pre-installazione C</td>
+          <td>Rete Wi-Fi impostata su "A consumo".</td>
+          <td>Disattivare "Connessione a consumo" nelle propriet&agrave; Wi-Fi.</td>
+        </tr>
+        <tr>
+          <td><span class="highlight">30183-2016 / 30088-4</span></td>
+          <td>Pre-installazione D</td>
+          <td>Antivirus con scansione HTTPS che blocca CDN.</td>
+          <td>Sospendere temporaneamente la protezione (5&ndash;15 min); riattivarla dopo.</td>
+        </tr>
+        <tr>
+          <td><span class="highlight">Banner "Prova scaduta"</span></td>
+          <td>Post-installazione A</td>
+          <td>App OEM Microsoft 365 dallo Store sovrascrive le estensioni.</td>
+          <td><code>Get-AppxPackage *officehub* | Remove-AppxPackage</code>; reimpostare app predefinite.</td>
+        </tr>
+        <tr>
+          <td><span class="highlight">80090016 / CAA50021</span></td>
+          <td>Post-installazione B</td>
+          <td>Abbonamento M365 su account diverso o account scuola in conflitto.</td>
+          <td>Verificare account su account.microsoft.com; disconnettere account scuola; eliminare cache AAD.BrokerPlugin.</td>
+        </tr>
+        <tr>
+          <td><span class="highlight">Smart App Control</span></td>
+          <td>Post-installazione C</td>
+          <td>File ODT bloccato da Mark of the Web.</td>
+          <td>Propriet&agrave; file &rarr; spuntare <em>Annulla blocco</em>; oppure <code>Unblock-File</code> via PowerShell.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="footer">
+    Supporto Tecnico IT &bull; Procedura 02: Pulizia Completa e Installazione Office / Microsoft 365 su PC Privati Windows 11 Home &bull; Documento Operativo Unificato
+  </div>
+
+</body>
+</html>
