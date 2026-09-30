@@ -1,0 +1,1007 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Procedura: Falsi Guasti Hardware – 14 Casistiche Ibride HW/SW</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    @page { size: A4 portrait; margin: 12mm 12mm 12mm 12mm; }
+
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 8.8pt; line-height: 1.5; color: #1e293b; background: #ffffff; margin: 0; padding: 0;
+    }
+
+    /* ─── HEADER ─── */
+    .doc-header {
+      background: linear-gradient(135deg, #064e3b 0%, #047857 55%, #059669 100%);
+      color: #fff; padding: 20px 24px; border-radius: 10px; margin-bottom: 14px;
+      box-shadow: 0 4px 10px rgba(15,23,42,.12);
+    }
+    .header-badge {
+      display: inline-block; background: rgba(255,255,255,.22); padding: 3px 10px;
+      border-radius: 20px; font-size: 7.5pt; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .8px; margin-bottom: 8px;
+    }
+    .header-title { font-size: 15pt; font-weight: 800; line-height: 1.2; margin: 0 0 6px 0; color: #fff; }
+    .header-subtitle { font-size: 8.8pt; color: #e2e8f0; margin: 0 0 10px 0; font-weight: 400; line-height: 1.5; }
+    .header-meta {
+      display: flex; flex-wrap: wrap; gap: 14px; font-size: 7.5pt; color: #cbd5e1;
+      border-top: 1px solid rgba(255,255,255,.2); padding-top: 8px;
+    }
+
+    /* ─── INDICE ─── */
+    .index-section-title {
+      font-size: 7.5pt; font-weight: 800; text-transform: uppercase; letter-spacing: .6px;
+      color: #fff; padding: 3px 8px; border-radius: 4px; margin: 6px 0 3px 0; display: block;
+    }
+    .s1-color { background: #0369a1; }
+    .s2-color { background: #7c3aed; }
+    .s3-color { background: #b45309; }
+    .s4-color { background: #be123c; }
+    .s5-color { background: #064e3b; }
+
+    .index-grid {
+      background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
+      padding: 10px 14px; margin-bottom: 14px;
+    }
+    .index-cols { display: grid; grid-template-columns: 1fr 1fr; gap: 2px 20px; }
+    .index-item { display: flex; align-items: baseline; gap: 6px; color: #334155; padding: 2px 0; font-size: 7.8pt; }
+    .index-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; min-width: 17px; height: 17px; border-radius: 50%;
+      font-size: 6.8pt; font-weight: 700; flex-shrink: 0;
+    }
+
+    /* ─── SECTION DIVIDER ─── */
+    .section-divider {
+      border-radius: 8px; padding: 8px 16px; margin: 18px 0 10px 0;
+      display: flex; align-items: center; gap: 10px; page-break-after: avoid;
+    }
+    .section-divider h2 { margin: 0; font-size: 10.5pt; font-weight: 800; color: #fff; }
+    .section-divider p { margin: 2px 0 0 0; font-size: 7.5pt; color: rgba(255,255,255,.85); }
+    .sd-s1 { background: linear-gradient(90deg, #0369a1, #0284c7); }
+    .sd-s2 { background: linear-gradient(90deg, #5b21b6, #7c3aed); }
+    .sd-s3 { background: linear-gradient(90deg, #92400e, #d97706); }
+    .sd-s4 { background: linear-gradient(90deg, #9f1239, #e11d48); }
+    .sd-s5 { background: linear-gradient(90deg, #064e3b, #059669); }
+
+    /* ─── CASE BLOCK ─── */
+    .case-block {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 10px;
+      padding: 12px 16px; margin-bottom: 12px; page-break-inside: avoid;
+    }
+    .case-header {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 9px; padding-bottom: 7px; border-bottom: 2px solid #f1f5f9;
+    }
+    .case-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; min-width: 28px; height: 28px; border-radius: 50%;
+      font-size: 9pt; font-weight: 800; flex-shrink: 0;
+    }
+    .case-title { font-size: 10pt; font-weight: 800; color: #0f172a; margin: 0; line-height: 1.3; }
+    .case-subtitle { font-size: 7.8pt; color: #64748b; font-style: italic; margin: 1px 0 0 0; }
+
+    /* ─── CALLOUT VARIANTI ─── */
+    .callout-sintomo {
+      background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid #2563eb;
+      border-radius: 0 6px 6px 0; padding: 8px 12px; margin-bottom: 8px; font-size: 8.2pt;
+    }
+    .callout-sintomo-title { font-weight: 700; color: #1d4ed8; font-size: 7.5pt; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 3px; }
+
+    .callout-causa {
+      background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #d97706;
+      border-radius: 0 6px 6px 0; padding: 8px 12px; margin-bottom: 8px; font-size: 8.2pt; color: #92400e;
+    }
+    .callout-causa-title { font-weight: 700; color: #b45309; font-size: 7.5pt; text-transform: uppercase; letter-spacing: .4px; margin-bottom: 3px; }
+
+    .callout-step {
+      background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid #16a34a;
+      border-radius: 0 6px 6px 0; padding: 9px 13px; margin-bottom: 8px;
+      page-break-inside: avoid; font-size: 8.2pt;
+    }
+    .callout-step-title { font-weight: 700; color: #15803d; font-size: 8.5pt; margin-bottom: 5px; display: flex; align-items: center; gap: 6px; }
+    .step-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #16a34a; color: #fff; min-width: 20px; height: 20px;
+      border-radius: 50%; font-size: 7.5pt; font-weight: 700; flex-shrink: 0;
+    }
+
+    .callout-danger {
+      background: #fff1f2; border: 1px solid #fecdd3; border-left: 4px solid #dc2626;
+      border-radius: 0 6px 6px 0; padding: 8px 12px; margin-bottom: 8px; font-size: 8.2pt; color: #7f1d1d;
+    }
+    .callout-danger-title { font-weight: 700; color: #dc2626; font-size: 7.5pt; text-transform: uppercase; margin-bottom: 3px; }
+
+    .callout-ref {
+      background: #faf5ff; border: 1px solid #e9d5ff; border-left: 4px solid #9333ea;
+      border-radius: 0 6px 6px 0; padding: 8px 12px; margin-bottom: 8px; font-size: 8.2pt;
+    }
+    .callout-ref-title { font-weight: 700; color: #7e22ce; font-size: 7.5pt; text-transform: uppercase; margin-bottom: 3px; }
+
+    /* ─── CODE BOX ─── */
+    .code-box {
+      background: #0f172a; color: #f8fafc;
+      font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 7.5pt;
+      padding: 8px 12px; border-radius: 6px; margin: 6px 0 8px 0;
+      white-space: pre-wrap; word-break: break-all; line-height: 1.6;
+    }
+    .code-comment { color: #94a3b8; }
+
+    /* ─── HIGHLIGHT ─── */
+    .highlight { background: #e0f2fe; color: #0369a1; padding: 1px 5px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.8pt; font-weight: 600; }
+    .hl-red    { background: #fff1f2; color: #be123c;  padding: 1px 5px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.8pt; font-weight: 600; }
+    .hl-green  { background: #f0fdf4; color: #15803d;  padding: 1px 5px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.8pt; font-weight: 600; }
+    .hl-orange { background: #fff7ed; color: #c2410c;  padding: 1px 5px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.8pt; font-weight: 600; }
+
+    /* ─── TABLE ─── */
+    table { width: 100%; border-collapse: collapse; font-size: 7.8pt; margin: 6px 0 10px 0; }
+    th { background: #0f172a; color: #fff; padding: 5px 8px; text-align: left; font-weight: 600; font-size: 7.5pt; }
+    td { padding: 5px 8px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+    tr:nth-child(even) td { background: #f8fafc; }
+    .triage-table th { background: #064e3b; }
+    .triage-table tr:nth-child(even) td { background: #f0fdf4; }
+    .triage-ok { color: #15803d; font-weight: 700; }
+    .triage-ko { color: #dc2626; font-weight: 700; }
+
+    /* ─── TAG ─── */
+    .tag { display: inline-block; font-size: 6.8pt; font-weight: 700; text-transform: uppercase; letter-spacing: .5px; padding: 2px 7px; border-radius: 10px; margin-left: 5px; vertical-align: middle; }
+    .tag-net { background: #dbeafe; color: #1e40af; }
+    .tag-drv { background: #ede9fe; color: #5b21b6; }
+    .tag-cfg { background: #fef3c7; color: #92400e; }
+    .tag-hw  { background: #fee2e2; color: #991b1b; }
+    .tag-svc { background: #d1fae5; color: #065f46; }
+
+    /* ─── MISC ─── */
+    .page-break { page-break-before: always; }
+    ul, ol { margin: 4px 0 6px 0; padding-left: 18px; }
+    li { margin-bottom: 3px; line-height: 1.5; }
+    p { margin: 3px 0 6px 0; }
+    strong { color: #0f172a; }
+
+    .section-label-bar {
+      font-size: 9pt; font-weight: 800; color: #fff;
+      background: linear-gradient(90deg, #0f172a, #1e3a5f);
+      border-radius: 6px; padding: 6px 14px; margin: 16px 0 10px 0; display: block;
+    }
+
+    .footer {
+      text-align: center; font-size: 7.2pt; color: #94a3b8;
+      margin-top: 16px; padding-top: 7px; border-top: 1px solid #e2e8f0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════ HEADER ══ -->
+<div class="doc-header">
+  <div class="header-badge">Procedura Operativa 08 — Diagnostica Avanzata Falsi Guasti</div>
+  <h1 class="header-title">Casistiche Hardware/Software Ibride: 14 Falsi Guasti Risolti via Software</h1>
+  <p class="header-subtitle">
+    Guida tecnica per il tecnico helpdesk: 14 scenari in cui il cliente conclude che "si è rotto un pezzo"
+    mentre la causa reale è logica — driver, configurazione energetica, firmware BIOS, carica elettrostatica o conflitti di sistema.
+    I casi sono raggruppati per area tematica: prima le problematiche di rete e servizi, poi le periferiche, poi storage/boot/memoria, infine input/multimedia e alimentazione.
+  </p>
+  <div class="header-meta">
+    <div><strong>Target:</strong> Windows 11 (laptop e desktop)</div>
+    <div><strong>Livello:</strong> Tecnico Helpdesk / Supporto IT</div>
+    <div><strong>Prerequisito:</strong> Procedura 03 (Casistiche Base)</div>
+    <div><strong>Aggiornamento:</strong> Settembre 2026</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════ INDICE ══ -->
+<div class="index-grid">
+  <span class="index-section-title s1-color">📶 SEZIONE 1 — Rete, Connettività e Autenticazione</span>
+  <div class="index-cols">
+    <div class="index-item"><span class="index-num" style="background:#0369a1;">1</span>Wi-Fi Instabile — Roaming, PCIe Power Mgmt</div>
+    <div class="index-item"><span class="index-num" style="background:#0369a1;">2</span>Bluetooth — Scompare dopo standby, cuffie cadono</div>
+    <div class="index-item"><span class="index-num" style="background:#0369a1;">3</span>Orologio &amp; SSL — CMOS scarica, certificati "scaduti"</div>
+    <div></div>
+  </div>
+  <span class="index-section-title s2-color">🔌 SEZIONE 2 — Periferiche e Porte (USB-A, USB-C, Stampa)</span>
+  <div class="index-cols">
+    <div class="index-item"><span class="index-num" style="background:#7c3aed;">4</span>USB-A &amp; Periferiche — Selective Suspend, 2.4 GHz</div>
+    <div class="index-item"><span class="index-num" style="background:#7c3aed;">5</span>Dock / USB-C / Thunderbolt — Porta "rotta"</div>
+    <div class="index-item"><span class="index-num" style="background:#7c3aed;">6</span>Stampante &amp; Spooler — Coda bloccata, sembra guasto</div>
+    <div></div>
+  </div>
+  <span class="index-section-title s3-color">💾 SEZIONE 3 — Storage, Boot e Memoria</span>
+  <div class="index-cols">
+    <div class="index-item"><span class="index-num" style="background:#b45309;">7</span>Disco Pieno — Sistema lento / crash app</div>
+    <div class="index-item"><span class="index-num" style="background:#b45309;">8</span>Boot &amp; Storage — AHCI/RAID BIOS, VMD, BCD corrotto</div>
+    <div class="index-item"><span class="index-num" style="background:#b45309;">9</span>RAM: Fisica vs. Software — BSoD, XMP, MemTest86</div>
+    <div></div>
+  </div>
+  <span class="index-section-title s4-color">🖥️ SEZIONE 4 — Input, Interfaccia e Multimedia</span>
+  <div class="index-cols">
+    <div class="index-item"><span class="index-num" style="background:#be123c;">10</span>Tastiera &amp; Touchpad — NumLock, Sticky Keys, Layout</div>
+    <div class="index-item"><span class="index-num" style="background:#be123c;">11</span>Webcam — Schermata nera in Teams / Meet / Zoom</div>
+    <div class="index-item"><span class="index-num" style="background:#be123c;">12</span>Audio &amp; Microfono — HDMI, Privacy OS, Sample Rate</div>
+    <div class="index-item"><span class="index-num" style="background:#be123c;">13</span>Schermo &amp; GPU — Schermo nero, DDU, Out of Range</div>
+  </div>
+  <span class="index-section-title s5-color">🔋 SEZIONE 5 — Alimentazione e Gestione Energetica</span>
+  <div class="index-cols">
+    <div class="index-item"><span class="index-num" style="background:#059669;">14</span>Alimentazione &amp; Batteria — Ricarica bloccata, EC Reset</div>
+    <div></div>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  SEZIONE 1 — RETE, CONNETTIVITÀ E AUTENTICAZIONE               -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="section-divider sd-s1">
+  <div>
+    <h2>📶 SEZIONE 1 — Rete, Connettività e Autenticazione</h2>
+    <p>Wi-Fi instabile, Bluetooth che scompare, siti HTTPS irraggiungibili per data errata: problemi che sembrano di rete o hardware ma hanno cause logiche.</p>
+  </div>
+</div>
+
+<!-- CASO 1: WI-FI -->
+<div class="case-block">
+  <div class="case-header">
+    <span class="case-badge" style="background:linear-gradient(135deg,#0369a1,#0284c7);">1</span>
+    <div>
+      <p class="case-title">Wi-Fi Instabile — "L'Antenna Wi-Fi Interna è Rotta"
+        <span class="tag tag-drv">Driver</span><span class="tag tag-cfg">Risparmio Energia</span>
+      </p>
+      <p class="case-subtitle">Connessione lentissima o frequenti cadute — sembra guasto antenna o scheda</p>
+    </div>
+  </div>
+
+  <div class="callout-sintomo">
+    <div class="callout-sintomo-title">🔵 Sintomo</div>
+    Il laptop si connette al Wi-Fi ma naviga a 1–5 Mbps mentre lo smartphone nello stesso punto va a 200+ Mbps; oppure si disconnette ogni 10–15 minuti e si riconnette da solo; oppure la scheda Wi-Fi scompare da Gestione Dispositivi dopo il risveglio dalla sospensione.
+  </div>
+
+  <div class="callout-causa">
+    <div class="callout-causa-title">⚠️ Cause Reali</div>
+    <ul>
+      <li><strong>Roaming Aggressiveness troppo alto:</strong> La scheda Wi-Fi cerca costantemente access point migliori, causando micro-disconnessioni continue e salti tra 2.4 GHz e 5 GHz.</li>
+      <li><strong>PCIe Link State Power Management:</strong> Il risparmio energetico sul bus PCIe stacca l'alimentazione alla scheda Wi-Fi durante le micro-pause, causando timeout e scomparsa del dispositivo dopo lo standby.</li>
+      <li><strong>Fast Startup con driver Wi-Fi buggy:</strong> La scheda non si reinizializza correttamente dopo il sonno ibrido di Windows — si risolve disabilitando Fast Startup (Procedura 03, Caso 1).</li>
+    </ul>
+  </div>
+
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">✓</span> Procedura di Risoluzione</div>
+    <ol>
+      <li><strong>Parametri avanzati driver Wi-Fi:</strong> Aprire <span class="highlight">devmgmt.msc</span> → <em>Schede di rete</em> → clic destro sulla scheda Wi-Fi → <em>Proprietà</em> → scheda <em>"Avanzate"</em> e impostare:
+        <table style="margin-top:5px;">
+          <tr><th>Parametro</th><th>Valore da Impostare</th></tr>
+          <tr><td>Roaming Aggressiveness / Aggressività Roaming</td><td><strong>Bassa (Lowest / 1)</strong></td></tr>
+          <tr><td>Preferred Band / Banda Preferita</td><td><strong>Preferisci banda a 5 GHz</strong></td></tr>
+          <tr><td>Throughput Booster / Boost velocità</td><td><strong>Abilitato</strong></td></tr>
+          <tr><td>Power Management / Risparmio energia</td><td><strong>Massime prestazioni</strong></td></tr>
+        </table>
+      </li>
+      <li><strong>Disabilitare PCIe Link Power Management:</strong> <span class="highlight">powercfg.cpl</span> → Modifica impostazioni avanzate → <strong>PCI Express → Risparmio energia stato collegamento → Disattivato</strong>.</li>
+      <li><strong>Reset stack TCP/IP:</strong>
+        <div class="code-box"><span class="code-comment"># CMD come Amministratore</span>
+netsh winsock reset
+netsh int ip reset
+ipconfig /flushdns
+ipconfig /release
+ipconfig /renew</div>
+        Riavviare dopo aver eseguito i comandi.
+      </li>
+    </ol>
+  </div>
+</div>
+
+<!-- CASO 2: BLUETOOTH -->
+<div class="case-block">
+  <div class="case-header">
+    <span class="case-badge" style="background:linear-gradient(135deg,#0369a1,#0284c7);">2</span>
+    <div>
+      <p class="case-title">Bluetooth — "Il Modulo Bluetooth è Bruciato / Scomparso"
+        <span class="tag tag-svc">Servizi</span><span class="tag tag-drv">Driver</span>
+      </p>
+      <p class="case-subtitle">Bluetooth assente dal Gestore Dispositivi, cuffie che si scollegano ogni 30–60 sec</p>
+    </div>
+  </div>
+
+  <div class="callout-sintomo">
+    <div class="callout-sintomo-title">🔵 Sintomo</div>
+    La voce Bluetooth scompare completamente da Impostazioni e Gestione Dispositivi dopo una sospensione o un aggiornamento; le cuffie BT si disconnettono ogni 30–60 secondi durante l'uso; il dispositivo non riesce ad abbinarsi con nessun device.
+  </div>
+
+  <div class="callout-causa">
+    <div class="callout-causa-title">⚠️ Cause Reali</div>
+    <ul>
+      <li><strong>Chip combo Wi-Fi+Bluetooth condiviso:</strong> La stragrande maggioranza dei laptop usa un chip combo (Intel AX201, AX210, Realtek RTL8852). Un aggiornamento del driver Wi-Fi può corrompere il radio Bluetooth che condivide firmware e antenna.</li>
+      <li><strong>Servizi Bluetooth disabilitati o in stallo:</strong> I servizi <span class="highlight">bthserv</span> e <span class="highlight">BluetoothUserService</span> vanno in deadlock dopo lo standby.</li>
+      <li><strong>Fast Startup che non reinizializza il radio stack BT:</strong> Il Bluetooth stack non si riavvia correttamente dalla modalità ibernazione ibrida.</li>
+      <li><strong>Interferenza da USB 3.0 (su desktop):</strong> Il dongle BT posizionato vicino a una porta USB 3.0 subisce interferenze nello spettro 2.4 GHz.</li>
+    </ul>
+  </div>
+
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">✓</span> Procedura di Risoluzione</div>
+    <ol>
+      <li><strong>Riavvio forzato servizi Bluetooth:</strong>
+        <div class="code-box"><span class="code-comment"># PowerShell come Amministratore</span>
+Stop-Service bthserv -Force
+Start-Service bthserv
+Get-Service bthserv | Select-Object Status, DisplayName</div>
+      </li>
+      <li><strong>Reinstallazione driver Bluetooth pulito:</strong> In <span class="highlight">devmgmt.msc</span> → <em>Bluetooth</em> → clic destro → <strong>Disinstalla dispositivo</strong> (spuntare "Elimina il software del driver"). Riavviare per il driver inbox base. Per il driver ottimizzato: scaricare "Intel Wireless Bluetooth" dal sito Intel o dal supporto vendor del laptop.</li>
+      <li><strong>Disabilitare USB Selective Suspend sul controller BT:</strong> In <span class="highlight">devmgmt.msc</span> → <em>Bluetooth</em> → proprietà → scheda <em>Risparmio energia</em> → togliere la spunta su "Consenti al computer di spegnere il dispositivo".</li>
+      <li><strong>BT scompare solo dopo standby → disabilitare Fast Startup:</strong> Pannello di controllo → Opzioni risparmio energia → Specifica comportamento pulsanti di alimentazione → Modifica impostazioni attualmente non disponibili → <strong>deselezionare "Attiva avvio rapido"</strong>.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- CASO 3: OROLOGIO E SSL -->
+<div class="case-block">
+  <div class="case-header">
+    <span class="case-badge" style="background:linear-gradient(135deg,#0369a1,#0284c7);">3</span>
+    <div>
+      <p class="case-title">Orologio di Sistema &amp; Certificati SSL — "Internet non Funziona / Tutti i Siti Danno Errore"
+        <span class="tag tag-hw">CMOS</span><span class="tag tag-svc">Servizi</span>
+      </p>
+      <p class="case-subtitle">ERR_CERT_DATE_INVALID su ogni sito HTTPS, Windows Update fallisce, Outlook non autentica</p>
+    </div>
+  </div>
+
+  <div class="callout-sintomo">
+    <div class="callout-sintomo-title">🔵 Sintomo</div>
+    Il browser mostra <span class="hl-red">NET::ERR_CERT_DATE_INVALID</span> o <span class="hl-red">CERTIFICATE_EXPIRED</span> su <em>tutti</em> i siti HTTPS, incluso google.com. Windows Update fallisce con errori di connessione. Teams e Outlook non autenticano. L'utente pensa a un problema del router o dell'ISP.
+  </div>
+
+  <div class="callout-causa">
+    <div class="callout-causa-title">⚠️ Causa Reale — L'Orologio di Sistema è Sbagliato</div>
+    <ul>
+      <li><strong>Data e ora di sistema errate di giorni/anni:</strong> Tutti i certificati TLS/SSL hanno date di validità. Se l'orologio del PC è sfasato, i certificati dei siti risultano "non ancora validi" o "già scaduti" — nessun sito HTTPS funzionerà.</li>
+      <li><strong>Batteria CMOS CR2032 scarica:</strong> La piccola batteria a bottone sulla scheda madre mantiene il Real Time Clock durante lo spegnimento. A fine vita, l'orologio si azzera a ogni spegnimento (tipicamente al 01/01/2000 o 01/01/2023).</li>
+      <li><strong>Servizio W32Time disabilitato:</strong> Il servizio di sincronizzazione NTP non parte e l'orologio non si autocorregge.</li>
+    </ul>
+  </div>
+
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">✓</span> Procedura di Risoluzione</div>
+    <ol>
+      <li><strong>Correzione immediata:</strong> <em>Impostazioni → Ora e lingua → Data e ora</em> → disattivare e riattivare <strong>"Imposta ora automaticamente"</strong> → cliccare <strong>"Sincronizza ora"</strong>. Verificare che il fuso orario sia corretto (Italia = UTC+1 / UTC+2 ora legale).</li>
+      <li><strong>Resincronizzazione NTP forzata:</strong>
+        <div class="code-box"><span class="code-comment"># CMD come Amministratore</span>
+net stop w32tm
+net start w32tm
+w32tm /resync /force
+w32tm /query /status</div>
+        Il risultato deve mostrare <span class="hl-green">Ultimo tentativo di sincronizzazione riuscito</span>.
+      </li>
+      <li><strong>Problema ricorrente a ogni spegnimento → batteria CMOS scarica:</strong> Verificare in BIOS → System Information se la RTC Battery è segnalata come "Low". Sostituire la pila CR2032 (costo inferiore a 1 €, reperibile in qualsiasi negozio di elettronica). Il problema si risolve definitivamente.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  SEZIONE 2 — PERIFERICHE E PORTE                               -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="section-divider sd-s2">
+  <div>
+    <h2>🔌 SEZIONE 2 — Periferiche e Porte (USB-A, USB-C, Stampa)</h2>
+    <p>Porte USB-A con sospensione selettiva, hub USB-C/Thunderbolt con driver mancante, spooler di stampa bloccato: tutto risolto via software.</p>
+  </div>
+</div>
+
+<!-- CASO 4: USB-A E PERIFERICHE -->
+<div class="case-block">
+  <div class="case-header">
+    <span class="case-badge" style="background:linear-gradient(135deg,#5b21b6,#7c3aed);">4</span>
+    <div>
+      <p class="case-title">USB-A &amp; Periferiche — "Le Porte USB sono Andate / Il Mouse Scatta"
+        <span class="tag tag-cfg">Risparmio Energia</span><span class="tag tag-drv">Interferenza RF</span>
+      </p>
+      <p class="case-subtitle">Mouse/tastiera wireless che scattano o si disconnettono, chiavette che si scollegano ciclicamente</p>
+    </div>
+  </div>
+
+  <div class="callout-sintomo">
+    <div class="callout-sintomo-title">🔵 Sintomo</div>
+    Il mouse wireless scatta o congela ogni pochi secondi; la tastiera salta lettere; le chiavette USB e gli hard disk esterni si disconnettono e riconnettono con il classico suono Windows ogni 20–30 secondi; oppure le periferiche non vengono rilevate al collegamento.
+  </div>
+
+  <div class="callout-causa">
+    <div class="callout-causa-title">⚠️ Cause Reali</div>
+    <ul>
+      <li><strong>Sospensione selettiva USB (USB Selective Suspend):</strong> Windows spegne attivamente la porta USB dopo pochi secondi di inattività per risparmiare energia — la periferica cade e si riconnette ciclicamente producendo il tipico suono "ding-dong" in loop.</li>
+      <li><strong>Interferenza USB 3.0 vs 2.4 GHz:</strong> Le porte USB 3.0 (blu) emettono rumore elettromagnetico nello spettro 2.4–2.5 GHz — esattamente la frequenza dei nano-ricevitori wireless di mouse e tastiere. Il dongle inserito nella porta USB 3.0 adiacente subisce interferenze continue.</li>
+      <li><strong>Carica elettrostatica residua sul bus USB:</strong> Il controller USB si blocca in protezione da sovracorrente — si risolve con l'EC Reset (Power Drain).</li>
+    </ul>
+  </div>
+
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">✓</span> Procedura di Risoluzione</div>
+    <ol>
+      <li><strong>Disabilitare USB Selective Suspend:</strong>
+        <ul>
+          <li><span class="highlight">devmgmt.msc</span> → <em>Controller USB</em> → per ogni <em>"Hub radice USB"</em>: clic destro → Proprietà → scheda <em>Risparmio energia</em> → <strong>togliere la spunta</strong> su "Consenti al computer di spegnere il dispositivo".</li>
+          <li>In alternativa: <span class="highlight">powercfg.cpl</span> → Impostazioni avanzate → <strong>Impostazioni USB → Sospensione selettiva USB → Disabilitata</strong>.</li>
+        </ul>
+      </li>
+      <li><strong>Fix interferenza USB 3.0 / 2.4 GHz:</strong> Spostare il nano-dongle wireless da una porta <strong>USB 3.0 blu</strong> a una porta <strong>USB 2.0 nera</strong>, oppure usare una prolunga USB da 10–15 cm per allontanarlo fisicamente. In alternativa: passare a mouse/tastiera Bluetooth 5.0 (banda 2.4 GHz ma con FHSS — molto più resistente alle interferenze).</li>
+      <li><strong>Reset carica elettrostatica:</strong> Spegnere completamente il PC → scollegare l'alimentatore → tenere premuto il tasto di accensione per 30–40 secondi → ricollegare e accendere.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- CASO 5: DOCK USB-C THUNDERBOLT -->
+<div class="case-block">
+  <div class="case-header">
+    <span class="case-badge" style="background:linear-gradient(135deg,#5b21b6,#7c3aed);">5</span>
+    <div>
+      <p class="case-title">Dock Station / USB-C / Thunderbolt — "La Porta USB-C è Fisicamente Rotta"
+        <span class="tag tag-hw">BIOS/TBT</span><span class="tag tag-drv">Driver</span>
+      </p>
+      <p class="case-subtitle">Monitor non rilevato, ricarica PD assente o a 5W, periferiche dock non funzionanti</p>
+    </div>
+  </div>
+
+  <div class="callout-sintomo">
+    <div class="callout-sintomo-title">🔵 Sintomo</div>
+    Collegando una dock station o un hub USB-C: il monitor collegato via DisplayPort-Alt non si accende; la ricarica Power Delivery non parte (o carica a soli 5W invece di 65W); alcune periferiche della dock non vengono rilevate. L'utente conclude che la porta USB-C è fisicamente rotta o che la dock è difettosa.
+  </div>
+
+  <div class="callout-causa">
+    <div class="callout-causa-title">⚠️ Cause Reali</div>
+    <ul>
+      <li><strong>Thunderbolt non autorizzato:</strong> Windows con policy Thunderbolt attiva richiede l'approvazione esplicita della dock al primo collegamento — con il PC sbloccato e l'utente loggato. Se si è collegata a PC spento o bloccato, la dock non viene mai autorizzata.</li>
+      <li><strong>Driver Intel Thunderbolt Control Center non installato:</strong> Senza il driver specifico, la porta USB-C funziona solo come USB 3.2 base (5V/3A) senza DisplayPort Alternate Mode né Power Delivery negoziato.</li>
+      <li><strong>Mancata negoziazione USB-C PD:</strong> Il firmware della dock e quello del notebook non concordano sulla tensione/corrente target (20V/65W vs 20V/100W), causando fallback a 5W o nessuna ricarica.</li>
+      <li><strong>Sequenza di collegamento errata:</strong> Alcuni laptop (HP EliteBook, Dell Latitude) richiedono che la dock sia collegata PRIMA dell'accensione per registrare correttamente il controller Thunderbolt.</li>
+    </ul>
+  </div>
+
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">✓</span> Procedura di Risoluzione</div>
+    <ol>
+      <li><strong>Autorizzazione Thunderbolt:</strong> Con la dock collegata e il PC acceso e sbloccato: attendere la notifica in basso a destra che chiede di autorizzare il dispositivo Thunderbolt → cliccare <strong>"Connetti sempre"</strong>. Se non compare: aprire <span class="highlight">Thunderbolt Control Center</span> (se già installato) e approvare il dispositivo nella lista.</li>
+      <li><strong>Installazione driver Intel Thunderbolt:</strong> Scaricare dal sito del vendor del laptop (HP/Dell/Lenovo/ASUS) il pacchetto <strong>"Intel Thunderbolt Driver"</strong> o <strong>"Thunderbolt Control Center"</strong>. Installare e riavviare.</li>
+      <li><strong>Test sequenza corretta:</strong> Spegnere il laptop completamente → collegare la dock con il suo alimentatore → accendere il laptop → attendere il caricamento completo del desktop prima di testare monitor e periferiche.</li>
+      <li><strong>Verifica in Gestione Dispositivi:</strong> <span class="highlight">devmgmt.msc</span> → <em>Vista → Mostra dispositivi nascosti</em>. Cercare <em>"Thunderbolt Controller"</em>, <em>"USB4 Host Interface"</em> con triangoli gialli. Se presenti: aggiornare il driver dal sito Intel o del vendor laptop.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- CASO 6: STAMPANTE E SPOOLER -->
+<div class="case-block">
+  <div class="case-header">
+    <span class="case-badge" style="background:linear-gradient(135deg,#5b21b6,#7c3aed);">6</span>
+    <div>
+      <p class="case-title">Stampante &amp; Spooler — "La Stampante è Rotta / Non Comunica"
+        <span class="tag tag-svc">Servizi</span><span class="tag tag-drv">Driver</span>
+      </p>
+      <p class="case-subtitle">Stampe in coda che non partono mai, stampante verde ma nessun output fisico</p>
+    </div>
+  </div>
+
+  <div class="callout-sintomo">
+    <div class="callout-sintomo-title">🔵 Sintomo</div>
+    La stampante è accesa, la spia verde lampeggia, è connessa in rete o via USB, ma nessun documento viene mai stampato. I lavori si accumulano nella coda di stampa bloccata. Oppure la stampante scompare improvvisamente dai dispositivi anche se fisicamente collegata.
+  </div>
+
+  <div class="callout-causa">
+    <div class="callout-causa-title">⚠️ Cause Reali</div>
+    <ul>
+      <li><strong>Spooler di stampa (spoolsv.exe) in crash o in stallo:</strong> È uno dei servizi Windows che va in deadlock più frequentemente, specialmente con driver vecchi o firmware misto.</li>
+      <li><strong>File di coda corrotti:</strong> Nella cartella <span class="highlight">C:\Windows\System32\spool\PRINTERS\</span> si accumulano file .SHD e .SPL corrotti che bloccano ogni nuovo lavoro.</li>
+      <li><strong>Conflitto driver V3 vs V4 (Windows 11 24H2+):</strong> Microsoft ha modificato le policy sui driver di stampa. I driver V3 di molte stampanti HP, Canon, Epson non sono più compatibili e causano blocchi silenziosi.</li>
+    </ul>
+  </div>
+
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">✓</span> Procedura di Risoluzione Rapida</div>
+    <ol>
+      <li><strong>Reset completo spooler e coda:</strong>
+        <div class="code-box"><span class="code-comment"># CMD come Amministratore — eseguire riga per riga</span>
+net stop spooler
+del /Q /F /S "C:\Windows\System32\spool\PRINTERS\*.*"
+net start spooler</div>
+        Dopo questo comando la coda sarà vuota e lo spooler ripartirà pulito. Provare a stampare.
+      </li>
+      <li><strong>Reinstallazione driver pulito:</strong> Rimuovere la stampante da <em>Impostazioni → Bluetooth e dispositivi → Stampanti e scanner</em> → <strong>Rimuovi</strong>. Scaricare il driver più recente dal sito ufficiale del produttore (HP, Canon, Epson, Brother). Installare e ricollegare.</li>
+      <li><strong>Verifica servizio Spooler:</strong> In <span class="highlight">services.msc</span> verificare che <strong>"Spooler di stampa"</strong> sia in stato <em>In esecuzione</em> e tipo di avvio <em>Automatico</em>. Se si blocca nuovamente subito dopo l'avvio: il driver è irrecuperabile → reinstallare da zero.</li>
+    </ol>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  SEZIONE 3 — STORAGE, BOOT E MEMORIA                           -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="section-divider sd-s3">
+  <div>
+    <h2>💾 SEZIONE 3 — Storage, Boot e Memoria</h2>
+    <p>Disco pieno che mima un SSD failing, boot impossibile per cambio BIOS AHCI/RAID, BSoD da RAM che in realtà è un driver kernel: identificare prima la causa logica prima di toccare l'hardware.</p>
+  </div>
+</div>
+
+<!-- CASO 7: DISCO PIENO -->
+<div class="case-block">
+  <div class="case-header">
+    <span class="case-badge" style="background:linear-gradient(135deg,#92400e,#d97706);">7</span>
+    <div>
+      <p class="case-title">Disco Pieno Scambiato per Guasto — "L'SSD si sta Rompendo"
+        <span class="tag tag-cfg">Storage</span>
+      </p>
+      <p class="case-subtitle">Sistema lentissimo, crash applicazioni, backup fallisce, antivirus non aggiorna — barra C: rossa</p>
+    </div>
+  </div>
+
+  <div class="callout-sintomo">
+    <div class="callout-sintomo-title">🔵 Sintomo</div>
+    Il PC è improvvisamente lentissimo su tutto; le app crashano con errori generici; Windows Update fallisce; Teams e Chrome crashano all'avvio; l'antivirus non riesce ad aggiornarsi; il backup non parte. La barra del disco C: in Esplora File è <strong>rossa</strong>.
+  </div>
+
+  <div class="callout-causa">
+    <div class="callout-causa-title">⚠️ Causa Reale — Spazio C: Esaurito, Non Hardware</div>
+    Windows necessita di spazio libero su C: per il file di paging (<span class="highlight">pagefile.sys</span>), i file temporanei, le shadow copy VSS, i log di sistema e i pacchetti di aggiornamento. <strong>Sotto il 5–10% di spazio libero</strong> (tipicamente sotto i 10–15 GB su disco da 256 GB), il sistema degrada in modo esponenziale. I dati SMART del disco sono però perfetti — nessun guasto fisico.
+  </div>
+
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">✓</span> Procedura di Recupero Spazio</div>
+    <ol>
+      <li><strong>Pulizia disco avanzata (include file sistema):</strong> <span class="highlight">Win + R</span> → <span class="highlight">cleanmgr</span> → selezionare C: → cliccare <strong>"Pulizia file di sistema"</strong> → selezionare tutte le voci (in particolare <em>"File di Windows Update"</em> e <em>"Installazioni precedenti di Windows"</em>) → OK → Elimina file. Può liberare 5–30 GB.</li>
+      <li><strong>Pulizia cartelle temporanee:</strong>
+        <div class="code-box"><span class="code-comment"># PowerShell come Amministratore</span>
+Remove-Item "$env:TEMP\*" -Recurse -Force -ErrorAction SilentlyContinue
+Remove-Item "C:\Windows\Temp\*" -Recurse -Force -ErrorAction SilentlyContinue
+Clear-RecycleBin -Force -ErrorAction SilentlyContinue</div>
+      </li>
+      <li><strong>Individuare le cartelle più grandi:</strong> Installare <strong>WinDirStat</strong> (gratuito, <span class="highlight">https://windirstat.net/</span>) — visualizza graficamente quali cartelle occupano più spazio. Candidati tipici: Downloads, backup telefoni (iTunes/Samsung), cartelle progetti, VM.</li>
+      <li><strong>Ridurre shadow copy VSS:</strong>
+        <div class="code-box">vssadmin list shadowstorage
+vssadmin resize shadowstorage /for=C: /on=C: /maxsize=5%</div>
+      </li>
+      <li><strong>Regola pratica:</strong> Mantenere sempre almeno <strong>15 GB liberi su C:</strong> per il funzionamento ottimale di Windows 11.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- CASO 8: BOOT E STORAGE -->
+<div class="case-block">
+  <div class="case-header">
+    <span class="case-badge" style="background:linear-gradient(135deg,#92400e,#d97706);">8</span>
+    <div>
+      <p class="case-title">Boot &amp; Storage — "L'SSD si è Bruciato, Non Vede più il Disco"
+        <span class="tag tag-hw">BIOS/UEFI</span><span class="tag tag-drv">Driver</span>
+      </p>
+      <p class="case-subtitle">INACCESSIBLE_BOOT_DEVICE, "No bootable device", disco scomparso — i dati sono quasi sempre intatti</p>
+    </div>
+  </div>
+
+  <div class="callout-sintomo">
+    <div class="callout-sintomo-title">🔵 Sintomo</div>
+    All'avvio compare la schermata blu <span class="hl-red">INACCESSIBLE_BOOT_DEVICE (0x0000007B)</span> oppure il BIOS mostra "No bootable device found". Il BIOS stesso potrebbe non elencare più il disco nella lista di boot.
+  </div>
+
+  <div class="callout-causa">
+    <div class="callout-causa-title">⚠️ Cause Reali — I Dati sono Intatti nel 90% dei Casi</div>
+    <ul>
+      <li><strong>Cambio modalità controller BIOS (AHCI ↔ RAID/RST):</strong> Un aggiornamento BIOS automatico o la batteria CMOS scarica ha resettato le impostazioni cambiando la modalità del controller storage. Windows era installato in AHCI: ora il BIOS è in RAID e non riconosce il disco al boot.</li>
+      <li><strong>Intel VMD (Volume Management Device) abilitato/disabilitato:</strong> Sui processori Intel dalla 11ª gen in poi, se VMD cambia stato nel BIOS senza il relativo driver, il disco scompare completamente.</li>
+      <li><strong>Partizione EFI / BCD corrotto:</strong> Un aggiornamento interrotto o un'installazione Linux ha sovrascritto il bootloader. I dati sulla partizione dati sono intatti.</li>
+    </ul>
+  </div>
+
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">✓</span> Procedura di Risoluzione</div>
+    <ol>
+      <li><strong>Verifica e correzione modalità BIOS:</strong> Entrare nel BIOS (F2 / Canc / F10). Cercare <em>"SATA Mode"</em>, <em>"Storage Configuration"</em> o <em>"VMD Controller"</em>. Provare a commutare tra AHCI e RST/RAID. Salvare e riavviare — se Windows parte, trovato il problema.</li>
+      <li><strong>Ripristino BCD da WinRE (chiavetta USB installazione Windows 11):</strong>
+        <div class="code-box"><span class="code-comment"># Da Risoluzione problemi → Prompt dei comandi in WinRE</span>
+bootrec /fixmbr
+bootrec /fixboot
+bootrec /scanos
+bootrec /rebuildbcd
+
+<span class="code-comment"># Ripristino file avvio sul volume EFI (adattare la lettera S: al volume EFI rilevato)</span>
+bcdboot C:\Windows /s S: /f UEFI</div>
+      </li>
+      <li><strong>Disco non visibile neanche nel BIOS:</strong> Spegnere, rimuovere fisicamente e reinserire il modulo NVMe M.2. Poi riprovare la modifica VMD. Solo se il disco rimane invisibile anche dopo questi passaggi si configura un guasto hardware confermato.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- CASO 9: RAM -->
+<div class="case-block">
+  <div class="case-header">
+    <span class="case-badge" style="background:linear-gradient(135deg,#92400e,#d97706);">9</span>
+    <div>
+      <p class="case-title">RAM: Guasto Fisico vs. Causa Software — "La RAM è Difettosa"
+        <span class="tag tag-hw">Hardware</span><span class="tag tag-drv">Driver/Kernel</span>
+      </p>
+      <p class="case-subtitle">BSoD MEMORY_MANAGEMENT, PAGE_FAULT, crash casuali — protocollo per distinguere fisico da logico</p>
+    </div>
+  </div>
+
+  <div class="callout-sintomo">
+    <div class="callout-sintomo-title">🔵 Sintomo</div>
+    Blue Screen of Death casuali con codici <span class="hl-red">MEMORY_MANAGEMENT (0x0000001A)</span>, <span class="hl-red">PAGE_FAULT_IN_NONPAGED_AREA</span>, <span class="hl-red">IRQL_NOT_LESS_OR_EQUAL</span>, <span class="hl-red">SYSTEM_SERVICE_EXCEPTION</span>. I crash sembrano casuali e non riproducibili, e puntano immediatamente alla RAM.
+  </div>
+
+  <div class="callout-causa">
+    <div class="callout-causa-title">⚠️ Questi BSoD Possono Avere Cause Completamente Software</div>
+    <ul>
+      <li><strong>Driver kernel legacy:</strong> Driver di stampanti vecchi, antivirus, VPN e software di virtualizzazione che accedono a indirizzi di memoria vietati in kernel mode producono esattamente gli stessi BSoD della RAM fisica difettosa.</li>
+      <li><strong>XMP/EXPO instabile nel BIOS:</strong> I profili XMP (Intel) o EXPO (AMD) overclocckano la RAM oltre le specifiche reali dei moduli, generando errori di lettura/scrittura casuali.</li>
+      <li><strong>Pagefile.sys corrotto su settore danneggiato:</strong> Un pagefile su un settore difettoso del disco causa letture errate che Windows interpreta come errori di RAM.</li>
+    </ul>
+  </div>
+
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">✓</span> Protocollo di Triage — Fisico vs. Software</div>
+    <ol>
+      <li><strong>Step 1 — Disabilitare XMP/EXPO nel BIOS:</strong> Entrare nel BIOS → cercare <em>"XMP Profile"</em> o <em>"EXPO Mode"</em> → impostare su <strong>Auto / Disabled</strong>. Se i BSoD cessano: la RAM è integra, era il profilo XMP instabile.</li>
+      <li><strong>Step 2 — Windows Memory Diagnostic (test rapido):</strong>
+        <div class="code-box">mdsched.exe</div>
+        Scegliere <strong>"Riavvia ora e verifica i problemi"</strong>. Dopo il riavvio, leggere il risultato in <em>Visualizzatore eventi → Registri Windows → Sistema → MemoryDiagnostics-Results</em>.<br>
+        <span class="hl-green">Nessun errore</span> → RAM integra → problema software.<br>
+        <span class="hl-red">Errori rilevati</span> → procedere con MemTest86.
+      </li>
+      <li><strong>Step 3 — MemTest86 (test definitivo):</strong> Scaricare da <span class="highlight">https://www.memtest86.com/</span> → creare USB avviabile → eseguire almeno <strong>2 pass completi</strong> (1–3 ore).
+        <table style="margin-top:5px;">
+          <tr><th>Risultato</th><th>Diagnosi</th><th>Azione</th></tr>
+          <tr><td><span class="hl-green">0 errori</span></td><td>RAM fisicamente integra</td><td>Indagare driver kernel con ETW (Proc. 01/07 Lv.6)</td></tr>
+          <tr><td><span class="hl-orange">Errori solo con XMP attivo</span></td><td>Profilo XMP instabile</td><td>Disabilitare XMP o ridurre frequenza BIOS</td></tr>
+          <tr><td><span class="hl-red">Errori su un singolo modulo</span></td><td>Modulo RAM difettoso</td><td>Sostituire il modulo specifico (testare uno alla volta)</td></tr>
+          <tr><td><span class="hl-red">Errori su tutti i moduli</span></td><td>Slot/controller difettoso</td><td>Valutare sostituzione scheda madre</td></tr>
+        </table>
+      </li>
+    </ol>
+  </div>
+
+  <div class="callout-ref">
+    <div class="callout-ref-title">🔗 Riferimento Incrociato</div>
+    Se MemTest86 non rileva errori ma i BSoD persistono: procedere con <strong>Procedura 01 (ETW/WPR)</strong> o <strong>Procedura 07 Livello 6</strong> per isolare il driver kernel colpevole tramite analisi DPC/ISR.
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  SEZIONE 4 — INPUT, INTERFACCIA E MULTIMEDIA                   -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="section-divider sd-s4">
+  <div>
+    <h2>🖥️ SEZIONE 4 — Input, Interfaccia e Multimedia</h2>
+    <p>Tastiera con numeri, touchpad morto, webcam nera, silenzio audio, schermo senza segnale: in quasi tutti i casi la causa è configurazione OS, privacy, driver o modalità display errata.</p>
+  </div>
+</div>
+
+<!-- CASO 10: TASTIERA E TOUCHPAD -->
+<div class="case-block">
+  <div class="case-header">
+    <span class="case-badge" style="background:linear-gradient(135deg,#9f1239,#e11d48);">10</span>
+    <div>
+      <p class="case-title">Tastiera &amp; Touchpad — "La Tastiera Digita Numeri / Il Touchpad non Funziona"
+        <span class="tag tag-cfg">Config OS</span>
+      </p>
+      <p class="case-subtitle">Tasti che producono numeri, lettere saltate, touchpad completamente morto</p>
+    </div>
+  </div>
+
+  <div class="callout-sintomo">
+    <div class="callout-sintomo-title">🔵 Sintomo</div>
+    Premendo i tasti <strong>J K L U I O M</strong> compaiono i numeri <strong>1 2 3 4 5 6 0</strong>; oppure la tastiera salta lettere o le produce in ritardo; oppure il touchpad non risponde ad alcun tocco o gesto; oppure i caratteri speciali (@ # à è) escono sbagliati rispetto al tasto premuto.
+  </div>
+
+  <div class="callout-causa">
+    <div class="callout-causa-title">⚠️ Cause Reali — Nessuna Rottura Fisica</div>
+    <ul>
+      <li><strong>Bloc Num (NumLock) attivo su notebook compatti:</strong> I laptop 13"–14" senza tastierino numerico fisico mappano un tastierino virtuale sulle lettere centrali, attivabile con <span class="highlight">Fn + NumLk</span> o <span class="highlight">Fn + F11</span>.</li>
+      <li><strong>Tasti Permanenti / Tasti Filtro (Accessibilità Windows):</strong> Tenere premuto Shift per 8+ secondi attiva "Sticky Keys"; i "Filter Keys" fanno ignorare i tasti premuti troppo rapidamente.</li>
+      <li><strong>Layout tastiera commutato:</strong> <span class="highlight">Alt + Shift</span> o <span class="highlight">Win + Spazio</span> commuta il layout tra ITA e ENG/US — la posizione di @ # è del tutto diversa.</li>
+      <li><strong>Touchpad disabilitato da scorciatoia vendor:</strong> HP, Dell, Lenovo hanno tasti Fn dedicati o aree touch che lo disabilitano accidentalmente.</li>
+    </ul>
+  </div>
+
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">✓</span> Procedura di Risoluzione — In Ordine di Velocità</div>
+    <ol>
+      <li><strong>NumLock:</strong> Premere <span class="highlight">Fn + NumLk</span> o <span class="highlight">Fn + F11</span> (varia per modello). Il LED NumLock si spegne e le lettere tornano normali.</li>
+      <li><strong>Sticky / Filter Keys:</strong> <em>Impostazioni → Accessibilità → Tastiera</em> → disattivare <strong>"Tasti permanenti"</strong> e <strong>"Tasti filtro"</strong>.</li>
+      <li><strong>Layout tastiera:</strong> Guardare l'angolo in basso a destra della barra delle applicazioni. Deve mostrare <strong>ITA</strong>. Se mostra ENG: cliccarci sopra → selezionare Italiano. Rimuovere i layout superflui in <em>Impostazioni → Ora e lingua → Lingua e area geografica → Italiano → Opzioni lingua</em>.</li>
+      <li><strong>Touchpad:</strong> Provare <span class="highlight">Fn + F7</span> / <span class="highlight">Fn + F9</span> (varia per vendor). Se non funziona: <em>Impostazioni → Bluetooth e dispositivi → Touchpad</em> → riattivare il toggle. In <span class="highlight">devmgmt.msc</span> verificare che il dispositivo HID I2C Touchpad non abbia un triangolo giallo.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- CASO 11: WEBCAM -->
+<div class="case-block">
+  <div class="case-header">
+    <span class="case-badge" style="background:linear-gradient(135deg,#9f1239,#e11d48);">11</span>
+    <div>
+      <p class="case-title">Webcam — "La Fotocamera Integrata è Rotta / Schermata Nera"
+        <span class="tag tag-cfg">Privacy OS</span><span class="tag tag-hw">Shutter Fisico</span>
+      </p>
+      <p class="case-subtitle">Schermata nera in Teams/Meet/Zoom, webcam non rilevata dall'app</p>
+    </div>
+  </div>
+
+  <div class="callout-sintomo">
+    <div class="callout-sintomo-title">🔵 Sintomo</div>
+    In Teams, Zoom o Meet la webcam mostra una schermata completamente nera anche se il LED verde di attività si accende; oppure la fotocamera non compare nell'elenco delle periferiche dell'app; oppure una app vede la cam ma un'altra no.
+  </div>
+
+  <div class="callout-causa">
+    <div class="callout-causa-title">⚠️ Cause Reali — Verificare Prima lo Shutter Fisico</div>
+    <ul>
+      <li><strong>Privacy Shutter fisico NON aperto:</strong> HP EliteBook, Lenovo ThinkPad, Dell Latitude e molti altri modelli business hanno uno slider fisico sull'obiettivo che lo copre meccanicamente. Se chiuso, il LED si accende ma l'immagine è nera.</li>
+      <li><strong>Privacy fotocamera bloccata da Windows 11:</strong> L'interruttore globale privacy blocca tutte le app desktop dall'accedere alla fotocamera.</li>
+      <li><strong>Conflitto accesso esclusivo tra app:</strong> Teams e Zoom si contendono il device KSCATEGORY_VIDEO — se una app lo tiene aperto in background, la seconda vede schermo nero.</li>
+      <li><strong>Driver UVC generico di Windows Update:</strong> Windows Update può installare un driver generico USB Video Class che non supporta le funzionalità avanzate della cam del vendor.</li>
+    </ul>
+  </div>
+
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">✓</span> Procedura di Risoluzione — In Ordine di Priorità</div>
+    <ol>
+      <li><strong>Verificare lo shutter fisico:</strong> Cercare un piccolo slider sul bordo superiore del display vicino all'obiettivo. Spostarlo verso l'esterno per aprire l'otturatore. Su Lenovo ThinkPad: tasto <span class="highlight">Fn + F10</span>.</li>
+      <li><strong>Privacy Windows 11:</strong> <em>Impostazioni → Privacy e sicurezza → Fotocamera</em> → attivare <strong>"Consenti alle app di accedere alla fotocamera"</strong> e <strong>"Consenti alle app desktop di accedere alla fotocamera"</strong>. Verificare che Teams e Zoom siano abilitati nella lista.</li>
+      <li><strong>Chiudere tutte le app che usano la cam:</strong> In Gestione Attività verificare che non ci siano processi di Teams, Zoom, Meet, Skype, OBS attivi in background. Chiuderli tutti → riaprire solo l'app desiderata.</li>
+      <li><strong>Aggiornamento/reinstallazione driver:</strong> <span class="highlight">devmgmt.msc</span> → <em>Fotocamere</em> → clic destro → Aggiorna driver. Se il problema persiste: disinstallare il driver e scaricare quello specifico dal sito del produttore del laptop.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- CASO 12: AUDIO E MICROFONO -->
+<div class="case-block">
+  <div class="case-header">
+    <span class="case-badge" style="background:linear-gradient(135deg,#9f1239,#e11d48);">12</span>
+    <div>
+      <p class="case-title">Audio &amp; Microfono — "La Scheda Audio è Rotta / Il Microfono è Bruciato"
+        <span class="tag tag-cfg">Config OS</span><span class="tag tag-svc">Servizi</span>
+      </p>
+      <p class="case-subtitle">Silenzio totale, microfono non rilevato in Teams/Meet/Zoom</p>
+    </div>
+  </div>
+
+  <div class="callout-sintomo">
+    <div class="callout-sintomo-title">🔵 Sintomo</div>
+    Nessun suono esce da casse interne né da cuffie collegate; nelle videochiamate i colleghi dicono "non ti sentiamo, il tuo microfono non funziona"; oppure l'audio è distorto o robotico pur con il volume al massimo.
+  </div>
+
+  <div class="callout-causa">
+    <div class="callout-causa-title">⚠️ Cause Reali</div>
+    <ul>
+      <li><strong>Output audio dirottato su HDMI:</strong> Collegando un monitor esterno o una TV, Windows imposta automaticamente come altoparlante predefinito l'uscita HDMI — che spesso è priva di casse o ha il volume a 0.</li>
+      <li><strong>Privacy microfono bloccata da Windows 11:</strong> L'interruttore globale privacy blocca le app desktop dall'accedere al microfono.</li>
+      <li><strong>Frequenza di campionamento incompatibile (Sample Rate):</strong> Il formato audio è impostato a 24-bit 192kHz o 32-bit 384kHz — il chip Realtek consumer non elabora queste frequenze studio, generando silenzio o audio robotico.</li>
+      <li><strong>Servizio Windows Audio (Audiosrv) in stallo:</strong> Il servizio di sistema non comunica con l'endpoint audio.</li>
+    </ul>
+  </div>
+
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">✓</span> Procedura di Risoluzione</div>
+    <ol>
+      <li><strong>Verifica periferica audio predefinita:</strong> Clic destro sull'icona altoparlante nella barra → <em>"Impostazioni audio"</em>. In <em>Output</em>: verificare che sia selezionato <strong>Realtek Audio / Altoparlanti</strong> e non una voce HDMI o DisplayPort.</li>
+      <li><strong>Privacy microfono:</strong> <em>Impostazioni → Privacy e sicurezza → Microfono</em> → attivare <strong>"Consenti alle app di accedere al microfono"</strong> e <strong>"Consenti alle app desktop di accedere al microfono"</strong>.</li>
+      <li><strong>Frequenza di campionamento:</strong> Clic destro altoparlante → <em>Altre impostazioni audio</em> → scheda <em>Riproduzione</em> → doppio clic su Altoparlanti → scheda <em>Avanzate</em>. Formato: impostare <strong>16 bit, 48000 Hz (Qualità DVD)</strong> → Applica → OK.</li>
+      <li><strong>Riavvio servizio audio:</strong>
+        <div class="code-box"><span class="code-comment"># CMD come Amministratore</span>
+net stop audiosrv
+net stop AudioEndpointBuilder
+net start AudioEndpointBuilder
+net start audiosrv</div>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<!-- CASO 13: SCHERMO E GPU -->
+<div class="case-block">
+  <div class="case-header">
+    <span class="case-badge" style="background:linear-gradient(135deg,#9f1239,#e11d48);">13</span>
+    <div>
+      <p class="case-title">Schermo &amp; GPU — "Il Monitor / La Scheda Video è Bruciata"
+        <span class="tag tag-drv">Driver</span><span class="tag tag-cfg">Config</span>
+      </p>
+      <p class="case-subtitle">Schermo nero dopo standby, nessun segnale HDMI, "Out of Range" sul monitor</p>
+    </div>
+  </div>
+
+  <div class="callout-sintomo">
+    <div class="callout-sintomo-title">🔵 Sintomo</div>
+    Il PC si accende (LED accesi, ventole attive) ma lo schermo resta completamente nero. Oppure dopo sospensione lo schermo non torna. Oppure collegando un monitor esterno via HDMI/DisplayPort non compare nessun segnale e lo schermo dice "No Signal" o "Out of Range".
+  </div>
+
+  <div class="callout-causa">
+    <div class="callout-causa-title">⚠️ Cause Reali</div>
+    <ul>
+      <li><strong>DWM (Desktop Window Manager) congelato:</strong> Il compositing grafico non ha completato l'handshake con l'output video dopo il ripristino da standby.</li>
+      <li><strong>Modalità proiezione errata:</strong> Windows ha impostato "Solo secondo schermo" mentre il monitor esterno è scollegato — lo schermo interno risulta quindi nero.</li>
+      <li><strong>Frequenza di aggiornamento fuori scala (Out of Range):</strong> Un aggiornamento driver ha impostato 120Hz o 144Hz su un cavo HDMI 1.4 o monitor che supporta max 60Hz. Il monitor va in protezione e mostra "Out of Range".</li>
+      <li><strong>Driver video corrotto in cache:</strong> I file binari del driver NVIDIA/AMD/Intel vanno in crash ciclico — si risolve con DDU in modalità provvisoria.</li>
+    </ul>
+  </div>
+
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">✓</span> Procedura di Risoluzione — In Ordine di Priorità</div>
+    <ol>
+      <li><strong>Riavvio immediato sottosistema grafico (senza riavviare il PC):</strong> Premere <span class="highlight">Win + Ctrl + Shift + B</span> — emette un breve beep e reinizializza istantaneamente il driver grafico. Risolve il nero post-standby nel 60% dei casi.</li>
+      <li><strong>Cambio modalità proiezione da tastiera cieca:</strong> Premere <span class="highlight">Win + P</span> → freccia SU per ciclare verso "Solo schermo PC" → Invio. Attendere 5 secondi.</li>
+      <li><strong>Frequenza Out of Range — da modalità provvisoria:</strong> Riavviare in Modalità Provvisoria → <em>Impostazioni → Sistema → Schermo → Visualizzazione avanzata</em> → ridurre la frequenza a <strong>60 Hz</strong> → riavviare normalmente.</li>
+      <li><strong>Pulizia completa driver con DDU (Display Driver Uninstaller):</strong>
+        <ul>
+          <li>Scaricare DDU da: <span class="highlight">https://www.wagnardsoft.com/</span></li>
+          <li>Riavviare in Modalità Provvisoria (senza rete)</li>
+          <li>DDU → selezionare GPU e vendor (NVIDIA / AMD / Intel) → <strong>"Pulisci e riavvia"</strong></li>
+          <li>Dopo il riavvio: installare il driver pulito dal sito ufficiale NVIDIA/AMD/Intel (non da Windows Update)</li>
+        </ul>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  SEZIONE 5 — ALIMENTAZIONE E GESTIONE ENERGETICA               -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="section-divider sd-s5">
+  <div>
+    <h2>🔋 SEZIONE 5 — Alimentazione e Gestione Energetica</h2>
+    <p>Battery Conservation Mode che blocca la ricarica all'80%, EC Reset per sbloccare il controller di carica, powercfg /batteryreport per la diagnosi precisa della salute della batteria.</p>
+  </div>
+</div>
+
+<!-- CASO 14: BATTERIA E ALIMENTAZIONE -->
+<div class="case-block">
+  <div class="case-header">
+    <span class="case-badge" style="background:linear-gradient(135deg,#064e3b,#059669);">14</span>
+    <div>
+      <p class="case-title">Alimentazione &amp; Batteria — "La Batteria è Morta / Non Carica"
+        <span class="tag tag-cfg">Software Vendor</span><span class="tag tag-hw">EC Controller</span>
+      </p>
+      <p class="case-subtitle">Ricarica bloccata al 60–80%, PC si spegne staccando il cavo, "Collegata ma non in carica"</p>
+    </div>
+  </div>
+
+  <div class="callout-sintomo">
+    <div class="callout-sintomo-title">🔵 Sintomo</div>
+    Il laptop collegato all'alimentatore mostra <em>"Collegata ma non in carica"</em>; la carica non supera mai il 60% o l'80% nonostante sia sempre sotto rete; oppure il PC si spegne di colpo appena si stacca il cavo anche se la batteria indica una percentuale alta.
+  </div>
+
+  <div class="callout-causa">
+    <div class="callout-causa-title">⚠️ Cause Reali — Quasi Sempre Software, Non Celle Esaurite</div>
+    <ul>
+      <li><strong>Battery Conservation / Health Mode attivo:</strong> Software del vendor (Lenovo Vantage, ASUS MyASUS, Dell Power Manager, HP Battery Care) imposta una soglia massima di ricarica al 60% o 80% per preservare le celle al litio su laptop sempre sotto rete. La batteria è integra, è volutamente limitata via software.</li>
+      <li><strong>Driver ACPI batteria corrotto:</strong> Lo stack di comunicazione tra Windows e il controller di carica è desincronizzato — Windows non legge correttamente lo stato della batteria fisica.</li>
+      <li><strong>Embedded Controller (EC) bloccato in stato anomalo:</strong> Il microcontrollore hardware che gestisce tutta l'alimentazione è andato in blocco logico per micro-sbalzi di tensione durante il collegamento/scollegamento del cavo.</li>
+    </ul>
+  </div>
+
+  <div class="callout-step">
+    <div class="callout-step-title"><span class="step-badge">✓</span> Procedura di Risoluzione</div>
+    <ol>
+      <li><strong>Verifica e disattivazione Battery Conservation Mode:</strong> Aprire il software del vendor (Lenovo Vantage / ASUS MyASUS / Dell Power Manager / HP Support Assistant) → sezione <em>"Impostazioni batteria"</em> o <em>"Battery Health"</em>. Se la soglia è al 60% o 80%: portarla al 100% oppure disabilitare la modalità Conservation.</li>
+      <li><strong>Reset driver ACPI batteria:</strong> <span class="highlight">devmgmt.msc</span> → <em>Batterie</em> → clic destro su <em>"Batteria con metodo di controllo conforme ad ACPI Microsoft"</em> → <strong>Disinstalla dispositivo</strong> (senza spuntare la rimozione driver). Riavviare: Windows reinstalla il driver ACPI pulito automaticamente.</li>
+      <li><strong>EC Reset (Power Drain — reset hardware del controller di carica):</strong> Scollegare l'alimentatore → spegnere il laptop completamente → tenere premuto il pulsante di accensione per <strong>30–40 secondi continui</strong> (scarica la carica residua dai condensatori e resetta i registri interni dell'Embedded Controller) → ricollegare l'alimentatore → accendere.</li>
+      <li><strong>Report diagnostico batteria completo:</strong>
+        <div class="code-box"><span class="code-comment"># PowerShell come Amministratore — genera report HTML dettagliato</span>
+powercfg /batteryreport /output "C:\Temp\batteria.html"</div>
+        Aprire il file generato nel browser. Leggere il campo <strong>"Design Capacity"</strong> (capacità originale di progetto) vs. <strong>"Full Charge Capacity"</strong> (capacità attuale reale).
+        <table style="margin-top:5px;">
+          <tr><th>Capacità Residua</th><th>Diagnosi</th><th>Azione</th></tr>
+          <tr><td>&gt; 80% della capacità originale</td><td><span class="hl-green">Batteria sana</span></td><td>Nessuna sostituzione — verificare Conservation Mode</td></tr>
+          <tr><td>60–80% della capacità originale</td><td><span class="hl-orange">Batteria usurata</span></td><td>Monitorare — sostituzione facoltativa</td></tr>
+          <tr><td>&lt; 60% della capacità originale</td><td><span class="hl-red">Batteria a fine vita</span></td><td>Sostituzione consigliata</td></tr>
+        </table>
+      </li>
+    </ol>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════ -->
+<!--  SCHEMA DI TRIAGE RAPIDO                                        -->
+<!-- ════════════════════════════════════════════════════════════════ -->
+
+<div class="page-break"></div>
+
+<span class="section-label-bar">🔎 Schema di Triage Rapido — Protocollo di Esclusione in 4 Livelli</span>
+
+<p style="font-size:8pt; margin-bottom:8px; color:#475569;">
+  Prima di concludere che un componente fisico è guasto, completare questi 4 livelli in ordine. Solo se tutti falliscono si procede con la diagnosi hardware definitiva.
+</p>
+
+<table class="triage-table">
+  <thead>
+    <tr>
+      <th style="width:8%;">Livello</th>
+      <th style="width:18%;">Azione</th>
+      <th style="width:30%;">Come Eseguire</th>
+      <th style="width:27%;">Problemi che Risolve</th>
+      <th style="width:17%;">Risultato</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>L1</strong><br><em>Hard Reset</em></td>
+      <td>EC Reset / Power Drain</td>
+      <td>Scollegare tutto → tenere premuto Power 30–40 sec → ricollegare alimentatore → accendere</td>
+      <td>Batteria non carica, USB non rilevate, PC bloccato dopo thermal shutdown, ventola al massimo da spento, controller di carica in stallo</td>
+      <td class="triage-ok">✔ Risolto</td>
+    </tr>
+    <tr>
+      <td><strong>L2</strong><br><em>Configurazione</em></td>
+      <td>Verificare impostazioni OS e BIOS</td>
+      <td>Controllare: NumLock, Fn, Layout tastiera, Privacy cam/mic, AHCI/RAID BIOS, Battery Conservation Mode, modalità proiezione schermo, layout Wi-Fi driver avanzati</td>
+      <td>Tastiera con numeri, touchpad morto, cam nera, disco non visibile al boot, batteria bloccata all'80%, schermo nero</td>
+      <td class="triage-ok">✔ Risolto</td>
+    </tr>
+    <tr>
+      <td><strong>L3</strong><br><em>Driver / Servizi</em></td>
+      <td>Reset/reinstallazione driver e servizi Windows</td>
+      <td>Restart servizi (audiosrv, bthserv, spooler, w32tm), DDU per GPU, reinstall driver Wi-Fi/BT/cam, netsh reset TCP/IP, Selective Suspend disabilitato, BCD repair da WinRE</td>
+      <td>Audio muto, BT scomparso, schermo nero, Wi-Fi lento, coda stampa bloccata, cuffie che cadono, errori SSL, boot impossibile</td>
+      <td class="triage-ok">✔ Risolto</td>
+    </tr>
+    <tr>
+      <td><strong>L4</strong><br><em>Ambiente Isolato</em></td>
+      <td>Test hardware in ambiente pulito</td>
+      <td>Avviare da Live Linux USB o WinRE. Testare la periferica senza driver Windows. Eseguire MemTest86 per RAM. CrystalDiskInfo per SSD SMART (C5/C6 &gt; 0)</td>
+      <td>RAM con errori fisici confermati, SSD failing SMART, hardware effettivamente rotto e non recuperabile via software</td>
+      <td class="triage-ko">✖ HW Confermato</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="callout-danger">
+  <div class="callout-danger-title">🔴 Regola d'Oro Prima di Qualsiasi Sostituzione Hardware</div>
+  <strong>Non consigliare mai la sostituzione di un componente senza aver completato almeno L1, L2 e L3.</strong>
+  La statistica del supporto tecnico indica che oltre il <strong>70% dei "guasti hardware"</strong> segnalati dai clienti si risolve interamente a livello software (configurazione, driver, servizi, risparmio energia). La sostituzione di un componente integro è un danno economico per il cliente e un danno reputazionale per il tecnico.
+</div>
+
+<!-- MAPPA PROCEDURE -->
+<span class="section-label-bar">📋 Mappa di Riferimento Incrociato — Tutte le Procedure</span>
+
+<table>
+  <thead>
+    <tr><th>Casistica</th><th>Questa Procedura (08)</th><th>Procedure Correlate</th></tr>
+  </thead>
+  <tbody>
+    <tr><td>Wi-Fi instabile / Roaming / PCIe Power</td><td><strong>Caso 1</strong></td><td>Proc. 03 (Caso 2 — Codice 10)</td></tr>
+    <tr><td>Bluetooth scompare / cuffie cadono</td><td><strong>Caso 2</strong></td><td>—</td></tr>
+    <tr><td>Orologio errato / SSL / CMOS</td><td><strong>Caso 3</strong></td><td>—</td></tr>
+    <tr><td>USB-A Selective Suspend / 2.4 GHz</td><td><strong>Caso 4</strong></td><td>—</td></tr>
+    <tr><td>Dock / USB-C / Thunderbolt</td><td><strong>Caso 5</strong></td><td>—</td></tr>
+    <tr><td>Stampante / Spooler bloccato</td><td><strong>Caso 6</strong></td><td>—</td></tr>
+    <tr><td>Disco pieno / sistema lento</td><td><strong>Caso 7</strong></td><td>Proc. 07 (Livello 2C Storage)</td></tr>
+    <tr><td>Boot / AHCI-RAID BIOS / BCD corrotto</td><td><strong>Caso 8</strong></td><td>—</td></tr>
+    <tr><td>RAM: Fisica vs. Software / MemTest86</td><td><strong>Caso 9</strong></td><td>Proc. 01 (ETW), Proc. 07 (Lv.6)</td></tr>
+    <tr><td>Tastiera numeri / Touchpad morto</td><td><strong>Caso 10</strong></td><td>—</td></tr>
+    <tr><td>Webcam nera (Teams/Meet/Zoom)</td><td><strong>Caso 11</strong></td><td>—</td></tr>
+    <tr><td>Audio muto / Microfono non rilevato</td><td><strong>Caso 12</strong></td><td>—</td></tr>
+    <tr><td>Schermo nero / DDU / Out of Range</td><td><strong>Caso 13</strong></td><td>Proc. 07 (Lv.6 WPA — driver GPU)</td></tr>
+    <tr><td>Batteria bloccata / EC Reset / powercfg</td><td><strong>Caso 14</strong></td><td>Proc. 03 (Caso 1 — EC)</td></tr>
+    <tr><td>PC Lento / Thermal Throttling</td><td>—</td><td><strong>Proc. 07</strong> (Lv.0-1), <strong>Proc. 01</strong></td></tr>
+    <tr><td>Coperchio bloccato / Modern Standby</td><td>—</td><td><strong>Proc. 03</strong> (Caso 1)</td></tr>
+    <tr><td>Scheda di rete Codice 10/43</td><td>Caso 1 (avanzato)</td><td><strong>Proc. 03</strong> (Caso 2)</td></tr>
+    <tr><td>Errori 0x... Windows</td><td>—</td><td><strong>Proc. 03</strong> (Caso 3)</td></tr>
+    <tr><td>Office / Outlook / Microsoft 365</td><td>—</td><td><strong>Proc. 02</strong> (cartella Office)</td></tr>
+    <tr><td>Account Google / Gmail bloccato</td><td>—</td><td><strong>Proc. 04</strong></td></tr>
+    <tr><td>Mac: Kernel Panic, App bloccate, Wi-Fi</td><td>—</td><td><strong>Proc. 05</strong></td></tr>
+    <tr><td>Elettrodomestici / Menu Segreti</td><td>—</td><td><strong>Proc. 06</strong></td></tr>
+  </tbody>
+</table>
+
+<div class="footer">
+  Supporto Tecnico IT — Procedura 08: Casistiche Hardware/Software Ibride – 14 Falsi Guasti Risolti via Software | Settembre 2026
+</div>
+
+</body>
+</html>
