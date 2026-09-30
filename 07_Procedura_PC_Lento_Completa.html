@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Procedura: PC Lento – Troubleshooting Completo (Win 11 Laptop)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    @page {
+      size: A4 portrait;
+      margin: 12mm 12mm 12mm 12mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 8.8pt;
+      line-height: 1.5;
+      color: #1e293b;
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* ─── HEADER ─── */
+    .doc-header {
+      background: linear-gradient(135deg, #064e3b 0%, #047857 55%, #059669 100%);
+      color: #ffffff;
+      padding: 20px 24px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 10px rgba(15,23,42,0.12);
+    }
+    .header-badge {
+      display: inline-block;
+      background: rgba(255,255,255,0.22);
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: 7.5pt;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin-bottom: 8px;
+    }
+    .header-title {
+      font-size: 16pt;
+      font-weight: 800;
+      line-height: 1.2;
+      margin: 0 0 6px 0;
+      color: #ffffff;
+    }
+    .header-subtitle {
+      font-size: 8.8pt;
+      color: #e2e8f0;
+      margin: 0 0 10px 0;
+      font-weight: 400;
+      line-height: 1.5;
+    }
+    .header-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      font-size: 7.5pt;
+      color: #cbd5e1;
+      border-top: 1px solid rgba(255,255,255,0.2);
+      padding-top: 8px;
+    }
+
+    /* ─── LEVEL HEADERS ─── */
+    .level-header {
+      border-radius: 8px;
+      padding: 10px 16px;
+      margin: 16px 0 10px 0;
+      page-break-after: avoid;
+    }
+    .level-header h2 {
+      margin: 0;
+      font-size: 11pt;
+      font-weight: 800;
+      color: #ffffff;
+    }
+    .level-header p {
+      margin: 4px 0 0 0;
+      font-size: 8pt;
+      color: rgba(255,255,255,0.85);
+    }
+    .lv0 { background: linear-gradient(90deg, #0f172a, #1e3a5f); }
+    .lv1 { background: linear-gradient(90deg, #7c2d12, #b45309); }
+    .lv2 { background: linear-gradient(90deg, #1e3a5f, #1d4ed8); }
+    .lv3 { background: linear-gradient(90deg, #064e3b, #059669); }
+    .lv4 { background: linear-gradient(90deg, #3b0764, #7e22ce); }
+    .lv5 { background: linear-gradient(90deg, #0c4a6e, #0284c7); }
+    .lv6 { background: linear-gradient(90deg, #701a75, #db2777); }
+    .lv7 { background: linear-gradient(90deg, #1c1917, #57534e); }
+
+    /* ─── CARDS ─── */
+    .card {
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 12px 16px;
+      margin-bottom: 12px;
+      page-break-inside: avoid;
+    }
+    .card-title {
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 0 0 8px 0;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #f1f5f9;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    /* ─── CALLOUT STEP ─── */
+    .callout-step {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+      border-left: 4px solid #16a34a;
+      border-radius: 0 8px 8px 0;
+      padding: 10px 14px;
+      margin-bottom: 11px;
+      page-break-inside: avoid;
+    }
+    .callout-step-title {
+      font-weight: 700;
+      color: #15803d;
+      font-size: 9pt;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 7px;
+    }
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: #16a34a;
+      color: #ffffff;
+      min-width: 22px;
+      height: 22px;
+      border-radius: 50%;
+      font-size: 8pt;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* ─── CALLOUT WARN ─── */
+    .callout-warn {
+      background: #fffbeb;
+      border: 1px solid #fde68a;
+      border-left: 4px solid #d97706;
+      border-radius: 0 6px 6px 0;
+      padding: 9px 13px;
+      margin-bottom: 10px;
+      font-size: 8.3pt;
+      color: #92400e;
+      page-break-inside: avoid;
+    }
+    .callout-warn-title {
+      font-weight: 700;
+      color: #b45309;
+      font-size: 8pt;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    /* ─── CALLOUT DANGER ─── */
+    .callout-danger {
+      background: #fff1f2;
+      border: 1px solid #fecdd3;
+      border-left: 4px solid #dc2626;
+      border-radius: 0 6px 6px 0;
+      padding: 9px 13px;
+      margin-bottom: 10px;
+      font-size: 8.3pt;
+      color: #7f1d1d;
+      page-break-inside: avoid;
+    }
+    .callout-danger-title {
+      font-weight: 700;
+      color: #dc2626;
+      font-size: 8pt;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    /* ─── CALLOUT INFO ─── */
+    .callout-info {
+      background: #eff6ff;
+      border: 1px solid #bfdbfe;
+      border-left: 4px solid #2563eb;
+      border-radius: 0 6px 6px 0;
+      padding: 9px 13px;
+      margin-bottom: 10px;
+      font-size: 8.3pt;
+      color: #1e3a8a;
+      page-break-inside: avoid;
+    }
+    .callout-info-title {
+      font-weight: 700;
+      color: #1d4ed8;
+      font-size: 8pt;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    /* ─── CALLOUT REF ─── */
+    .callout-ref {
+      background: #faf5ff;
+      border: 1px solid #e9d5ff;
+      border-left: 4px solid #9333ea;
+      border-radius: 0 6px 6px 0;
+      padding: 9px 13px;
+      margin-bottom: 10px;
+      font-size: 8.2pt;
+      page-break-inside: avoid;
+    }
+    .callout-ref-title {
+      font-weight: 700;
+      color: #7e22ce;
+      font-size: 8pt;
+      text-transform: uppercase;
+      margin-bottom: 5px;
+    }
+
+    /* ─── CODE BOX ─── */
+    .code-box {
+      background: #0f172a;
+      color: #f8fafc;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
+      font-size: 7.6pt;
+      padding: 9px 13px;
+      border-radius: 6px;
+      margin: 7px 0 9px 0;
+      white-space: pre-wrap;
+      word-break: break-all;
+      line-height: 1.6;
+    }
+    .code-comment {
+      color: #94a3b8;
+    }
+
+    /* ─── HIGHLIGHT ─── */
+    .highlight {
+      background: #e0f2fe;
+      color: #0369a1;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.8pt;
+      font-weight: 600;
+    }
+    .hl-orange {
+      background: #fff7ed;
+      color: #c2410c;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.8pt;
+      font-weight: 600;
+    }
+    .hl-red {
+      background: #fff1f2;
+      color: #be123c;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.8pt;
+      font-weight: 600;
+    }
+    .hl-green {
+      background: #f0fdf4;
+      color: #15803d;
+      padding: 1px 5px;
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.8pt;
+      font-weight: 600;
+    }
+
+    /* ─── TABLE ─── */
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8pt;
+      margin: 8px 0 11px 0;
+    }
+    th {
+      background-color: #0f172a;
+      color: #ffffff;
+      padding: 6px 9px;
+      text-align: left;
+      font-weight: 600;
+      font-size: 7.8pt;
+    }
+    td {
+      padding: 6px 9px;
+      border-bottom: 1px solid #e2e8f0;
+      vertical-align: top;
+    }
+    tr:nth-child(even) td {
+      background-color: #f8fafc;
+    }
+
+    /* ─── GRID ─── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+    .grid-3 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+
+    /* ─── LISTS ─── */
+    ul, ol {
+      margin: 5px 0 7px 0;
+      padding-left: 20px;
+    }
+    li {
+      margin-bottom: 3px;
+      line-height: 1.5;
+    }
+
+    /* ─── DECISION TREE ─── */
+    .decision-tree {
+      background: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: 8px;
+      padding: 10px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8pt;
+      line-height: 1.8;
+      margin: 8px 0 12px 0;
+      page-break-inside: avoid;
+    }
+    .dt-yes  { color: #15803d; font-weight: 700; }
+    .dt-no   { color: #dc2626; font-weight: 700; }
+    .dt-node { color: #1d4ed8; font-weight: 600; }
+    .dt-action { color: #7e22ce; font-weight: 600; }
+
+    /* ─── ALTRI ELEMENTI ─── */
+    .page-break { page-break-before: always; }
+    .sub-title {
+      font-size: 9.5pt;
+      font-weight: 700;
+      color: #0f172a;
+      margin: 12px 0 5px 0;
+      padding-left: 4px;
+      border-left: 3px solid #059669;
+    }
+    .reading-guide {
+      background: #f1f5f9;
+      border-radius: 6px;
+      padding: 8px 12px;
+      margin: 7px 0 10px 0;
+      font-size: 8pt;
+    }
+    .reading-guide strong { color: #0f172a; }
+    .footer {
+      text-align: center;
+      font-size: 7.2pt;
+      color: #94a3b8;
+      margin-top: 16px;
+      padding-top: 7px;
+      border-top: 1px solid #e2e8f0;
+    }
+    p { margin: 4px 0 7px 0; }
+    strong { color: #0f172a; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--                    INTESTAZIONE                     -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="doc-header">
+  <div class="header-badge">Procedura Operativa 07 — Troubleshooting Avanzato Windows 11</div>
+  <h1 class="header-title">PC Lento — Diagnostica Completa a Livelli Crescenti</h1>
+  <p class="header-subtitle">
+    Procedura scalare per laptop Windows 11 con antivirus commerciale preinstallato (Norton / Kaspersky / McAfee).
+    Parte dalla diagnosi visiva in 3 minuti fino all'analisi kernel con ETW (WPR/WPA) e alla reinstallazione pulita del sistema operativo.
+    Ogni livello è completo, autonomo e include cosa leggere, cosa cercare e come interpretare ogni dato rilevato.
+  </p>
+  <div class="header-meta">
+    <div><strong>Target:</strong> Laptop Windows 11 (consumer/privato)</div>
+    <div><strong>AV presenti:</strong> Norton / Kaspersky / McAfee (non disinstallabili)</div>
+    <div><strong>Livelli:</strong> 0 → 7 (Triage → Reset/Reinstall)</div>
+    <div><strong>Aggiornamento:</strong> Settembre 2026</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--            LIVELLO 0 — TRIAGE RAPIDO               -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="level-header lv0">
+  <h2>⚡ LIVELLO 0 — Triage Rapido: 3 Minuti per Identificare il Collo di Bottiglia</h2>
+  <p>Prima domanda obbligatoria. Albero decisionale su Gestione Attività. Nessuna modifica al sistema — solo osservazione.</p>
+</div>
+
+<div class="callout-warn">
+  <div class="callout-warn-title">🔌 Prima Domanda Obbligatoria — SEMPRE</div>
+  <strong>Il caricabatterie è collegato in questo momento?</strong><br>
+  Su laptop Windows 11, il comportamento del processore cambia radicalmente in base alla sorgente di alimentazione.
+  Un laptop su batteria può essere limitato al 30–50% della frequenza massima della CPU per policy di risparmio energetico,
+  simulando perfettamente un "PC lento" che invece funziona normalmente sotto rete.<br>
+  <strong>Regola: eseguire SEMPRE questa procedura con il caricabatterie collegato e verificato funzionante.</strong>
+  Se il problema scompare sotto rete, la causa è il piano di alimentazione (→ Livello 3).
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">A</span> Apertura di Gestione Attività</div>
+  <ol>
+    <li>Premere <strong>CTRL + SHIFT + ESC</strong> contemporaneamente per aprire Gestione Attività direttamente.</li>
+    <li>Se la finestra appare in modalità compatta (solo lista processi senza tab), fare clic su <strong>"Più dettagli"</strong> in basso a sinistra.</li>
+    <li>Fare clic sulla scheda <strong>"Prestazioni"</strong> nella barra superiore (seconda tab dopo "Processi").</li>
+    <li>Nella colonna sinistra comparirà la lista delle risorse: <strong>CPU, Memoria, Disco 0 (C:), Wi-Fi / Ethernet, GPU</strong>.<br>
+        Fare clic su ciascuna voce per visualizzare il grafico in tempo reale e i dati in basso.</li>
+  </ol>
+</div>
+
+<div class="sub-title">Albero Decisionale — Cosa Leggere e Dove Andare</div>
+<div class="decision-tree">
+<span class="dt-node">[Scheda CPU]</span>
+│
+├─ Utilizzo CPU > 80% costante → Scheda "Processi" → ordina per CPU
+│   ├─ Il processo più alto è: <span class="dt-action">Antivirus (Norton/Kaspersky/McAfee)</span> → LIVELLO 2 (Gestione AV)
+│   ├─ Il processo è: <span class="dt-action">MsMpEng.exe (Defender) / SearchIndexer.exe</span> → LIVELLO 5 (Registro/Servizi)
+│   └─ Frequenza CPU bloccata es. <span class="hl-red">0.79 GHz</span> invece di 2.4+ GHz → LIVELLO 1 (Thermal Throttling)
+│
+├─ Utilizzo CPU < 30% ma sistema lento
+│   └─ Controllare le altre risorse sotto ↓
+│
+<span class="dt-node">[Scheda Disco 0]</span>
+│
+├─ "Tempo di attività" → <span class="hl-red">100%</span> costante → LIVELLO 1 (Disco HDD/SSD degradato)
+├─ "Tempo di attività" 80-100% a picchi → LIVELLO 2 (AV in scansione) o LIVELLO 4 (Windows Update)
+└─ "Tempo di attività" normale (< 20%) → non è il disco
+│
+<span class="dt-node">[Scheda Memoria]</span>
+│
+├─ Memoria utilizzata > 85% (es. 7.5/8 GB) → LIVELLO 2 (processi AV + startup)
+└─ Memoria nella norma → non è la RAM il problema principale
+│
+<span class="dt-node">[Tutto nella norma ma PC lento uguale]</span>
+└─ → Sospettare corruzione OS o DPC latency → LIVELLO 4 poi LIVELLO 6 (ETW)
+</div>
+
+<div class="callout-info">
+  <div class="callout-info-title">📖 Come Leggere la Scheda CPU in Dettaglio</div>
+  Nel pannello della CPU, in basso, sono presenti dati fondamentali:<br><br>
+  <strong>Velocità:</strong> frequenza attuale della CPU (es. <span class="hl-green">2.40 GHz</span> = normale | <span class="hl-red">0.79 GHz</span> = throttling termico).<br>
+  <strong>Utilizzo:</strong> percentuale di lavoro totale (100% = CPU satura).<br>
+  <strong>Processi / Thread / Handle:</strong> numero di processi attivi (oltre 200 processi su PC consumer è spesso segnale di bloatware eccessivo).<br>
+  <strong>Tempo di esecuzione:</strong> da quanto tempo è acceso il sistema (utile per capire se il rallentamento è immediato o si manifesta dopo ore di utilizzo).
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--        LIVELLO 1 — HARDWARE: THERMAL, DISCO, RAM   -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="level-header lv1">
+  <h2>🌡️ LIVELLO 1 — Hardware: Thermal Throttling, Salute Disco e RAM</h2>
+  <p>Escludere cause fisiche prima di qualsiasi intervento software. Su laptop è la causa n°1 di lentezza cronica.</p>
+</div>
+
+<!-- SEZIONE 1A: THERMAL THROTTLING -->
+<div class="sub-title">1A — Thermal Throttling: La Causa n°1 su Laptop</div>
+
+<p>
+  Il <strong>thermal throttling</strong> è il meccanismo di sicurezza con cui il processore riduce automaticamente la propria frequenza
+  di clock per non superare la soglia critica di temperatura (generalmente 90–105°C). Il risultato visibile è un PC che
+  diventa improvvisamente lentissimo anche svolgendo operazioni banali. Su laptop usati da 2–3 anni con ventole sporche
+  o usati su superfici morbide (coperte, letti, cuscini) questo fenomeno è estremamente frequente.
+</p>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">1</span> Verifica della Frequenza CPU in Tempo Reale (Metodo Immediato)</div>
+  <ol>
+    <li>Aprire <strong>Gestione Attività → Scheda Prestazioni → CPU</strong>.</li>
+    <li>Osservare il campo <strong>"Velocità"</strong> in basso mentre si esegue una qualsiasi operazione (apertura browser, caricamento di un file).</li>
+    <li>
+      <strong>Come interpretare il valore:</strong><br>
+      - Valore vicino alla frequenza nominale del processore (es. 2.4 GHz su un i5-1235U) = <span class="hl-green">comportamento normale</span>.<br>
+      - Valore bloccato a <span class="hl-red">0.39 / 0.79 GHz</span> indipendentemente dal carico = <strong>thermal throttling confermato</strong>.
+    </li>
+  </ol>
+  <div class="callout-info">
+    <div class="callout-info-title">ℹ️ Come trovare la frequenza nominale del processore</div>
+    Nella stessa scheda CPU di Gestione Attività, in alto a destra appare il nome del processore (es. "Intel Core i5-1235U").
+    Il campo <strong>"Velocità di base"</strong> in basso indica la frequenza base nominale del produttore.
+    Se la velocità attuale è molto inferiore alla velocità di base, il throttling è attivo.
+  </div>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">2</span> Monitoraggio Temperature con HWiNFO64 (Strumento Gratuito)</div>
+  <p>Gestione Attività non mostra le temperature. Scaricare e utilizzare <strong>HWiNFO64</strong> per avere i dati termici in tempo reale.</p>
+  <ol>
+    <li>Scaricare <strong>HWiNFO64</strong> dal sito ufficiale: <span class="highlight">https://www.hwinfo.com/download/</span> — versione Portable (non richiede installazione).</li>
+    <li>Eseguire il file scaricato. Alla finestra iniziale, selezionare la spunta <strong>"Sensors-only"</strong> e cliccare <strong>"Run"</strong>.</li>
+    <li>Si aprirà una finestra con centinaia di sensori. Scorrere fino alla sezione <strong>"CPU [#0]: Intel Core i…"</strong> o <strong>"AMD Ryzen…"</strong>.</li>
+    <li>
+      <strong>Valori da leggere e interpretare:</strong><br>
+      - <strong>CPU Package Power:</strong> watt consumati dal processore in quel momento.<br>
+      - <strong>Core #X Temperature:</strong> temperatura di ogni singolo core del processore.<br>
+      - <strong>CPU (Tjmax):</strong> temperatura massima di progetto del processore (solitamente 100°C).<br><br>
+      <strong>Soglie di allerta:</strong>
+      <table>
+        <tr><th>Condizione</th><th>Temperatura Core</th><th>Interpretazione</th></tr>
+        <tr><td>PC a riposo (solo desktop aperto)</td><td>< 45°C</td><td><span class="hl-green">Normale</span></td></tr>
+        <tr><td>PC a riposo</td><td>55–70°C</td><td><span class="hl-orange">Elevata — ventole parzialmente ostruite o pasta termica secca</span></td></tr>
+        <tr><td>PC a riposo</td><td>> 75°C</td><td><span class="hl-red">Critica — thermal throttling quasi certo</span></td></tr>
+        <tr><td>PC sotto carico (navigazione/video)</td><td>< 85°C</td><td><span class="hl-green">Accettabile</span></td></tr>
+        <tr><td>PC sotto carico</td><td>90–100°C</td><td><span class="hl-red">Throttling attivo — prestazioni dimezzate</span></td></tr>
+      </table>
+    </li>
+    <li>Chiedere al cliente di usare il laptop normalmente per 5–10 minuti osservando i valori. Se i core salgono oltre 90°C e la velocità CPU scende, il diagnosi è confermata.</li>
+  </ol>
+</div>
+
+<div class="callout-warn">
+  <div class="callout-warn-title">⚠️ Azione Correttiva sul Campo</div>
+  Se il thermal throttling è confermato:<br>
+  <strong>1. Soluzione immediata:</strong> posizionare il laptop su una superficie rigida e piana (tavolo), assicurarsi che le griglie di ventilazione (solitamente sotto o sui lati) non siano ostruite. Far raffreddare il PC 5 minuti spento.<br>
+  <strong>2. Soluzione strutturale:</strong> pulizia professionale delle ventole con aria compressa (dal basso attraverso le griglie, senza smontare). In casi estremi, sostituzione della pasta termica — intervento fisico che esula da questa procedura software.
+</div>
+
+<!-- SEZIONE 1B: DISCO -->
+<div class="sub-title">1B — Salute del Disco: HDD vs SSD e Dati SMART</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">3</span> Identificare il Tipo di Disco e la sua Salute (PowerShell)</div>
+  <p>Aprire PowerShell come Amministratore: premere il tasto <strong>Windows</strong>, digitare <strong>PowerShell</strong>, fare clic destro sul risultato e scegliere <strong>"Esegui come amministratore"</strong>. Digitare il seguente comando:</p>
+  <div class="code-box">Get-PhysicalDisk | Select-Object MediaType, Model, HealthStatus, OperationalStatus, Size | Format-Table -AutoSize</div>
+  <strong>Come leggere il risultato:</strong>
+  <table>
+    <tr><th>Campo</th><th>Valore</th><th>Significato</th></tr>
+    <tr><td>MediaType</td><td>SSD</td><td><span class="hl-green">Disco a stato solido — prestazioni normali</span></td></tr>
+    <tr><td>MediaType</td><td>HDD</td><td><span class="hl-red">Disco meccanico — incompatibile con Windows 11 per prestazioni normali</span></td></tr>
+    <tr><td>MediaType</td><td>Unspecified</td><td>Spesso NVMe M.2 — considerare SSD a tutti gli effetti</td></tr>
+    <tr><td>HealthStatus</td><td>Healthy</td><td><span class="hl-green">Disco segnalato sano a livello OS</span></td></tr>
+    <tr><td>HealthStatus</td><td>Warning / Unhealthy</td><td><span class="hl-red">Disco con anomalie — procedere con analisi SMART approfondita</span></td></tr>
+  </table>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">4</span> Analisi SMART Approfondita con CrystalDiskInfo</div>
+  <p>
+    I dati <strong>SMART (Self-Monitoring, Analysis and Reporting Technology)</strong> sono informazioni interne al disco che
+    registrano in modo cumulativo eventuali anomalie hardware: settori danneggiati, ore di accensione, errori di lettura, usura delle celle NAND (per SSD).
+    PowerShell fornisce solo un sommario; per leggere i parametri SMART completi è necessario <strong>CrystalDiskInfo</strong>.
+  </p>
+  <ol>
+    <li>Scaricare <strong>CrystalDiskInfo</strong> (versione Standard, gratuita) da: <span class="highlight">https://crystalmark.info/en/software/crystaldiskinfo/</span></li>
+    <li>Installare ed eseguire. Si aprirà una finestra con una o più righe (una per disco fisico rilevato).</li>
+    <li>
+      <strong>Dati principali da leggere nell'interfaccia:</strong><br><br>
+      <strong>Salute:</strong> riquadro colorato in alto a sinistra. Valori possibili:
+      <table>
+        <tr><th>Colore</th><th>Stato</th><th>Azione</th></tr>
+        <tr><td style="background:#e8f5e9">🟢 Blu/Verde</td><td>Buono (Good)</td><td>Il disco è sano</td></tr>
+        <tr><td style="background:#fff8e1">🟡 Giallo</td><td>Attenzione (Caution)</td><td>Anomalie rilevate — procedere con cautela, backup immediato</td></tr>
+        <tr><td style="background:#ffebee">🔴 Rosso</td><td>Brutto (Bad)</td><td>Disco da sostituire urgentemente</td></tr>
+      </table>
+    </li>
+    <li>
+      <strong>Attributi SMART critici da controllare nella tabella (fare riferimento alla colonna "Corrente" e "Peggiore"):</strong>
+      <table>
+        <tr><th>ID (Hex)</th><th>Nome Attributo</th><th>Valore da Cercare</th></tr>
+        <tr><td>05</td><td>Reallocated Sectors Count</td><td><span class="hl-red">Qualsiasi valore > 0 = settori danneggiati riallocati. Urgente.</span></td></tr>
+        <tr><td>C5</td><td>Current Pending Sectors</td><td><span class="hl-red">&gt; 0 = settori in attesa di riallocazione. Disco instabile.</span></td></tr>
+        <tr><td>C6</td><td>Uncorrectable Sector Count</td><td><span class="hl-red">&gt; 0 = errori non recuperabili. Disco da sostituire subito.</span></td></tr>
+        <tr><td>E9 / BB</td><td>Media Wearout Indicator (SSD)</td><td>Indica l'usura percentuale. Sotto 10% di vita residua: SSD a fine vita.</td></tr>
+        <tr><td>09</td><td>Power-On Hours</td><td>Ore totali di accensione. Oltre 30.000h su HDD = usura meccanica significativa.</td></tr>
+      </table>
+    </li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">5</span> Verifica TRIM su SSD (Fondamentale per le Prestazioni)</div>
+  <p>
+    Il comando <strong>TRIM</strong> è il meccanismo con cui Windows segnala all'SSD quali blocchi di dati non sono più necessari,
+    permettendo al controller del disco di ottimizzarsi in background. Se TRIM è disabilitato, le prestazioni dell'SSD
+    degradano progressivamente fino a diventare simili a quelle di un HDD vecchio.
+  </p>
+  <p>Aprire PowerShell come Amministratore e digitare:</p>
+  <div class="code-box">fsutil behavior query DisableDeleteNotify</div>
+  <strong>Come interpretare il risultato:</strong><br>
+  <span class="hl-green">DisableDeleteNotify = 0</span> → TRIM <strong>attivo</strong> — comportamento corretto.<br>
+  <span class="hl-red">DisableDeleteNotify = 1</span> → TRIM <strong>disabilitato</strong> — riabilitarlo con il comando:
+  <div class="code-box">fsutil behavior set DisableDeleteNotify 0</div>
+</div>
+
+<!-- SEZIONE 1C: RAM -->
+<div class="sub-title">1C — Verifica RAM: Quantità, Canale e Utilizzo</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">6</span> Controllo RAM in Gestione Attività</div>
+  <ol>
+    <li>Aprire <strong>Gestione Attività → Prestazioni → Memoria</strong>.</li>
+    <li>
+      <strong>Dati da leggere e interpretare:</strong><br><br>
+      <strong>In uso:</strong> RAM attualmente occupata. Se su 8 GB totali ne risultano in uso 7.5–8.0 GB a sistema praticamente fermo, la RAM è insufficiente per il carico applicativo presente.<br><br>
+      <strong>Velocità:</strong> frequenza operativa dei moduli (es. 3200 MHz). Non modificabile.<br><br>
+      <strong>Slot utilizzati:</strong> indica quanti slot RAM fisici sono occupati (es. "2 di 2"). Su laptop quasi tutti i moduli sono LPDDR4x/5 saldati, quindi il numero di slot è solo informativo.<br><br>
+      <strong>Canale:</strong>
+      <table>
+        <tr><th>Valore mostrato</th><th>Significato</th><th>Impatto Prestazioni</th></tr>
+        <tr><td>Dual Channel</td><td>Due banchi attivi in parallelo</td><td><span class="hl-green">Ottimale — larghezza di banda massima</span></td></tr>
+        <tr><td>Single Channel</td><td>Un solo banco attivo o banchi non appaiati</td><td><span class="hl-orange">Prestazioni ridotte del 30–40% sul sottosistema memoria</span></td></tr>
+      </table>
+      <em>Nota: su laptop con RAM saldata in Single Channel la situazione non è correggibile — utile solo come diagnosi per spiegare al cliente il limite strutturale del dispositivo.</em>
+    </li>
+  </ol>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--       LIVELLO 2 — STARTUP, AV, STORAGE             -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="level-header lv2">
+  <h2>🛡️ LIVELLO 2 — Startup, Gestione Antivirus e Igiene dello Storage</h2>
+  <p>Eliminare il carico inutile all'avvio. Gestire Norton, Kaspersky e McAfee senza disinstallazione. Liberare spazio critico su C:.</p>
+</div>
+
+<!-- SEZIONE 2A: STARTUP -->
+<div class="sub-title">2A — Bonifica Completa dei Programmi all'Avvio</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">1</span> Gestione Avvio da Gestione Attività (Metodo Base)</div>
+  <ol>
+    <li>Aprire <strong>Gestione Attività → scheda "App di avvio"</strong> (visibile nella barra superiore).</li>
+    <li>La colonna <strong>"Impatto all'avvio"</strong> mostra se ogni applicazione ha impatto <span class="hl-red">Alto</span>, <span class="hl-orange">Medio</span> o <span class="hl-green">Basso/Nessuno</span>.</li>
+    <li>
+      <strong>Criteri di disabilitazione sicura:</strong><br>
+      - Disabilitare (clic destro → Disabilita): launcher di giochi non utilizzati quotidianamente (Steam, Epic Games Launcher, GOG Galaxy, Riot Games), app di messaggistica opzionali (Telegram, Discord, WhatsApp), aggiornatori di terze parti (Adobe Creative Cloud, Java Update Scheduler).<br>
+      - <strong>NON disabilitare mai:</strong> l'antivirus presente (Norton, Kaspersky, McAfee), il driver audio/video (Realtek HD, Intel Graphics), OneDrive se in uso attivo dall'utente.
+    </li>
+    <li>Dopo la disabilitazione riavviare il PC e misurare la differenza nel tempo di avvio tramite il campo <strong>"Ultimo tempo BIOS"</strong> in fondo alla scheda CPU di Gestione Attività.</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">2</span> Analisi Avanzata con Autoruns (Sysinternals — Voci Nascoste)</div>
+  <p>
+    Gestione Attività mostra solo le app di avvio visibili. <strong>Autoruns</strong> di Microsoft Sysinternals rivela
+    anche i processi nascosti: updater in background, task pianificati, BHO (Browser Helper Objects) e servizi di terze parti.
+  </p>
+  <ol>
+    <li>Scaricare <strong>Autoruns</strong> (gratuito, ufficiale Microsoft): <span class="highlight">https://learn.microsoft.com/en-us/sysinternals/downloads/autoruns</span></li>
+    <li>Estrarre lo ZIP e avviare <span class="highlight">Autoruns64.exe</span> come Amministratore (clic destro → Esegui come amministratore).</li>
+    <li>
+      Nella scheda <strong>"Everything"</strong> sono elencate <em>tutte</em> le voci di avvio del sistema.
+      Per filtrare rapidamente le voci potenzialmente superflue:
+      <ul>
+        <li>Aprire il menu <strong>Options → Scan Options</strong> e abilitare <strong>"Check VirusTotal.com"</strong> per evidenziare in rosso eventuali processi segnalati come malevoli.</li>
+        <li>Aprire il menu <strong>Options → Filter Options</strong> e attivare <strong>"Hide Microsoft Entries"</strong>: così si nascondono tutti i componenti Microsoft/Windows e rimangono visibili solo le voci di terze parti.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Voci da ricercare e valutare:</strong><br>
+      - Qualsiasi voce con percorso <span class="highlight">C:\Users\[nome]\AppData\Roaming\</span> non riconosciuto — spesso adware o bloatware installato a insaputa.<br>
+      - Task pianificati (scheda <strong>"Scheduled Tasks"</strong>) con trigger "Al login" o "Ad ogni avvio" di produttori sconosciuti.<br>
+      - Chiavi <span class="highlight">HKCU\SOFTWARE\Microsoft\Windows\CurrentVersion\Run</span> con percorsi file inesistenti (voce orfana che rallenta l'avvio cercando un file che non esiste più).
+    </li>
+    <li>Per disabilitare una voce: <strong>togliere il segno di spunta</strong> nella casella a sinistra di ogni riga (non eliminarla, solo disabilitarla — è reversibile).</li>
+  </ol>
+</div>
+
+<!-- SEZIONE 2B: ANTIVIRUS -->
+<div class="sub-title">2B — Gestione Norton / Kaspersky / McAfee (senza disinstallazione)</div>
+
+<div class="callout-danger">
+  <div class="callout-danger-title">🚫 Vincolo Operativo Fondamentale</div>
+  Norton, Kaspersky e McAfee su questi laptop sono <strong>non disinstallabili</strong> (abbonamento attivo o contratto OEM).
+  Qualsiasi tentativo di rimozione forzata provocherebbe: rottura del contratto con il cliente, mancata protezione del dispositivo,
+  e potenzialmente la corruzione dei driver di rete NDIS iniettati (lasciando il PC senza connettività). 
+  <strong>L'approccio è la coabitazione ottimizzata, non la rimozione.</strong>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">3</span> Identificare se l'Antivirus è il Responsabile del Carico in quel Momento</div>
+  <ol>
+    <li>Aprire <strong>Gestione Attività → Processi</strong>. Fare clic sulla colonna <strong>"CPU"</strong> per ordinare i processi per utilizzo decrescente.</li>
+    <li>
+      Riconoscere i processi dell'antivirus:
+      <table>
+        <tr><th>Antivirus</th><th>Processi Principali</th><th>Funzione</th></tr>
+        <tr><td>Norton</td><td>NortonSecurity.exe, ccSvcHst.exe, NvxUI.exe</td><td>Core antivirus, VPN, interfaccia utente</td></tr>
+        <tr><td>Kaspersky</td><td>avp.exe, avpui.exe, kavtray.exe</td><td>Motore AV, interfaccia, icona tray</td></tr>
+        <tr><td>McAfee</td><td>McAPExe.exe, McUICnt.exe, ModuleCoreService.exe</td><td>Core AV, aggiornamento, interfaccia</td></tr>
+      </table>
+    </li>
+    <li>Se uno di questi processi è al <strong>50–100% CPU</strong> e il disco è al 100%, molto probabilmente è in corso una <strong>scansione automatica non pianificata</strong>. Attendere il completamento (solitamente 20–40 minuti) prima di procedere con altri interventi, oppure procedere al punto 4.</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">4</span> Ripianificazione della Scansione Automatica a Orario Notturno</div>
+  <p>Tutti e 3 gli antivirus eseguono scansioni complete pianificate. L'impostazione di default è spesso "all'avvio" o a orari di utilizzo. Va spostata a orario notturno.</p>
+  <ul>
+    <li>
+      <strong>Norton:</strong> Aprire Norton Security → Menù principale → <strong>Protezione</strong> → <strong>Scansioni e rischi</strong> → <strong>Impostazioni di scansione</strong> → <strong>Pianificazione scansione completa</strong> → Modificare giorno e ora (es. Venerdì ore 3:00 AM) → Salvare. Assicurarsi che sia spuntata l'opzione <em>"Esegui solo se il PC è collegato all'alimentazione"</em>.
+    </li>
+    <li>
+      <strong>Kaspersky:</strong> Aprire Kaspersky → <strong>Pianificazione</strong> (voce nel menu principale) → Fare clic su <strong>"Scansione completa"</strong> → <strong>Modifica programmazione</strong> → Impostare frequenza <em>"Settimanale"</em> e orario notturno (es. Sabato 02:00) → <em>"Esegui solo se il computer è inattivo"</em> → OK.
+    </li>
+    <li>
+      <strong>McAfee:</strong> Aprire McAfee → Ingranaggio (Impostazioni) → <strong>Scansione pianificata</strong> → Modificare il tipo di scansione su <em>"Scansione personalizzata"</em> → Impostare orario notturno e limitare le cartelle incluse (escludere cartelle di sistema).
+    </li>
+  </ul>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">5</span> Aggiungere Esclusioni dalla Scansione (Riduzione Carico 60–70%)</div>
+  <p>Aggiungere alle eccezioni le cartelle che non contengono file scaricati dall'utente e che vengono analizzate inutilmente ad ogni avvio:</p>
+  <ul>
+    <li><strong>Norton:</strong> Impostazioni → Antivirus → Esclusioni/Rischi bassi → <strong>"Aggiungi cartelle"</strong> → Aggiungere: <span class="highlight">C:\Windows\</span>, <span class="highlight">C:\Program Files\</span>, <span class="highlight">C:\Program Files (x86)\</span></li>
+    <li><strong>Kaspersky:</strong> Impostazioni → Generale → Esclusioni e azioni con oggetti rilevati → <strong>"Gestisci esclusioni"</strong> → Aggiungere le stesse cartelle di sistema.</li>
+    <li><strong>McAfee:</strong> Impostazioni → Protezione Antivirus → Tempo reale → <strong>"Escludi file"</strong> → Aggiungere le cartelle di sistema.</li>
+  </ul>
+  <div class="callout-warn">
+    <div class="callout-warn-title">⚠️ Importante</div>
+    Non escludere mai le cartelle dell'utente (<span class="highlight">C:\Users\</span>), le cartelle dei download o il Desktop. Escludere solo cartelle di sistema Windows e programmi installati da fonti ufficiali.
+  </div>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">6</span> Disabilitare la VPN Integrata (Norton / McAfee)</div>
+  <p>Norton e McAfee includono una VPN (Virtual Private Network) che in molti casi è abilitata automaticamente e non nota all'utente. Questa VPN rallenta tutte le connessioni di rete e può causare il problema "connesso ma senza internet".</p>
+  <ul>
+    <li><strong>Norton Secure VPN:</strong> Aprire Norton → Schermata principale → individuare il riquadro <strong>"Secure VPN"</strong> → Se mostra "Attivato" o "Connesso", fare clic sul toggle per <strong>disattivarla</strong>. Confermare la scelta.</li>
+    <li><strong>McAfee Safe Connect:</strong> Aprire McAfee → schermata principale → voce <strong>"Safe Connect VPN"</strong> → Se attiva, fare clic su <strong>"Disconnetti"</strong> e poi disabilitare l'avvio automatico nelle impostazioni della VPN.</li>
+    <li><strong>Kaspersky VPN (Secure Connection):</strong> Aprire Kaspersky → voce <strong>"Connessione Sicura"</strong> → Impostazioni → disabilitare l'opzione <em>"Connetti automaticamente"</em>.</li>
+  </ul>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">7</span> Disabilitare le Estensioni Browser degli Antivirus</div>
+  <p>Norton Safe Web, McAfee WebAdvisor e Kaspersky Protection sono estensioni browser che analizzano in tempo reale ogni pagina visitata. Rallentano significativamente il caricamento delle pagine web. Possono essere rimosse dal browser <em>senza toccare il software antivirus</em> sul PC.</p>
+  <p><strong>Google Chrome:</strong> digitare nella barra degli indirizzi <span class="highlight">chrome://extensions/</span> → individuare l'estensione dell'antivirus → disabilitarla con il toggle o eliminarla.</p>
+  <p><strong>Microsoft Edge:</strong> digitare nella barra degli indirizzi <span class="highlight">edge://extensions/</span> → stessa procedura.</p>
+</div>
+
+<!-- SEZIONE 2C: STORAGE -->
+<div class="sub-title">2C — Pulizia dello Storage e Spazio su C:</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">8</span> Verifica Spazio Libero su C: e Soglia Critica</div>
+  <p>Windows 11 richiede un minimo di spazio libero su C: per operare correttamente. Sotto una certa soglia, il file di paging si frammenta, Windows Update non riesce a scaricare gli aggiornamenti e la creazione di file temporanei viene bloccata.</p>
+  <ol>
+    <li>Aprire <strong>Esplora File</strong> (cartella gialla nella barra delle applicazioni).</li>
+    <li>Nella colonna sinistra, fare clic su <strong>"Questo PC"</strong>.</li>
+    <li>Osservare la barra sotto l'icona del disco C:. <span class="hl-red">Se la barra è rossa</span>, lo spazio è critico (meno del 10% libero).</li>
+    <li>La soglia minima raccomandata è <strong>15 GB liberi</strong> su C: per funzionamento normale di Windows 11.</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">9</span> Pulizia Completa con Pulizia Disco (Cleanmgr) — File di Sistema Inclusi</div>
+  <ol>
+    <li>Premere <strong>Windows + R</strong>, digitare <span class="highlight">cleanmgr</span> e premere Invio.</li>
+    <li>Selezionare l'unità <strong>C:</strong> e fare clic su <strong>OK</strong>. Attendere la scansione (1–2 minuti).</li>
+    <li>Nella finestra risultante, fare clic su <strong>"Pulizia file di sistema"</strong> (pulsante in basso). Inserire la password amministratore se richiesta. Attendere una nuova scansione più approfondita.</li>
+    <li>
+      <strong>Selezionare TUTTE le voci disponibili</strong>, in particolare:
+      <ul>
+        <li><strong>File di Windows Update</strong> — spesso occupa 2–8 GB di vecchi pacchetti di aggiornamento non più necessari.</li>
+        <li><strong>File temporanei di Internet</strong></li>
+        <li><strong>File di dump della memoria per errori di sistema</strong></li>
+        <li><strong>Installazioni precedenti di Windows</strong> (voce "Windows.old") — se presente, può liberare 15–30 GB.</li>
+        <li><strong>Pacchetti driver di dispositivo</strong></li>
+      </ul>
+    </li>
+    <li>Fare clic su <strong>OK → Elimina file</strong>. Attendere il completamento.</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">10</span> Pulizia Manuale Cartelle Temporanee</div>
+  <ol>
+    <li>Premere <strong>Windows + R</strong>, digitare <span class="highlight">%temp%</span> e premere Invio. Si aprirà la cartella dei file temporanei dell'utente corrente.</li>
+    <li>Selezionare tutti i file con <strong>CTRL + A</strong> → <strong>Canc</strong>. Se appare un messaggio di file in uso, selezionare <strong>"Ignora"</strong> per saltare i file bloccati e cancellare il resto.</li>
+    <li>Ripetere aprendo <strong>Windows + R</strong> → <span class="highlight">temp</span> (senza il simbolo %) per la cartella temporanea di sistema (<span class="highlight">C:\Windows\Temp</span>). Stessa procedura di cancellazione.</li>
+  </ol>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--     LIVELLO 3 — PIANO ALIMENTAZIONE & PAGEFILE      -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="level-header lv3">
+  <h2>⚙️ LIVELLO 3 — Piano di Alimentazione e File di Paging (Pagefile)</h2>
+  <p>Configurazione energetica critica su laptop Windows 11. Il piano errato blocca la CPU fisicamente. Il pagefile mal configurato frammenta il disco.</p>
+</div>
+
+<div class="sub-title">3A — Piano di Alimentazione Windows 11</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">1</span> Verificare e Modificare il Piano di Alimentazione Attivo</div>
+  <ol>
+    <li>Premere <strong>Windows + R</strong>, digitare <span class="highlight">powercfg.cpl</span> e premere Invio. Si aprirà la finestra <strong>"Opzioni risparmio energia"</strong>.</li>
+    <li>
+      Leggere quale piano è attualmente selezionato (indicato con il pallino di selezione):
+      <table>
+        <tr><th>Piano Attivo</th><th>Effetto sulla CPU del Laptop</th><th>Azione</th></tr>
+        <tr><td>Risparmio energetico</td><td><span class="hl-red">CPU limitata al 30–50% della frequenza massima. Causa lentezza immediata.</span></td><td>Cambiare immediatamente</td></tr>
+        <tr><td>Bilanciato</td><td><span class="hl-green">Comportamento normale. Frequenza scalata dinamicamente in base al carico.</span></td><td>Ottimizzare (vedi punto 2)</td></tr>
+        <tr><td>Prestazioni elevate</td><td>CPU sempre alla frequenza massima. Aumenta il consumo batteria.</td><td>Consigliato solo sotto rete</td></tr>
+      </table>
+    </li>
+    <li>Selezionare il piano <strong>"Bilanciato"</strong> o <strong>"Prestazioni elevate"</strong> (assicurarsi che il laptop sia collegato alla corrente).</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">2</span> Impostare la Frequenza CPU Minima al 100% nel Piano Bilanciato</div>
+  <p>
+    Anche nel piano "Bilanciato", Windows 11 può impostare la frequenza CPU minima al 5%, causando ritardi percettibili nell'avvio delle applicazioni.
+    Forzandola al 100%, il processore parte sempre alla massima frequenza e scala in eccesso anziché in difetto.
+  </p>
+  <ol>
+    <li>Nella finestra Opzioni risparmio energia, fare clic su <strong>"Modifica impostazioni combinazione"</strong> accanto al piano Bilanciato.</li>
+    <li>Fare clic su <strong>"Modifica impostazioni avanzate risparmio energia"</strong>.</li>
+    <li>Nella finestra che si apre, scorrere fino alla voce <strong>"Gestione dell'alimentazione del processore"</strong> e fare clic sulla freccia per espanderla.</li>
+    <li>Espandere <strong>"Stato minimo del processore"</strong>. Modificare i valori:<br>
+      - <strong>A batteria:</strong> lasciare a 5–20% per non consumare eccessivamente.<br>
+      - <strong>Sotto rete:</strong> portare al <strong>100%</strong>.</li>
+    <li>Fare clic su <strong>Applica → OK</strong>.</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">3</span> Disabilitare Fast Startup (Avvio Rapido) su Windows 11</div>
+  <p>
+    L'Avvio Rapido (Fast Startup / Ibernazione ibrida) è una funzione di Windows 11 che velocizza l'accensione salvando
+    lo stato del kernel in un file di ibernazione. Su laptop moderni con Modern Standby (S0ix) questa funzione
+    causa frequenti blocchi alla riapertura dello schermo, corruzione del file di sistema e comportamenti anomali post-aggiornamento.
+  </p>
+  <ol>
+    <li>Nella finestra Opzioni risparmio energia (già aperta), fare clic su <strong>"Specifica comportamento pulsanti di alimentazione"</strong> nel menu laterale sinistro.</li>
+    <li>Fare clic su <strong>"Modifica le impostazioni attualmente non disponibili"</strong> (richiede i permessi di amministratore).</li>
+    <li>Nella sezione <strong>"Impostazioni di arresto"</strong> in fondo alla pagina, <strong>togliere la spunta</strong> da <em>"Attiva avvio rapido (consigliato)"</em>.</li>
+    <li>Fare clic su <strong>"Salva impostazioni"</strong>. Il prossimo spegnimento e riaccensione del laptop userà un avvio completo (cold boot) invece del ripristino dello stato ibernato.</li>
+  </ol>
+</div>
+
+<div class="sub-title">3B — File di Paging (Pagefile.sys)</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">4</span> Verificare e Ottimizzare il File di Paging</div>
+  <p>
+    Il <strong>file di paging</strong> (<span class="highlight">pagefile.sys</span>) è un'area del disco che Windows usa come
+    "RAM di riserva" quando la RAM fisica è esaurita. Se impostato su dimensioni automatiche, Windows lo espande e
+    riduce dinamicamente, causando frammentazione e picchi di I/O sul disco. Impostare dimensioni fisse elimina questo problema.
+  </p>
+  <ol>
+    <li>Premere <strong>Windows + R</strong>, digitare <span class="highlight">sysdm.cpl</span> e premere Invio (apre Proprietà di sistema).</li>
+    <li>Andare nella scheda <strong>"Avanzate"</strong>.</li>
+    <li>Nella sezione <strong>"Prestazioni"</strong>, fare clic su <strong>"Impostazioni"</strong>.</li>
+    <li>Nella finestra Opzioni prestazioni, andare nella scheda <strong>"Avanzate"</strong>.</li>
+    <li>Nella sezione <strong>"Memoria virtuale"</strong>, fare clic su <strong>"Cambia"</strong>.</li>
+    <li>
+      <strong>Configurazione consigliata per laptop:</strong>
+      <ul>
+        <li>Deselezionare <strong>"Gestisci automaticamente le dimensioni del file di paging per tutte le unità"</strong>.</li>
+        <li>Selezionare l'unità <strong>C:</strong>.</li>
+        <li>Selezionare <strong>"Dimensioni personalizzate"</strong>.</li>
+        <li>Impostare:
+          <table>
+            <tr><th>RAM Totale del Laptop</th><th>Dimensione Iniziale (MB)</th><th>Dimensione Massima (MB)</th></tr>
+            <tr><td>4 GB RAM</td><td>4096</td><td>8192</td></tr>
+            <tr><td>8 GB RAM</td><td>8192</td><td>12288</td></tr>
+            <tr><td>16 GB RAM</td><td>8192</td><td>16384</td></tr>
+          </table>
+        </li>
+        <li>Fare clic su <strong>"Imposta"</strong> → <strong>"OK"</strong> → Riavviare quando richiesto.</li>
+      </ul>
+    </li>
+  </ol>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--         LIVELLO 4 — TERMINALE (DISM, SFC)          -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="level-header lv4">
+  <h2>💻 LIVELLO 4 — Terminale: Integrità del Sistema Operativo e File System</h2>
+  <p>Riparazione profonda tramite PowerShell e CMD come Amministratore. DISM, SFC, CHKDSK e bonifica di Windows Update.</p>
+</div>
+
+<div class="callout-warn">
+  <div class="callout-warn-title">⚠️ Prerequisito: Aprire il Terminale come Amministratore</div>
+  <strong>PowerShell Amministratore:</strong> Fare clic destro sul pulsante Start (logo Windows) → selezionare <strong>"Terminale Windows (Amministratore)"</strong> o <strong>"Windows PowerShell (Amministratore)"</strong>.<br>
+  <strong>CMD Amministratore:</strong> Premere il tasto <strong>Windows</strong>, digitare <span class="highlight">cmd</span>, fare clic destro sul risultato "Prompt dei comandi" → <strong>"Esegui come amministratore"</strong>.<br>
+  <strong>Tutti i comandi di questo livello richiedono i privilegi di amministratore senza eccezioni.</strong>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">1</span> DISM — Riparazione dell'Immagine del Sistema Operativo</div>
+  <p>
+    <strong>DISM (Deployment Image Servicing and Management)</strong> verifica e ripara il <strong>Component Store</strong> di Windows,
+    ovvero il deposito di tutti i file binari del sistema operativo. Se questo deposito è corrotto, SFC (passo successivo)
+    non può riparare nulla perché anche le "copie di riserva" sono danneggiate. DISM va sempre eseguito <em>prima</em> di SFC.
+  </p>
+  <p>Aprire <strong>PowerShell Amministratore</strong> ed eseguire i comandi nell'ordine indicato:</p>
+  <p><strong>Fase 1 — Verifica dello stato dell'immagine:</strong></p>
+  <div class="code-box">DISM /Online /Cleanup-Image /CheckHealth</div>
+  <div class="reading-guide">
+    <strong>Come leggere l'output:</strong> Il comando risponde in pochi secondi.<br>
+    - <span class="hl-green">"Nessun danneggiamento rilevato"</span> → il Component Store è integro, procedere a SFC.<br>
+    - <span class="hl-red">"Danneggiamento rilevato"</span> → procedere con il passo successivo.
+  </div>
+  <p><strong>Fase 2 — Scansione approfondita (non ripara ancora):</strong></p>
+  <div class="code-box">DISM /Online /Cleanup-Image /ScanHealth</div>
+  <div class="reading-guide">
+    <strong>Come leggere l'output:</strong> Dura 5–15 minuti. Mostra una barra di avanzamento dal 1% al 100%.<br>
+    - <span class="hl-green">"Component store integrity violations not found"</span> → nessun problema.<br>
+    - <span class="hl-red">"Component store has repairable corruption"</span> → eseguire la fase 3.
+  </div>
+  <p><strong>Fase 3 — Riparazione effettiva (scarica file da Windows Update):</strong></p>
+  <div class="code-box">DISM /Online /Cleanup-Image /RestoreHealth</div>
+  <div class="reading-guide">
+    <strong>Come leggere l'output:</strong> Dura 15–45 minuti a seconda della connessione internet. Contatta i server Microsoft Update per scaricare i file corretti. <strong>Necessaria la connessione a internet.</strong><br>
+    - <span class="hl-green">"Operazione di ripristino completata correttamente"</span> → riparazione riuscita, procedere con SFC.<br>
+    - <span class="hl-red">Errore con codice 0x800F081F</span> → Windows Update non disponibile come sorgente. Soluzione al passaggio 4.
+  </div>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">2</span> SFC — Verifica e Riparazione File di Sistema Protetti</div>
+  <p>
+    <strong>SFC (System File Checker)</strong> confronta ogni file protetto del sistema operativo con la copia nel Component Store
+    (già riparato con DISM). Se trova difformità, li sostituisce automaticamente. Questo risolve errori legati a
+    <span class="highlight">explorer.exe</span> instabile, schermate nere post-login e servizi Windows che si avviano con errori.
+  </p>
+  <div class="code-box">sfc /scannow</div>
+  <div class="reading-guide">
+    <strong>Come leggere l'output:</strong> Dura 10–30 minuti. Al termine compare uno dei seguenti messaggi:<br><br>
+    <span class="hl-green">"Protezione risorse di Windows non ha trovato alcuna violazione di integrità."</span><br>
+    → I file di sistema sono tutti integri. Il problema di lentezza non è legato a corruzione OS.<br><br>
+    <span class="hl-orange">"Protezione risorse di Windows ha trovato file corrotti e li ha riparati."</span><br>
+    → SFC ha corretto delle anomalie. Riavviare il PC e testare.<br><br>
+    <span class="hl-red">"Protezione risorse di Windows ha trovato file corrotti ma non è riuscita a riparare alcuni di essi."</span><br>
+    → Alcuni file sono così corrotti che nemmeno il Component Store li ha riparati. Vedere il log dettagliato:<br>
+    <span class="highlight">%WinDir%\Logs\CBS\CBS.log</span> — cercare le righe contenenti la parola <strong>[SR]</strong>.
+  </div>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">3</span> Bonifica del Component Store WinSxS (Recupero Spazio su C:)</div>
+  <p>
+    La cartella <span class="highlight">C:\Windows\WinSxS</span> conserva le versioni precedenti di tutti i componenti aggiornati,
+    rendendo possibile il rollback degli aggiornamenti. Nel tempo può arrivare a occupare 15–25 GB.
+    Il seguente comando rimuove tutte le versioni obsolete mantenendo solo quella corrente.
+  </p>
+  <div class="code-box"><span class="code-comment"># Eseguire DOPO DISM /RestoreHealth — non prima</span>
+Dism.exe /online /Cleanup-Image /StartComponentCleanup /ResetBase</div>
+  <div class="reading-guide">
+    <strong>Attenzione:</strong> Dopo l'esecuzione di <span class="highlight">/ResetBase</span>, non sarà più possibile disinstallare gli aggiornamenti già installati tramite il rollback. Questa operazione è <strong>irreversibile</strong>. Eseguirla solo su sistemi stabili e aggiornati all'ultima versione disponibile.
+  </div>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">4</span> CHKDSK — Verifica e Riparazione del File System sul Disco</div>
+  <p>
+    <strong>CHKDSK</strong> analizza la struttura logica del file system (NTFS) sul disco, cercando errori di allocazione,
+    cluster danneggiati, link orfani e settori non leggibili. A differenza di CrystalDiskInfo che legge i dati SMART hardware,
+    CHKDSK lavora a livello software sul volume.
+  </p>
+  <div class="code-box"><span class="code-comment"># Il flag /f corregge gli errori trovati
+# Il flag /r localizza i settori danneggiati e recupera le informazioni leggibili
+# La lettera C: indica il volume da analizzare (adattare se necessario)</span>
+chkdsk C: /f /r</div>
+  <p>Poiché il volume C: è in uso dal sistema operativo, CHKDSK non può eseguire la scansione in tempo reale. Risponderà:</p>
+  <div class="reading-guide">
+    <em>"Impossibile bloccare l'unità corrente. Eseguire un controllo all'avvio successivo del sistema?"</em><br><br>
+    → Digitare <strong>S</strong> (Sì) e premere Invio. Riavviare il PC. La scansione avviene automaticamente prima che Windows si carichi (durata 15–60 minuti a seconda delle dimensioni del disco).
+  </div>
+  <strong>Come leggere il log di CHKDSK dopo il riavvio:</strong>
+  <ol>
+    <li>Aprire il <strong>Visualizzatore eventi</strong>: premere <strong>Windows + R</strong> → <span class="highlight">eventvwr.msc</span> → Invio.</li>
+    <li>Nel pannello sinistro, navigare: <strong>Registri di Windows → Applicazione</strong>.</li>
+    <li>Nel pannello centrale, fare clic sulla colonna <strong>"Origine"</strong> per ordinare. Cercare le voci con Origine <strong>"Wininit"</strong>.</li>
+    <li>Aprire la voce Wininit più recente (doppio clic). Il testo dell'evento contiene l'intero report di CHKDSK.</li>
+    <li>
+      <strong>Cosa cercare nel report:</strong>
+      <table>
+        <tr><th>Stringa trovata</th><th>Significato</th><th>Azione</th></tr>
+        <tr><td>"0 bad sectors" / "0 settori danneggiati"</td><td><span class="hl-green">File system integro</span></td><td>Nessuna azione</td></tr>
+        <tr><td>"bad sectors" con numero &gt; 0</td><td><span class="hl-orange">Settori danneggiati trovati e recuperati</span></td><td>Monitorare con CrystalDiskInfo nei prossimi giorni</td></tr>
+        <tr><td>"bad sectors" in crescita a ogni scansione</td><td><span class="hl-red">Disco in fase di cedimento</span></td><td>Backup immediato e sostituzione disco</td></tr>
+      </table>
+    </li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">5</span> Reset Completo dei Componenti di Windows Update</div>
+  <p>Se Windows Update è bloccato, in errore o sembra in loop, il reset manuale dei servizi e della cache risolve il 90% dei casi senza reinstallare il sistema.</p>
+  <div class="code-box"><span class="code-comment"># Step 1: Arrestare i servizi di aggiornamento</span>
+net stop wuauserv
+net stop cryptSvc
+net stop bits
+net stop msiserver
+
+<span class="code-comment"># Step 2: Rinominare le cartelle di cache (non eliminarle)</span>
+ren C:\Windows\SoftwareDistribution SoftwareDistribution.old
+ren C:\Windows\System32\catroot2 Catroot2.old
+
+<span class="code-comment"># Step 3: Riavviare i servizi</span>
+net start wuauserv
+net start cryptSvc
+net start bits
+net start msiserver</div>
+  <p>Dopo questo script, aprire <strong>Impostazioni → Windows Update → Verifica aggiornamenti</strong>. I componenti ripartono da zero.</p>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--         LIVELLO 5 — REGISTRO & SERVIZI W11         -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="level-header lv5">
+  <h2>🔧 LIVELLO 5 — Registro di Sistema e Ottimizzazione Servizi Windows 11</h2>
+  <p>Interventi chirurgici nel Registro di sistema e sui servizi OS. Ogni modifica va eseguita con backup preventivo. Impatto diretto sulla reattività.</p>
+</div>
+
+<div class="callout-danger">
+  <div class="callout-danger-title">🔴 Backup Obbligatorio Prima di Qualsiasi Modifica al Registro</div>
+  Qualsiasi errore nel Registro di sistema può rendere Windows 11 non avviabile. Prima di procedere:
+  <ol>
+    <li>Premere <strong>Windows + R</strong> → digitare <span class="highlight">regedit</span> → Invio (accettare il controllo UAC).</li>
+    <li>Nel menu in alto fare clic su <strong>File → Esporta</strong>.</li>
+    <li>In "Intervallo di esportazione" selezionare <strong>"Tutto"</strong>.</li>
+    <li>Salvare il file con nome <strong>backup_registro_completo_[data].reg</strong> in una cartella diversa da C: (es. su chiavetta USB o Desktop).</li>
+    <li>In alternativa: creare un Punto di Ripristino prima di procedere: cercare <strong>"Crea punto di ripristino"</strong> nel menu Start → Crea → OK.</li>
+  </ol>
+</div>
+
+<div class="sub-title">5A — Gestione Servizi Critici (services.msc)</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">1</span> Apertura e Navigazione in services.msc</div>
+  <ol>
+    <li>Premere <strong>Windows + R</strong> → digitare <span class="highlight">services.msc</span> → Invio.</li>
+    <li>Si aprirà la console dei Servizi di Windows. La lista mostra tutti i servizi con nome, stato (In esecuzione / Arrestato) e tipo di avvio (Automatico / Manuale / Disabilitato).</li>
+    <li>Per modificare un servizio: <strong>doppio clic</strong> sul suo nome → si apre la finestra delle proprietà dove si può modificare il "Tipo di avvio" e avviare/arrestare il servizio.</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">2</span> SysMain (ex Superfetch) — Abilitare o Disabilitare in Base al Disco</div>
+  <p>
+    <strong>SysMain</strong> analizza le abitudini d'uso del PC e precarica in RAM i file applicativi più usati,
+    per aprirli più velocemente. Su SSD è utile. Su HDD provoca il famigerato "disco al 100%" costante perché genera
+    un traffico di lettura/scrittura continuo che intasa il disco meccanico.
+  </p>
+  <p>In services.msc, trovare il servizio <strong>"SysMain"</strong>:</p>
+  <table>
+    <tr><th>Tipo di Disco</th><th>Impostazione Raccomandata</th><th>Come</th></tr>
+    <tr><td>SSD (NVMe o SATA)</td><td><span class="hl-green">Automatico — lasciare attivo</span></td><td>Nessuna modifica necessaria</td></tr>
+    <tr><td>HDD meccanico</td><td><span class="hl-red">Disabilitato — spegnere</span></td><td>Doppio clic → Tipo di avvio: Disabilitato → Arresta → OK</td></tr>
+  </table>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">3</span> Windows Search (WSearch) — Ricostruzione dell'Indice</div>
+  <p>
+    <strong>Windows Search</strong> indicizza il contenuto dei file per permettere ricerche rapide dal menu Start e da Esplora File.
+    Se l'indice è corrotto o troppo grande, il processo <span class="highlight">SearchIndexer.exe</span> può saturare
+    CPU e disco per ore dopo ogni riavvio.
+  </p>
+  <ol>
+    <li>Aprire <strong>Impostazioni Windows</strong> (tasto Windows + I) → <strong>Privacy e sicurezza → Ricerca in Windows</strong>.</li>
+    <li>Scorrere in fondo e fare clic su <strong>"Opzioni di indicizzazione avanzate"</strong>.</li>
+    <li>Nella finestra che si apre, fare clic su <strong>"Avanzate"</strong>.</li>
+    <li>Fare clic su <strong>"Ricostruisci"</strong>. Confermare. L'indice verrà cancellato e ricreato (durata 1–4 ore, durante le quali le ricerche saranno più lente del normale).</li>
+    <li>
+      <strong>Ridurre le posizioni indicizzate:</strong> nella stessa finestra "Opzioni di indicizzazione", fare clic su <strong>"Modifica"</strong>.
+      Deselezionare le cartelle che non si usano mai per le ricerche (es. <span class="highlight">C:\Windows\</span> se visibile). Mantenere indicizzata solo la cartella dell'utente (<span class="highlight">C:\Users\[nome]</span>).
+    </li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">4</span> DiagTrack — Riduzione Telemetria Windows 11</div>
+  <p>
+    Il servizio <strong>"Connected User Experiences and Telemetry" (DiagTrack)</strong> raccoglie e invia dati diagnostici e di utilizzo ai server Microsoft.
+    Su macchine con risorse limitate genera letture/scritture periodiche non necessarie. Non può essere disabilitato completamente
+    in Windows 11 Home, ma può essere ridotto al minimo.
+  </p>
+  <ol>
+    <li>Aprire <strong>Impostazioni → Privacy e sicurezza → Diagnostica e feedback</strong>.</li>
+    <li>Impostare <strong>"Dati di diagnostica"</strong> su <strong>"Dati di diagnostica di base"</strong> (il livello minimo disponibile).</li>
+    <li>Disattivare tutte le opzioni della sezione <strong>"Esperienze personalizzate"</strong> e <strong>"Feedback"</strong>.</li>
+    <li>In services.msc, trovare <strong>"Connected User Experiences and Telemetry"</strong> → Tipo di avvio: <strong>Manuale</strong> (non Disabilitato, per non rompere la compatibilità con Windows Update) → OK.</li>
+  </ol>
+</div>
+
+<div class="sub-title">5B — Modifiche al Registro di Sistema (Regedit)</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">5</span> Riduzione Menu Contestuale Lento su Windows 11</div>
+  <p>
+    Il menu contestuale del tasto destro su Windows 11 a volte impiega 1–3 secondi per aprirsi. La causa è spesso il valore
+    <span class="highlight">MenuShowDelay</span> e la presenza di shell extension di applicazioni di terze parti non ottimizzate.
+  </p>
+  <ol>
+    <li>Aprire <strong>regedit</strong> (Windows + R → regedit → Invio).</li>
+    <li>Navigare nel pannello sinistro fino al percorso:<br>
+        <span class="highlight">HKEY_CURRENT_USER\Control Panel\Desktop</span></li>
+    <li>Nel pannello destro, cercare il valore <strong>"MenuShowDelay"</strong>. Se non esiste: clic destro nel pannello destro → Nuovo → Valore stringa → nominarlo <strong>MenuShowDelay</strong>.</li>
+    <li>Doppio clic su <strong>MenuShowDelay</strong> → nel campo "Dati valore" inserire <strong>100</strong> (default è 400, valore in millisecondi). Fare clic su OK.</li>
+    <li>Riavviare <span class="highlight">explorer.exe</span> per applicare senza riavviare il PC: aprire Gestione Attività → trovare <strong>"Esplora risorse"</strong> → clic destro → <strong>"Riavvia"</strong>.</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">6</span> Riduzione Timeout di Arresto dei Servizi</div>
+  <p>
+    Quando si spegne Windows 11, il sistema aspetta che ogni servizio si chiuda prima di procedere all'arresto vero e proprio.
+    Il timeout predefinito è <strong>5000 ms (5 secondi) per servizio</strong>. Riducendolo, gli spegnimenti e i riavvii diventano notevolmente più rapidi.
+  </p>
+  <ol>
+    <li>In <strong>regedit</strong>, navigare a:<br>
+        <span class="highlight">HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Control</span></li>
+    <li>Nel pannello destro, cercare il valore <strong>"WaitToKillServiceTimeout"</strong>.</li>
+    <li>Doppio clic → modificare il valore da <strong>5000</strong> a <strong>2000</strong> → OK.</li>
+    <li>Navigare anche a:<br>
+        <span class="highlight">HKEY_CURRENT_USER\Control Panel\Desktop</span></li>
+    <li>Trovare i valori <strong>"WaitToKillAppTimeout"</strong> e <strong>"HungAppTimeout"</strong>. Impostare entrambi a <strong>2000</strong>.</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">7</span> Bonifica Chiavi di Avvio Orfane nel Registro</div>
+  <p>
+    Programmi disinstallati male lasciano chiavi nel registro che puntano a file eseguibili non più presenti sul disco.
+    Ad ogni avvio Windows tenta di caricarli, fallisce silenziosamente e continua — ma ogni tentativo aggiunge latenza.
+  </p>
+  <ol>
+    <li>In <strong>regedit</strong>, controllare questi due percorsi chiave:</li>
+  </ol>
+  <div class="code-box"><span class="code-comment"># Voci di avvio per tutti gli utenti (richiede diritti Admin)</span>
+HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
+
+<span class="code-comment"># Voci di avvio per l'utente corrente</span>
+HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run</div>
+  <ol start="2">
+    <li>Per ogni voce presente nel pannello destro, fare doppio clic e leggere il "Dati valore" — deve contenere il percorso di un file eseguibile (.exe). Copiare il percorso indicato e verificare con Esplora File se il file esiste ancora su disco.</li>
+    <li>Se il file non esiste: clic destro sulla voce → <strong>"Elimina"</strong> → Confermare. La voce orfana è rimossa.</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">8</span> ShellExView — Identificare Shell Extension Che Rallentano il Menu Contestuale</div>
+  <p>
+    Le <strong>Shell Extension</strong> sono componenti DLL che le applicazioni installano per aggiungere voci al menu contestuale
+    del tasto destro. Con il tempo si accumulano e molte appartengono a software disinstallato, rallentando ogni click destro.
+    <strong>ShellExView</strong> di NirSoft le elenca tutte e permette di disabilitarle selettivamente.
+  </p>
+  <ol>
+    <li>Scaricare <strong>ShellExView</strong> (gratuito) da: <span class="highlight">https://www.nirsoft.net/utils/shexview.html</span> — versione 64-bit.</li>
+    <li>Estrarre ed eseguire <span class="highlight">shexview.exe</span> come Amministratore.</li>
+    <li>Le voci colorate in <strong>rosa/rosso</strong> sono le shell extension di terze parti (non Microsoft). Quelle bianche sono di Windows — non toccarle.</li>
+    <li>Per identificare quelle che rallentano il menu: fare clic sul menu <strong>Options → Filter by Extension Type → Context Menu</strong> per mostrare solo quelle rilevanti per il menu contestuale.</li>
+    <li>Per disabilitare una shell extension sospetta: selezionarla con un clic → premere <strong>F7</strong> (o clic destro → Disable Selected Items). La voce diventa grigia. Fare clic destro sul Desktop → verificare se il menu si apre più velocemente.</li>
+    <li>Per riabilitare: selezionare la voce grigia → premere <strong>F8</strong>.</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">9</span> Disabilitare Widgets e Chat Bar di Windows 11 (Se Non Usati)</div>
+  <p>
+    Windows 11 include natively <strong>Widgets</strong> (pannello notizie/meteo) e <strong>Microsoft Teams Chat</strong> nella barra delle applicazioni.
+    Entrambi mantengono processi in background costanti (<span class="highlight">Widgets.exe</span>, <span class="highlight">ms-teams.exe</span>)
+    anche se l'utente non li usa mai.
+  </p>
+  <ol>
+    <li>
+      <strong>Widgets:</strong> Aprire <strong>Impostazioni → Personalizzazione → Barra delle applicazioni</strong> → disattivare il toggle <strong>"Widget"</strong>.
+    </li>
+    <li>
+      <strong>Teams Chat:</strong> Nella stessa schermata, disattivare il toggle <strong>"Chat"</strong>.
+    </li>
+    <li>
+      Per rimuovere completamente Widgets da PowerShell Amministratore:
+      <div class="code-box">winget uninstall "Windows Web Experience Pack"</div>
+    </li>
+  </ol>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--          LIVELLO 6 — ETW (WPR / WPA)               -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="level-header lv6">
+  <h2>🔬 LIVELLO 6 — Analisi Kernel Avanzata con ETW (Windows Performance Recorder & Analyzer)</h2>
+  <p>Quando tutti i livelli precedenti falliscono. Isolamento atomico del driver colpevole tramite tracciamento kernel in memoria. Attenzione speciale ai filtri NDIS degli antivirus.</p>
+</div>
+
+<div class="card">
+  <div class="card-title">Perché ETW è Necessario e Quando Usarlo</div>
+  <p>
+    Quando il PC è ancora lento o ha blocchi intermittenti nonostante tutti i livelli precedenti, il problema risiede nel <strong>kernel di Windows</strong>:
+    un driver difettoso genera migliaia di <strong>Interrupt Hardware (ISR)</strong> e relative routine differite (<strong>DPC — Deferred Procedure Calls</strong>)
+    che monopolizzano il processore a livello ring-0, rendendolo non disponibile per le applicazioni utente.
+  </p>
+  <p>
+    Questo scenario è invisibile in Gestione Attività: si manifesta come <span class="hl-orange">"Interruzioni di sistema"</span> o
+    <span class="hl-orange">"System"</span> al 10–30% CPU anche a macchina apparentemente ferma, oppure come blocchi totali di 1–3 secondi ciclici.
+    Solo <strong>ETW (Event Tracing for Windows)</strong> con WPR e WPA può identificare il singolo file <span class="highlight">.sys</span> colpevole.
+  </p>
+  <div class="callout-warn">
+    <div class="callout-warn-title">⚠️ Sospettare i Filtri NDIS dell'Antivirus su Laptop</div>
+    Norton, Kaspersky e McAfee iniettano <strong>driver di filtro NDIS (Network Driver Interface Specification)</strong> tra la scheda
+    Wi-Fi/Ethernet e lo stack TCP/IP di Windows. Su laptop Windows 11, questi driver sono frequentemente la fonte di DPC latency
+    elevata che ETW identificherà con nomi tipo <span class="highlight">ndis.sys</span>, <span class="highlight">symevnt.sys</span> (Norton),
+    <span class="highlight">klwfp.sys</span> (Kaspersky) o <span class="highlight">mfewfpk.sys</span> (McAfee).
+  </div>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">1</span> Download e Installazione del Windows Performance Toolkit (WPT)</div>
+  <ol>
+    <li>Aprire il browser e navigare all'URL ufficiale Microsoft:
+      <div class="code-box">https://learn.microsoft.com/it-it/windows-hardware/get-started/adk-install</div>
+    </li>
+    <li>Fare clic su <strong>"Scarica Windows ADK"</strong> corrispondente alla versione di Windows in uso (Windows 11 → ADK per Windows 11).</li>
+    <li>Avviare il file scaricato <span class="highlight">adksetup.exe</span>.</li>
+    <li>Nella schermata di selezione dei componenti:
+      <ul>
+        <li><strong>Deselezionare TUTTE le voci</strong> facendo clic su ciascuna per togliere la spunta.</li>
+        <li>Lasciare selezionata <strong>esclusivamente</strong> la voce: <strong>[✓] Windows Performance Toolkit</strong>.</li>
+      </ul>
+      Questo installa solo WPR e WPA — meno di 150 MB, completo in circa 1 minuto.
+    </li>
+    <li>Completare l'installazione e fare clic su <strong>Chiudi</strong>.</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">2</span> Configurazione e Avvio della Traccia con WPR (Windows Performance Recorder)</div>
+  <ol>
+    <li>Premere il tasto <strong>Windows</strong> e digitare <strong>"Windows Performance Recorder"</strong>. Fare clic destro sul risultato → <strong>"Esegui come amministratore"</strong>.</li>
+    <li>All'apertura, se l'interfaccia mostra solo un pulsante grande "Start", fare clic su <strong>"More options"</strong> (in basso a sinistra) per espandere la vista avanzata con tutti i profili.</li>
+    <li>
+      <strong>Selezionare i profili di rilevamento:</strong> verificare che siano spuntati (o aggiungere con il pulsante "Add Profiles" se mancano):
+      <ul>
+        <li><strong>[✓] First level triage</strong> — overview generale di CPU, disco e memoria.</li>
+        <li><strong>[✓] CPU usage</strong> — utilizzo dettagliato del processore per processo e thread.</li>
+        <li><strong>[✓] Disk I/O activity</strong> — fondamentale per identificare saturazione disco.</li>
+        <li><strong>[✓] File I/O activity</strong> — identifica quale file viene letto/scritto con più frequenza.</li>
+      </ul>
+    </li>
+    <li>
+      <strong>Impostazione critica — Logging Mode:</strong> nel menu a tendina "Logging mode" (visibile nella vista avanzata), selezionare <strong>"Memory"</strong> (tracciamento in RAM).
+      <div class="callout-info">
+        <div class="callout-info-title">ℹ️ Perché "Memory" e non "File"</div>
+        In modalità "Memory", WPR scrive la traccia nella RAM anziché direttamente sul disco.
+        Questo è fondamentale perché, se la lentezza è causata da I/O sul disco, registrare su file durante il problema altererebbe
+        le misurazioni e aggraverebbe ulteriormente il freeze. In Memory mode, WPR non disturba il disco fino al salvataggio finale.
+      </div>
+    </li>
+    <li>Fare clic sul pulsante <strong>"Start"</strong> (verde). La registrazione è avviata.</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">3</span> Riproduzione del Problema e Salvataggio della Traccia ETL</div>
+  <ol>
+    <li>Con WPR in registrazione (la barra di stato mostra il progressivo aumento della RAM usata), <strong>chiedere al cliente di riprodurre esattamente l'operazione che genera il blocco</strong>: aprire il browser, avviare un'applicazione specifica, fare una copia di file, ecc.</li>
+    <li>Riprodurre il problema per <strong>30–60 secondi</strong> dopo che il freeze/rallentamento si è manifestato.</li>
+    <li>Tornare nella finestra di WPR e fare clic su <strong>"Save"</strong>.</li>
+    <li>Nella finestra di salvataggio, inserire una nota descrittiva (es. "freeze durante apertura browser") e scegliere il percorso di salvataggio: <span class="highlight">C:\Temp\traccia_diagnosi.etl</span>. Creare la cartella Temp se non esiste.</li>
+    <li>Attendere il completamento della finalizzazione della traccia (1–5 minuti). WPR scriverà il file ETL sul disco.</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">4</span> Apertura e Analisi in WPA (Windows Performance Analyzer)</div>
+  <ol>
+    <li>Premere il tasto Windows → digitare <strong>"Windows Performance Analyzer"</strong> → Esegui come amministratore.</li>
+    <li>In WPA: menu <strong>File → Open</strong> → selezionare il file <span class="highlight">traccia_diagnosi.etl</span> salvato.</li>
+    <li>Attendere il caricamento del file (30–120 secondi).</li>
+    <li>
+      Nel pannello sinistro <strong>"Graph Explorer"</strong> si troveranno le categorie di dati:
+    </li>
+  </ol>
+  <p><strong>Analisi DPC/ISR (Causa principale di freeze da driver):</strong></p>
+  <ol>
+    <li>Espandere la sezione <strong>"Computation"</strong> nel Graph Explorer.</li>
+    <li>Fare doppio clic su <strong>"DPC/ISR Duration by Module, Function"</strong> per portarlo nel pannello centrale.</li>
+    <li>Nel grafico che appare, fare clic sulla colonna <strong>"DPC Duration (ms)"</strong> per ordinare i moduli dal più pesante al meno pesante.</li>
+    <li>
+      Il primo modulo in cima è il principale responsabile. Interpretare in base al nome del file:
+      <table>
+        <tr><th>File .sys Rilevato</th><th>Componente</th><th>Causa Probabile</th><th>Azione Risolutiva</th></tr>
+        <tr><td><span class="highlight">symevnt.sys / srtsp64.sys</span></td><td>Norton Antivirus</td><td>Filtro NDIS o motore AV in sovraccarico</td><td>Aggiornare Norton all'ultima versione. Ridurre scansioni in tempo reale (vedere Livello 2).</td></tr>
+        <tr><td><span class="highlight">klwfp.sys / kl1.sys</span></td><td>Kaspersky</td><td>Filtro firewall Kaspersky</td><td>Aggiornare Kaspersky. In casi estremi, disabilitare temporaneamente il firewall Kaspersky per test diagnostico.</td></tr>
+        <tr><td><span class="highlight">mfewfpk.sys / mfefirek.sys</span></td><td>McAfee</td><td>Filtro Web Protection McAfee</td><td>Aggiornare McAfee. Disabilitare McAfee Firewall in fase di test.</td></tr>
+        <tr><td><span class="highlight">ndis.sys / tcpip.sys</span></td><td>Stack di rete Windows</td><td>Driver Wi-Fi corrotto o incompatibile</td><td>Scaricare e installare driver Wi-Fi aggiornato dal sito del produttore del laptop (HP, Dell, Lenovo, ASUS).</td></tr>
+        <tr><td><span class="highlight">storahci.sys / iaStorAC.sys</span></td><td>Controller SATA/NVMe</td><td>Driver controller storage corrotto</td><td>Aggiornare driver Intel RST o AMD SATA dal sito del produttore laptop. Se persiste: verifica SSD con CrystalDiskInfo.</td></tr>
+        <tr><td><span class="highlight">nvlddmkm.sys / atikmdag.sys</span></td><td>GPU NVIDIA / AMD</td><td>Driver grafico instabile</td><td>Pulizia driver con DDU (Display Driver Uninstaller) in modalità provvisoria e reinstallazione driver pulita dal sito NVIDIA/AMD.</td></tr>
+        <tr><td><span class="highlight">ACPI.sys</span></td><td>Gestione Energetica BIOS</td><td>BIOS/UEFI non compatibile o vecchio</td><td>Aggiornare BIOS/UEFI dal sito del produttore del laptop. Aggiornare driver Chipset.</td></tr>
+      </table>
+    </li>
+  </ol>
+  <p><strong>Analisi Saturazione Disco (se il disco era al 100%):</strong></p>
+  <ol>
+    <li>Espandere la sezione <strong>"Storage"</strong> nel Graph Explorer.</li>
+    <li>Aprire <strong>"Disk Usage by Process"</strong> → ordinare per <strong>"IO Time (ms)"</strong> o <strong>"Disk Queue Depth"</strong>.</li>
+    <li>Se "Disk Queue Depth" supera il valore <span class="hl-red">2</span> per più di qualche secondo, il disco è in saturazione da quel processo. Identificare il processo colpevole e trattarlo di conseguenza (aggiornare, escludere dalla scansione AV, disabilitare).</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">5</span> Chiusura Intervento e Rimozione degli Strumenti di Diagnosi</div>
+  <ol>
+    <li>Applicare la correzione identificata dall'analisi WPA.</li>
+    <li>Riavviare il PC e verificare la risoluzione del problema.</li>
+    <li>
+      <strong>Disinstallare Windows Performance Toolkit</strong> per non lasciare strumenti non necessari sul laptop del cliente:<br>
+      Aprire <strong>Impostazioni → App → App installate</strong> → cercare <strong>"Windows Assessment and Deployment Kit"</strong> → <strong>Disinstalla</strong>.
+    </li>
+  </ol>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--         LIVELLO 7 — RESET / REINSTALLAZIONE        -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="level-header lv7">
+  <h2>🔄 LIVELLO 7 — Opzione Nucleare: Reset Windows o Reinstallazione Pulita</h2>
+  <p>Ultima risorsa quando tutti i livelli precedenti non hanno risolto il problema. Backup obbligatorio prima di procedere. Windows 11 rende questa procedura più sicura e veloce rispetto al passato.</p>
+</div>
+
+<div class="callout-danger">
+  <div class="callout-danger-title">🔴 Backup Dati Prima di Qualsiasi Reset</div>
+  Prima di procedere, verificare che i dati del cliente siano al sicuro:
+  <ul>
+    <li><strong>Desktop, Documenti, Download, Immagini, Musica, Video</strong> — copiare su disco esterno o USB.</li>
+    <li><strong>Profilo browser</strong> — verificare che i segnalibri e le password siano sincronizzati sull'account Google/Microsoft del cliente.</li>
+    <li><strong>File di lavoro specifici</strong> — chiedere esplicitamente al cliente se ci sono file importanti fuori dalle cartelle standard.</li>
+    <li><strong>Chiavi di attivazione software di terze parti</strong> — annotare eventuali serial number di programmi a pagamento da reinstallare.</li>
+  </ul>
+</div>
+
+<div class="sub-title">7A — Reset di Windows 11 (Mantieni i File Personali)</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">1</span> Eseguire il Reset da Impostazioni Windows</div>
+  <p>
+    Il <strong>Reset di Windows 11</strong> con l'opzione "Mantieni i file personali" reinstalla il sistema operativo da zero,
+    rimuove tutte le applicazioni di terze parti installate, azzera tutte le configurazioni OS accumulate nel tempo,
+    ma preserva i file personali dell'utente (Documenti, Foto, ecc.) nella stessa posizione.
+    Su Windows 11 è significativamente più affidabile e veloce rispetto a Windows 10.
+  </p>
+  <ol>
+    <li>Aprire <strong>Impostazioni</strong> (Windows + I) → <strong>Sistema</strong> → scorrere in fondo → <strong>"Ripristino"</strong>.</li>
+    <li>Nella sezione <strong>"Opzioni di ripristino"</strong>, fare clic su <strong>"Reimposta il PC"</strong>.</li>
+    <li>
+      Nella finestra che si apre, scegliere tra due opzioni:
+      <table>
+        <tr><th>Opzione</th><th>Cosa Succede</th><th>Quando Sceglierla</th></tr>
+        <tr><td><strong>Mantieni i file personali</strong></td><td>Windows viene reinstallato. Le app e le impostazioni vengono rimosse. I file dell'utente rimangono.</td><td>Prima scelta — meno invasiva</td></tr>
+        <tr><td><strong>Rimuovi tutto</strong></td><td>Windows viene reinstallato da zero. Tutti i dati vengono cancellati.</td><td>Solo se il disco va riformattato o si cede il PC a un altro utente</td></tr>
+      </table>
+    </li>
+    <li>Selezionare <strong>"Mantieni i file personali"</strong>.</li>
+    <li>
+      Scegliere la sorgente di installazione:
+      <ul>
+        <li><strong>"Download dal cloud"</strong>: scarica una copia fresca di Windows 11 dai server Microsoft (~4 GB). Consigliata se la connessione lo permette — garantisce un'immagine pulita e aggiornata.</li>
+        <li><strong>"Reinstallazione locale"</strong>: usa i file Windows già presenti sul disco. Più veloce, ma se l'immagine locale è corrotta potrebbe portare problemi.</li>
+      </ul>
+    </li>
+    <li>Fare clic su <strong>"Avanti"</strong> → leggere il riepilogo delle app che verranno rimosse → confermare con <strong>"Reimposta"</strong>.</li>
+    <li>Il PC si riavvierà e inizierà il processo (durata 30–90 minuti a seconda dell'hardware).</li>
+  </ol>
+</div>
+
+<div class="sub-title">7B — Reinstallazione Pulita con Media Creation Tool (Ultima Risorsa)</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">2</span> Creazione USB di Installazione e Reinstallazione Pulita</div>
+  <p>Quando anche il Reset fallisce (disco corrotto, WinRE inaccessibile, loop di ripristino), la reinstallazione pulita da USB è l'unica soluzione definitiva.</p>
+  <ol>
+    <li>Su un <strong>altro PC funzionante</strong>, scaricare il <strong>Media Creation Tool</strong> di Microsoft:
+      <div class="code-box">https://www.microsoft.com/it-it/software-download/windows11</div>
+    </li>
+    <li>Avviare il tool → accettare la licenza → selezionare <strong>"Crea supporto di installazione (unità flash USB, DVD o file ISO)"</strong> → Avanti.</li>
+    <li>Inserire una chiavetta USB da <strong>minimo 8 GB</strong> (tutti i dati saranno cancellati). Selezionare <strong>"Unità flash USB"</strong> → Avanti. Il tool scaricherà Windows 11 e creerà la chiavetta avviabile automaticamente.</li>
+    <li>
+      <strong>Avvio da USB sul laptop del cliente:</strong>
+      <ul>
+        <li>Inserire la chiavetta USB nel laptop.</li>
+        <li>Riavviare il laptop e accedere al <strong>Boot Menu</strong>: solitamente premendo ripetutamente <strong>F12</strong>, <strong>F11</strong>, <strong>ESC</strong> o <strong>F2</strong> durante il POST (subito dopo l'accensione, prima del logo Windows). Il tasto varia per produttore: HP → F9, Dell → F12, Lenovo → F12, ASUS → F8/ESC.</li>
+        <li>Nel Boot Menu, selezionare la chiavetta USB (voce con il nome del produttore USB o "USB Storage Device").</li>
+      </ul>
+    </li>
+    <li>Seguire la procedura guidata di installazione Windows 11: lingua → Avanti → <strong>"Installa"</strong> → inserire il codice Product Key se richiesto (su laptop OEM con attivazione digitale, fare clic su <strong>"Non ho un codice Product Key"</strong> — verrà attivato automaticamente dopo l'installazione).</li>
+    <li>
+      Nella schermata <strong>"Che tipo di installazione si vuole eseguire?"</strong>: selezionare <strong>"Personalizzata"</strong>.
+      Selezionare la partizione con Windows esistente → fare clic su <strong>"Formatta"</strong> → quindi su <strong>"Avanti"</strong>.
+    </li>
+    <li>L'installazione procederà (30–60 minuti). Al termine, il laptop si riavvierà e ripartirà con Windows 11 pulito.</li>
+  </ol>
+</div>
+
+<div class="callout-ref">
+  <div class="callout-ref-title">📋 Post-Reinstallazione — Checklist Finale</div>
+  <ol>
+    <li>Verificare l'attivazione di Windows: <strong>Impostazioni → Sistema → Attivazione</strong> — deve mostrare "Windows è attivato".</li>
+    <li>Eseguire <strong>Windows Update</strong> fino ad avere tutti gli aggiornamenti installati (potrebbero servire 2–3 cicli).</li>
+    <li>Installare i <strong>driver dal sito del produttore del laptop</strong> (non aspettare che Windows Update li scarichi): chipset, scheda video, audio, Wi-Fi, touchpad.</li>
+    <li>Reinstallare l'antivirus (Norton/Kaspersky/McAfee) tramite il portale dell'abbonamento dell'utente.</li>
+    <li>Ripristinare i file personali dalla copia di backup.</li>
+    <li>Eseguire una verifica finale con Gestione Attività per confermare che le risorse siano ora nella norma.</li>
+  </ol>
+</div>
+
+<div class="callout-step">
+  <div class="callout-step-title"><span class="step-badge">3</span> Re-TRIM e Ottimizzazione Finale SSD dopo Reset/Reinstall</div>
+  <p>Dopo una reinstallazione pulita, eseguire il Re-TRIM dell'SSD per garantire le prestazioni ottimali delle celle NAND:</p>
+  <div class="code-box"><span class="code-comment"># Eseguire in PowerShell Amministratore dopo la reinstallazione</span>
+Optimize-Volume -DriveLetter C -ReTrim -Verbose</div>
+  <p>Il comando risponde con un resoconto delle operazioni eseguite e conferma il completamento del TRIM. Non produce output di errori in condizioni normali.</p>
+</div>
+
+<!-- ═══════════════════════════════════════════════════ -->
+<!--                    FOOTER                          -->
+<!-- ═══════════════════════════════════════════════════ -->
+
+<div class="footer">
+  Supporto Tecnico IT — Procedura 07: PC Lento — Troubleshooting Completo a Livelli Crescenti (Windows 11 Laptop) | Settembre 2026
+</div>
+
+</body>
+</html>
