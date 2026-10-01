@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Procedura 09 – Menu Segreti, Diagnostica e Reset Smart TV</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    @page { size: A4 portrait; margin: 10mm 10mm 10mm 10mm; }
+
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 8.2pt; line-height: 1.46; color: #1e293b; background: #ffffff; margin: 0; padding: 0;
+    }
+
+    /* ─── HEADER ─── */
+    .doc-header {
+      background: linear-gradient(135deg, #1e1b4b 0%, #312e81 45%, #4338ca 100%);
+      color: #fff; padding: 16px 20px; border-radius: 10px; margin-bottom: 12px;
+      box-shadow: 0 4px 10px rgba(15,23,42,.12);
+    }
+    .header-badge {
+      display: inline-block; background: rgba(255,255,255,.22); padding: 3px 10px;
+      border-radius: 20px; font-size: 7pt; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .8px; margin-bottom: 7px;
+    }
+    .header-title { font-size: 14pt; font-weight: 800; line-height: 1.2; margin: 0 0 5px 0; color: #fff; }
+    .header-subtitle { font-size: 8pt; color: #e0e7ff; margin: 0 0 8px 0; font-weight: 400; line-height: 1.45; }
+    .header-meta {
+      display: flex; flex-wrap: wrap; gap: 12px; font-size: 7pt; color: #c7d2fe;
+      border-top: 1px solid rgba(255,255,255,.2); padding-top: 6px;
+    }
+
+    /* ─── SECTION DIVIDER ─── */
+    .section-divider {
+      border-radius: 8px; padding: 7px 14px; margin: 16px 0 8px 0;
+      display: flex; align-items: center; gap: 10px; page-break-after: avoid;
+    }
+    .section-divider h2 { margin: 0; font-size: 10pt; font-weight: 800; color: #fff; }
+    .section-divider p { margin: 1px 0 0 0; font-size: 7pt; color: rgba(255,255,255,.85); }
+    .section-icon { font-size: 18pt; }
+    .sd-tv   { background: linear-gradient(90deg, #1e1b4b, #3730a3); }
+    .sd-diag { background: linear-gradient(90deg, #064e3b, #047857); }
+    .sd-warn { background: linear-gradient(90deg, #7c2d12, #c2410c); }
+
+    /* ─── BRAND BLOCK ─── */
+    .brand-block {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 9px;
+      padding: 10px 14px; margin-bottom: 10px; page-break-inside: avoid;
+    }
+    .brand-header {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 7px; padding-bottom: 6px; border-bottom: 2px solid #f1f5f9;
+    }
+    .brand-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; min-width: 28px; height: 28px; border-radius: 50%;
+      font-size: 8.5pt; font-weight: 800; flex-shrink: 0;
+    }
+    .bb-sam  { background: #034ea2; }
+    .bb-lg   { background: #a50034; }
+    .bb-sony { background: #000000; }
+    .bb-phil { background: #0b5ea8; }
+    .bb-pan  { background: #004098; }
+    .bb-tcl  { background: #e20613; }
+    .bb-his  { background: #009688; }
+    .bb-hai  { background: #005a9c; }
+
+    .brand-title { font-size: 9.5pt; font-weight: 800; color: #0f172a; margin: 0; line-height: 1.3; }
+    .brand-series { font-size: 7pt; color: #64748b; font-style: italic; margin: 1px 0 0 0; }
+
+    /* ─── CALLOUT VARIANTS ─── */
+    .callout-proc {
+      background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid #16a34a;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px;
+      page-break-inside: avoid; font-size: 7.8pt;
+    }
+    .callout-proc-title { font-weight: 700; color: #15803d; font-size: 8pt; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
+
+    .callout-warn {
+      background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #d97706;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px; font-size: 7.8pt; color: #92400e;
+      page-break-inside: avoid;
+    }
+    .callout-warn-title { font-weight: 700; color: #b45309; font-size: 7.5pt; text-transform: uppercase; margin-bottom: 3px; }
+
+    .callout-danger {
+      background: #fff1f2; border: 1px solid #fecdd3; border-left: 4px solid #dc2626;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px; font-size: 7.8pt; color: #7f1d1d;
+      page-break-inside: avoid;
+    }
+    .callout-danger-title { font-weight: 700; color: #dc2626; font-size: 7.5pt; text-transform: uppercase; margin-bottom: 3px; }
+
+    .callout-ref {
+      background: #faf5ff; border: 1px solid #e9d5ff; border-left: 4px solid #9333ea;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px; font-size: 7.8pt;
+      page-break-inside: avoid;
+    }
+    .callout-ref-title { font-weight: 700; color: #7e22ce; font-size: 7.5pt; text-transform: uppercase; margin-bottom: 3px; }
+
+    .callout-info {
+      background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid #2563eb;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px; font-size: 7.8pt;
+      page-break-inside: avoid;
+    }
+    .callout-info-title { font-weight: 700; color: #1d4ed8; font-size: 7.5pt; text-transform: uppercase; margin-bottom: 3px; }
+
+    /* ─── HIGHLIGHT ─── */
+    .hl  { background: #e0f2fe; color: #0369a1; padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+    .hl-r { background: #fff1f2; color: #be123c;  padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+    .hl-g { background: #f0fdf4; color: #15803d;  padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+    .hl-o { background: #fff7ed; color: #c2410c;  padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+    .hl-p { background: #faf5ff; color: #6d28d9;  padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+    .hl-k { background: #0f172a; color: #f8fafc;  padding: 1px 5px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.4pt; font-weight: 600; }
+
+    /* ─── TABLE ─── */
+    table { width: 100%; border-collapse: collapse; font-size: 7.5pt; margin: 5px 0 8px 0; }
+    th { background: #0f172a; color: #fff; padding: 4px 7px; text-align: left; font-weight: 600; font-size: 7pt; }
+    td { padding: 4px 7px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+    tr:nth-child(even) td { background: #f8fafc; }
+
+    /* ─── MISC ─── */
+    .page-break { page-break-before: always; }
+    ul, ol { margin: 3px 0 5px 0; padding-left: 16px; }
+    li { margin-bottom: 2px; line-height: 1.45; }
+    p { margin: 2px 0 5px 0; }
+    strong { color: #0f172a; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .index-box {
+      background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
+      padding: 9px 13px; margin-bottom: 12px; font-size: 7.5pt;
+    }
+    .index-title { font-weight: 800; font-size: 8pt; color: #0f172a; margin-bottom: 6px; }
+    .index-cols { display: grid; grid-template-columns: 1fr 1fr 1fr 1fr; gap: 4px 14px; }
+    .index-cat { font-weight: 700; font-size: 6.8pt; text-transform: uppercase; letter-spacing: .5px; color: #fff; padding: 2px 6px; border-radius: 3px; margin: 3px 0; display: inline-block; }
+    .index-item { color: #334155; padding: 1px 0; }
+
+    .footer {
+      text-align: center; font-size: 6.8pt; color: #94a3b8;
+      margin-top: 14px; padding-top: 6px; border-top: 1px solid #e2e8f0;
+    }
+
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #0f172a; color: #fff; min-width: 16px; height: 16px; border-radius: 50%;
+      font-size: 6.8pt; font-weight: 700; flex-shrink: 0; margin-right: 4px;
+    }
+    .step-line { display: flex; align-items: flex-start; gap: 5px; margin-bottom: 3px; font-size: 7.8pt; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════ HEADER ══ -->
+<div class="doc-header">
+  <div class="header-badge">Procedura Operativa 09 — Smart TV &amp; Display Solutions</div>
+  <h1 class="header-title">Menu Segreti, Diagnostica, Factory Mode e Hard Reset Smart TV</h1>
+  <p class="header-subtitle">
+    Guida tecnica di laboratorio per tecnici, installatori e sistemisti IT per accedere ai menu di servizio, sbloccare bootloop da firmware corrotto,
+    leggere le ore reali di pannello (OLED/LED), ottimizzare la protezione auto-dimming (ASBL/TPC/GSR su OLED LG), forzare Power Drain da tasti fisici chassis e gestire l'Hotel Mode per:
+    <strong>Samsung (Tizen), LG (webOS), Sony (Google TV), Philips (Titan/Google TV), Panasonic (My Home Screen/Fire TV), TCL (Google TV), Hisense (VIDAA OS) e Haier (Android TV).</strong>
+
+  </p>
+  <div class="header-meta">
+    <div><strong>Dispositivi:</strong> TV LED, QLED, Mini LED, OLED, QD-OLED, Laser TV</div>
+    <div><strong>OS Trattati:</strong> Tizen OS, webOS, Google TV, Titan OS, My Home Screen, Fire TV, VIDAA OS, Android TV</div>
+    <div><strong>Livello:</strong> Tecnico Riparatore Hardware &amp; Smart Home Specialist</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ INDICE ══ -->
+<div class="index-box">
+  <div class="index-title">📋 Indice dei Produttori e Piattaforme OS</div>
+  <div class="index-cols">
+    <div>
+      <span class="index-cat" style="background:#034ea2;">Samsung</span>
+      <div class="index-item"><strong>1. Samsung Electronics</strong></div>
+      <div class="index-item">Tizen OS (2015–2026)</div>
+      <div class="index-item">Neo QLED, QD-OLED, The Frame</div>
+    </div>
+    <div>
+      <span class="index-cat" style="background:#a50034;">LG</span>
+      <div class="index-item"><strong>2. LG Electronics</strong></div>
+      <div class="index-item">webOS (1.0–24)</div>
+      <div class="index-item">OLED evo B/C/G, QNED, NanoCell</div>
+    </div>
+    <div>
+      <span class="index-cat" style="background:#000000;">Sony</span>
+      <div class="index-item"><strong>3. Sony BRAVIA</strong></div>
+      <div class="index-item">Google TV / Android TV</div>
+      <div class="index-item">XR OLED, Mini LED, Full Array</div>
+    </div>
+    <div>
+      <span class="index-cat" style="background:#0b5ea8;">Philips</span>
+      <div class="index-item"><strong>4. Philips (TP Vision)</strong></div>
+      <div class="index-item">Titan OS, Google TV, Saphi</div>
+      <div class="index-item">OLED Ambilight, The One/Xtra</div>
+    </div>
+    <div>
+      <span class="index-cat" style="background:#004098;">Panasonic</span>
+      <div class="index-item"><strong>5. Panasonic</strong></div>
+      <div class="index-item">My Home Screen, Fire TV, Google TV</div>
+      <div class="index-item">Master OLED MZ/Z95A, Core LED</div>
+    </div>
+    <div>
+      <span class="index-cat" style="background:#e20613;">TCL</span>
+      <div class="index-item"><strong>6. TCL Technology</strong></div>
+      <div class="index-item">Google TV nativo</div>
+      <div class="index-item">QD-Mini LED Serie C (C805/C845/C855/X)</div>
+    </div>
+    <div>
+      <span class="index-cat" style="background:#009688;">Hisense</span>
+      <div class="index-item"><strong>7. Hisense</strong></div>
+      <div class="index-item">VIDAA OS (U4–U8)</div>
+      <div class="index-item">ULED Mini LED (U7/U8/UX), Laser TV</div>
+    </div>
+    <div>
+      <span class="index-cat" style="background:#005a9c;">Haier</span>
+      <div class="index-item"><strong>8. Haier Smart Home</strong></div>
+      <div class="index-item">Android TV 11 / Google TV</div>
+      <div class="index-item">Smart TV 4K QLED K7000 / S8000 / OLED</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--             GUIDA TRASVERSALE: SMART REMOTE & METODI           -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="section-divider sd-tv">
+  <span class="section-icon">📺</span>
+  <div>
+    <h2>Fondamenti Tecnici: La Sfida dei Telecomandi Smart Minimali</h2>
+    <p>Come inviare codici numerici sui TV moderni privi di tastierino 0-9 (SolarCell, Magic Remote, telecomandi vocali Bluetooth)</p>
+  </div>
+</div>
+
+<div class="brand-block">
+  <div class="callout-warn">
+    <div class="callout-warn-title">⚠️ Problema Operativo di Campo: Telecomandi Moderni Senza Tasti Numerici</div>
+    Tutti i moderni Smart TV (Samsung SolarCell, LG Magic Remote semplificato, Sony Bluetooth, TCL con telecomando ridotto) <strong>non consentono</strong> l'invio diretto delle sequenze IR classiche (es. Mute-1-8-2 o 1-9-5-0). Per operare in laboratorio o a domicilio cliente il tecnico <strong>deve adottare una delle seguenti 3 soluzioni universali</strong>:
+  </div>
+
+  <div class="grid-2">
+    <div class="callout-proc">
+      <div class="callout-proc-title">🛠️ Soluzione 1: Telecomando IR Universale o di Ricambio Standard (€ 5–8)</div>
+      Acquistare un telecomando a infrarossi di vecchio tipo (con tastierino numerico 0-9 completo, tasti Info, Menu, Mute). Tutti i TV Samsung, LG, Sony, Philips, Panasonic, TCL e Hisense <strong>mantengono sempre attivo il ricevitore IR fisico sulla cornice inferiore</strong>, anche se forniti in dotazione con telecomando solo Bluetooth. I codici IR legacy vengono sempre interpretati dal microcontrollore standby (Micom/Sub-MCU).
+    </div>
+    <div class="callout-proc">
+      <div class="callout-proc-title">📱 Soluzione 2: Smartphone Android con IR Blaster o Telecomando di Servizio Dedicato</div>
+      Utilizzare uno smartphone con porta infrarossi (Xiaomi, TCL, ecc.) o un dongle USB-C IR con app come <em>SURE Universal</em>, <em>AnyMote</em> o <em>IR Remote</em>. In alternativa, per LG e Samsung esistono i telecomandi di servizio ufficiali reperibili online:
+      <ul style="margin:2px 0 0 0;">
+        <li><strong>LG Service Remote (MKJ39170828):</strong> tasti fisici <span class="hl-k">IN-START</span>, <span class="hl-k">EZ-ADJUST</span>, <span class="hl-k">IN-STOP</span>.</li>
+        <li><strong>Samsung Service Remote (AA59-00818A):</strong> tasti <span class="hl-k">INFO</span>, <span class="hl-k">FACTORY</span>, <span class="hl-k">3SPEED</span>.</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--                     BRAND 1: SAMSUNG                           -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="section-divider sd-tv">
+  <span class="section-icon">1️⃣</span>
+  <div>
+    <h2>1. Samsung Electronics — Tizen OS</h2>
+    <p>Gamma Crystal UHD, QLED, Neo QLED (Mini LED), QD-OLED (S90/S95), The Frame, The Serif (2015–2026)</p>
+  </div>
+</div>
+
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-sam">SAM</span>
+    <div>
+      <div class="brand-title">Samsung — Piattaforma Tizen OS (e legacy Orsay OS)</div>
+      <div class="brand-series">Serie F/H/J/K/M/NU/RU/TU/AU/BU/CU/DU/Q/QN/S90/S95 · The Frame LS03, The Serif LS01</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Accesso al Service Menu (Factory Mode Standard Europeo)</div>
+    <div class="step-line"><span class="step-num">1</span> Spegnere il televisore posizionandolo in <strong>Stand-by</strong> (LED rosso acceso fisso).</div>
+    <div class="step-line"><span class="step-num">2</span> Sul telecomando IR con tastierino numerico, premere in rapida sequenza (entro 3 secondi):</div>
+    <div style="margin:4px 0 6px 22px;">
+      <span class="hl-k">MUTE</span> ➔ <span class="hl-k">1</span> ➔ <span class="hl-k">8</span> ➔ <span class="hl-k">2</span> ➔ <span class="hl-k">POWER (ACCENSIONE)</span>
+    </div>
+    <div class="step-line"><span class="step-num">3</span> Il TV si accende mostrando una schermata blu/grigia con il menu a tendina <strong>Factory Mode</strong> in alto a sinistra.</div>
+    <div class="step-line"><span class="step-num">4</span> <em>Sequenza alternativa (modelli serie H/J o display alternativi):</em> <span class="hl-k">INFO</span> ➔ <span class="hl-k">MENU</span> ➔ <span class="hl-k">MUTE</span> ➔ <span class="hl-k">POWER</span>.</div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Voci Chiave del Service Menu Samsung</div>
+    <table>
+      <thead><tr><th>Voce Menu</th><th>Funzione Tecnica</th><th>Note Operative</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><span class="hl">Option ➔ Factory Reset</span></td>
+          <td>Hard Reset totale EEPROM</td>
+          <td>Ripristina la memoria non volatile alle condizioni vergini di fabbrica. Risolve blocchi app Tizen e bootloop soft.</td>
+        </tr>
+        <tr>
+          <td><span class="hl">SVC ➔ SVC Info ➔ Panel Display Time</span></td>
+          <td><strong>Ore Reali di Funzionamento Pannello</strong></td>
+          <td>Mostra le ore effettive di accensione del pannello. Il percorso completo è: SVC → SVC Info (o SUB Options) → Panel Display Time. Indispensabile per verificare TV usati, resi o burn-in su QD-OLED.</td>
+        </tr>
+        <tr>
+          <td><span class="hl">Auto-Dimming QD-OLED (S90/S95)</span></td>
+          <td><strong>Gestione Auto-Dimming Samsung QD-OLED</strong></td>
+          <td>⚠️ <strong>ATTENZIONE:</strong> Le voci TPC/GSR esistono SOLO nel menu LG (non Samsung). Il problema di calo luminosità su pannelli Samsung QD-OLED è legato ai parametri <em>Max Lux Limit</em> e <em>Screen Saver Brightness</em> nel menu tecnico: la modifica è riservata ai tecnici autorizzati Samsung e richiede il software diagnostico ufficiale SVC.</td>
+        </tr>
+        <tr>
+          <td><span class="hl">Control ➔ Hotel Option (Hospitality Mode)</span></td>
+          <td>Modalità Albergo / Vetrina</td>
+          <td>Consente di impostare il volume massimo, il canale/sorgente di accensione predefinita e bloccare il menu utente. Accesso rapido da TV accesa: <span class="hl-k">MUTE</span> ➔ <span class="hl-k">1</span> ➔ <span class="hl-k">1</span> ➔ <span class="hl-k">9</span> ➔ <span class="hl-k">ENTER</span>.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">🚨 Power Drain di Emergenza da Tasto Fisico (Jog Controller / Power Button)</div>
+    Se il TV è bloccato in <strong>bootloop continuo</strong> (loop sul logo Smart TV Tizen). <strong>NOTA TECNICA:</strong> questa procedura esegue un <em>Power Drain</em> (scarica i condensatori della scheda madre), risolve blocchi elettrici e crash hardware, ma <strong>non ripristina le impostazioni di fabbrica del firmware</strong>. Per il factory reset software usare <em>Option → Factory Reset</em> dal Service Menu:
+    <ol>
+      <li>Staccare il cavo di alimentazione dalla presa a muro.</li>
+      <li>Individuare il pulsante fisico unico (Power/Jog controller posizionato sotto il logo Samsung centrale o sul retro in basso a destra).</li>
+      <li>Tenere premuto il tasto Power fisico sul telaio e, <strong>continuando a tenerlo premuto, reinserire la spina di corrente</strong>.</li>
+      <li>Mantenere premuto il pulsante fisico per <strong>15–20 secondi</strong> finché il LED di stand-by lampeggia velocemente: scarica l'elettricità residua dai condensatori e forza il Cold Boot della scheda madre.</li>
+    </ol>
+  </div>
+
+  <div class="callout-info">
+    <div class="callout-info-title">💡 Soft Reset Veloce (Cold Reboot da Telecomando Smart)</div>
+    A TV accesa, tenere premuto il tasto <strong>Power del telecomando per 5–8 secondi continui</strong> finché lo schermo si spegne e si riaccende mostrando il logo "Samsung Tizen": cancella la cache di memoria RAM delle app senza perdere le impostazioni dell'utente.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--                       BRAND 2: LG                              -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-divider sd-tv">
+  <span class="section-icon">2️⃣</span>
+  <div>
+    <h2>2. LG Electronics — webOS</h2>
+    <p>OLED serie A, B, C, G, Z (OLED evo) · QNED Mini LED · NanoCell · UHD 4K (webOS 1.0 fino a webOS 24)</p>
+  </div>
+</div>
+
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-lg">LG</span>
+    <div>
+      <div class="brand-title">LG Electronics — webOS</div>
+      <div class="brand-series">OLED evo B9/BX/B1/B2/B3/B4, C9/CX/C1/C2/C3/C4, G1/G2/G3/G4 · QNED91/99 · NanoCell 80/90</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Accesso ai Menu Segreti LG: In-Start ed EZ-Adjust</div>
+    I menu di fabbrica LG sono protetti da password di sicurezza:
+    <ul>
+      <li><strong>Password Universale di Servizio LG:</strong> <span class="hl-k">0 4 1 3</span>. Su modelli datati o firmware specifici le varianti sono: <span class="hl-k">0 0 0 0</span> / <span class="hl-k">7 7 7 7</span> / <span class="hl-k">3 1 9 5</span> / <span class="hl-k">8 7 4 1</span>.</li>
+    </ul>
+    <div class="step-line"><span class="step-num">A</span> <strong>Con Telecomando di Servizio Ufficiale (MKJ39170828):</strong></div>
+    <div style="margin-left:22px; font-size:7.8pt;">
+      Premere il tasto <span class="hl-k">IN-START</span> ➔ digitare password <span class="hl-k">0413</span> ➔ accesso al menu diagnostico e parametri OLED.<br>
+      Premere il tasto <span class="hl-k">EZ-ADJUST</span> ➔ digitare password <span class="hl-k">0413</span> ➔ calibrazione bilanciamento bianco e configurazione Tool Option.<br>
+      Premere il tasto <span class="hl-k">IN-STOP</span> ➔ digitare password <span class="hl-k">0413</span> ➔ <strong>Factory Reset completo</strong>: azzera tutti i dati (incluso contatore ore UTT) e riavvia la TV nella schermata di prima installazione (Out of Box).
+    </div>
+    <div class="step-line" style="margin-top:5px;"><span class="step-num">B</span> <strong>Con Telecomando Magic Remote Standard:</strong></div>
+    <div style="margin-left:22px; font-size:7.8pt;">
+      Accendere la TV ➔ andare in <em>Impostazioni</em> ➔ <em>Canali / Sintonizzazione Canali</em> (evidenziando la voce senza entrare) ➔ premere rapidamente per <strong>5 volte il tasto [1]</strong> (<span class="hl-k">1 1 1 1 1</span>) ➔ Compare la schermata <strong>Host Diagnostics</strong> con SNR segnale DVB-T2/S2, frequenza MUX, livello errori BER e stato scheda Wi-Fi/Ethernet.
+    </div>
+  </div>
+
+  <div class="callout-warn">
+    <div class="callout-warn-title">⚠️ Ottimizzazione OLED LG: Disattivazione TPC e GSR (Anti-Dimming Issue)</div>
+    Sui pannelli OLED LG, durante film con scene scure prolungate o videogiochi con interfaccia statica, il sistema ASBL abbassa progressivamente la luminosità. La procedura di disattivazione è valida <strong>solo per le serie C9, CX, C1, C2</strong>:
+    <ol style="margin-top:3px;">
+      <li>Entrare nel menu <span class="hl">IN-START</span> (password 0413).</li>
+      <li>Selezionare la voce <strong>12. OLED</strong> (o <em>System 1</em> a seconda del firmware webOS).</li>
+      <li>Individuare <strong>TPC Enable</strong> (Temporal Peak Control) e impostarlo su <span class="hl-r">OFF</span>.</li>
+      <li>Individuare <strong>GSR Enable</strong> (Global Sticky Reduction) e impostarlo su <span class="hl-r">OFF</span>.</li>
+      <li>Uscire premendo il tasto Back o spegnere la TV: la luminosità rimarrà stabile senza cali anomali.</li>
+    </ol>
+    <div class="callout-info" style="margin-top:6px; margin-bottom:0;">
+      <div class="callout-info-title">ℹ️ Serie C3 / G3 e Successive (2023–2026) — Non Applicabile</div>
+      A partire dalla serie C3 e G3, LG ha <strong>rimosso l'accesso</strong> alle voci TPC/GSR dal menu di servizio <strong>e contestualmente corretto l'algoritmo nativo</strong>, eliminando il problema di auto-dimming aggressivo. Su questi modelli la modifica non è né necessaria né accessibile.
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🏨 Hotel / Installation Mode (Senza telecomando di servizio)</div>
+    A TV accesa su <em>Live TV</em>, tenere premuto il tasto <strong>Settings</strong> sul telecomando per circa <strong>7–10 secondi</strong> finché il banner delle impostazioni scompare. Digitare immediatamente <span class="hl-k">1 1 0 5</span> (alternativa: <span class="hl-k">1 2 3 4</span>) seguito da <span class="hl-k">OK</span>: si apre il <em>LG Hotel Mode Setup</em> (blocco ingressi, clonazione canali su USB, volume massimo).
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">🚨 Power Cycle di Emergenza da Tasto Fisico Chassis</div>
+    <strong>NOTA TECNICA:</strong> tenere premuto il pulsante fisico sul telaio a spina staccata esegue solo un <em>Power Cycle</em> (scarica l'elettricità residua dai condensatori), utile per risolvere crash hardware della scheda madre. <strong>Non esegue un factory reset software del firmware.</strong> L'unico reset fisico profondo è il tasto <span class="hl-k">IN-STOP</span> con il telecomando di servizio (password 0413) che azzera completamente la TV.<br>
+    Procedura Power Cycle: scollegare il cavo di alimentazione → tenere premuto il pulsante di accensione fisico sotto il logo LG centrale per <strong>30 secondi</strong> → ricollegare l'alimentazione → rilasciare il tasto.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--                       BRAND 3: SONY                            -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="section-divider sd-tv">
+  <span class="section-icon">3️⃣</span>
+  <div>
+    <h2>3. Sony — BRAVIA XR Google TV / Android TV</h2>
+    <p>OLED (A80/A90/A95K/A95L QD-OLED) · Mini LED (X95L, Bravia 7, Bravia 9) · Full Array LED (X90J/K/L) · Cognitive Processor XR</p>
+  </div>
+</div>
+
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-sony">SONY</span>
+    <div>
+      <div class="brand-title">Sony BRAVIA — Google TV &amp; Android TV</div>
+      <div class="brand-series">Serie KD / XR / K-Series (2015–2026) · Piattaforme MediaTek Pentonic &amp; MT5895</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Accesso al Service Menu Sony (Self-Diagnostic &amp; Service Mode)</div>
+    <div class="step-line"><span class="step-num">1</span> Spegnere il televisore posizionandolo in <strong>Stand-by</strong> (LED frontale spento o rosso).</div>
+    <div class="step-line"><span class="step-num">2</span> Sul telecomando IR con tastierino numerico, premere in rapida sequenza (entro 3 secondi):</div>
+    <div style="margin:4px 0 6px 22px;">
+      <span class="hl-k">DISPLAY / i+</span> ➔ <span class="hl-k">5</span> ➔ <span class="hl-k">VOLUME +</span> ➔ <span class="hl-k">POWER</span>
+    </div>
+    <div class="step-line"><span class="step-num">3</span> La TV si avvia visualizzando la schermata verde/grigia del <strong>Service Mode Sony</strong>.</div>
+    <div class="step-line"><span class="step-num">4</span> <em>Voci cruciali:</em></div>
+    <div style="margin-left:22px; font-size:7.8pt;">
+      • <strong>Panel Operation Time:</strong> visualizza il contatore totale delle ore di accensione del pannello (in basso a sinistra nella schermata iniziale) e il numero di cicli di boot.<br>
+      • <strong>Self-Check Table:</strong> storico degli errori hardware registrati dalla Main Board con data e conteggio occorrenze.
+    </div>
+    <div class="callout-warn" style="margin-top:6px; margin-bottom:0;">
+      <div class="callout-warn-title">⚠️ Modelli 2021–2026 con Telecomando Smart Senza Tastierino Numerico</div>
+      La sequenza Display/i+ non è disponibile sui telecomandi Bluetooth smart recenti. Sequenza alternativa verificata:
+      <span class="hl-k">HOME</span> ➔ <span class="hl-k">Select (tasto centrale D-pad)</span> ➔ <span class="hl-k">VOLUME +</span> ➔ <span class="hl-k">POWER</span>. In alternativa usare un telecomando IR universale con tastierino numerico (cfr. sezione Fondamenti Tecnici).
+    </div>
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">🚨 Forzatura Hard Reset da Pulsanti Fisici Chassis (Recupero TV Bloccata su Bootloop)</div>
+    Procedura salvavita per TV Sony con Google TV bloccata sul logo iniziale o schermo nero con LED acceso:
+    <div class="step-line"><span class="step-num">1</span> Scollegare il cavo di alimentazione dalla presa di corrente.</div>
+    <div class="step-line"><span class="step-num">2</span> Individuare i pulsanti fisici sullo chassis (sul retro o sotto la cornice):</div>
+    <div style="margin-left:22px; font-size:7.8pt;">
+      • <strong>Se presenti 3 tasti (Power, Vol-, Vol+):</strong> tenere premuti contemporaneamente <strong>[POWER]</strong> e <strong>[VOLUME -]</strong>.<br>
+      • <strong>Se presente 1 solo tasto fisico (Power):</strong> tenere premuto il tasto <strong>[POWER]</strong>.
+    </div>
+    <div class="step-line"><span class="step-num">3</span> Continuando a tenere premuti i tasti fisici, <strong>reinserire la spina di alimentazione</strong> nella presa.</div>
+    <div class="step-line"><span class="step-num">4</span> Mantenere premuto finché il LED frontale diventa di colore <strong>VERDE (o BIANCO)</strong> — possono servire da 10 a 30 secondi.</div>
+    <div class="step-line"><span class="step-num">5</span> Rilasciare i tasti: la TV cancellerà completamente la memoria flash, forzerà il ripristino di fabbrica a basso livello e si riavvierà nella schermata di benvenuto Google TV.</div>
+  </div>
+
+  <div class="callout-ref">
+    <div class="callout-ref-title">🚦 Tabella Lampeggi LED Rosso Sony (Blink Codes Diagnostica Hardware)</div>
+    Quando una TV Sony si spegne e il LED frontale lampeggia in colore rosso, il numero di lampeggi identifica il modulo hardware guasto:
+    <table>
+      <thead><tr><th>N° Lampeggi</th><th>Circuito Guasto Rilevato</th><th>Azione Correttiva di Laboratorio</th></tr></thead>
+      <tbody>
+        <tr><td><span class="hl-r">2 Lampeggi</span></td><td>Power Supply Board (Scheda Alimentazione)</td><td>Mancanza linea 12V/24V, condensatori secondario esauriti o fotoaccoppiatori guasti</td></tr>
+        <tr><td><span class="hl-r">3 Lampeggi</span></td><td>Main Board (Scheda Madre / Processore XR)</td><td>Mancata comunicazione tra SoC e DC-DC regulator, RAM BGA dissaldata o firmware corrotto</td></tr>
+        <tr><td><span class="hl-r">4 o 6 Lampeggi</span></td><td>Backlight / Inverter LED / Surriscaldamento Pannello</td><td>4 lampeggi: surriscaldamento pannello (Panel Overtemp) o guasto scheda driver retroilluminazione LED. 6 lampeggi: barre LED bruciate fisicamente nel pannello (Backlight system failure)</td></tr>
+        <tr><td><span class="hl-r">5 Lampeggi</span></td><td>Pannello LCD/OLED o Scheda T-Con</td><td>Mancata risposta bus I2C T-Con o flat flex cable ossidati/scollegati</td></tr>
+        <tr><td><span class="hl-r">8 Lampeggi</span></td><td>Audio IC / Amplificatore integrato</td><td>Cortocircuito stadio finale audio o Acoustic Surface actuator</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--                     BRAND 4: PHILIPS                           -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-divider sd-tv">
+  <span class="section-icon">4️⃣</span>
+  <div>
+    <h2>4. Philips (TP Vision) — Titan OS &amp; Google TV</h2>
+    <p>OLED Ambilight (OLED708, 808, 908, 959) · Mini LED The Xtra (PML) · LED The One (PUS) · Titan OS, Google TV, Saphi</p>
+  </div>
+</div>
+
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-phil">PHIL</span>
+    <div>
+      <div class="brand-title">Philips — Piattaforma TP Vision</div>
+      <div class="brand-series">Chassis TPM21.1E, TPM22.1E, TPM23.1E · Titan OS (modelli 2024–2026), Google TV, Saphi OS</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 I 3 Menu di Servizio Philips (Sequenze IR)</div>
+    A TV accesa su una qualsiasi sorgente (TV/HDMI), digitare in modo rapido e fluido sul telecomando:
+    <div class="step-line" style="margin-top:5px;"><span class="step-num">1</span> <strong>CSM (Customer Service Mode — Sola Lettura / Sicuro al 100%):</strong></div>
+    <div style="margin-left:22px; font-size:7.8pt;">
+      Digitare <span class="hl-k">1</span> ➔ <span class="hl-k">2</span> ➔ <span class="hl-k">3</span> ➔ <span class="hl-k">6</span> ➔ <span class="hl-k">5</span> ➔ <span class="hl-k">4</span>.<br>
+      Apre 3 schermate informative che indicano: codice chassis, versione esatta software, ore di funzionamento reali (Operation Hours), codice esatto del display montato, stato LED Ambilight e storico errori buffer.
+    </div>
+    <div class="step-line" style="margin-top:5px;"><span class="step-num">2</span> <strong>SAM (Service Alignment Mode — Modifica Parametri Tecnici):</strong></div>
+    <div style="margin-left:22px; font-size:7.8pt;">
+      Digitare <span class="hl-k">0</span> ➔ <span class="hl-k">6</span> ➔ <span class="hl-k">2</span> ➔ <span class="hl-k">5</span> ➔ <span class="hl-k">9</span> ➔ <span class="hl-k">6</span> seguito da tasto <span class="hl-k">INFO</span> (o <span class="hl-k">OK</span>).<br>
+      Consente la regolazione del bilanciamento del bianco, verifica dei buffer errori (Error 1, Error 2) e cancellazione registro guasti.
+    </div>
+    <div class="step-line" style="margin-top:5px;"><span class="step-num">3</span> <strong>SDM (Service Default Mode):</strong> digitare <span class="hl-k">0 6 2 5 9 6</span> + <span class="hl-k">MENU (o HOME)</span>. <em>Nota: questa sequenza fissa i parametri hardware al default di laboratorio. Sui chassis Titan OS recenti (2024–2026) può essere parzialmente disabilitata; in tal caso usare SAM per le operazioni di ripristino.</em></div>
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">🚨 Recovery Mode e Hard Reset Hardware Philips Android (One Button Recovery)</div>
+    Se la TV rimane bloccata sul logo Philips:
+    <ol style="margin-top:3px;">
+      <li>Scollegare la spina di alimentazione dalla presa elettrica.</li>
+      <li>Sul retro della TV individuare il joystick a 5 direzioni (o il tasto sul bordo inferiore della cornice).</li>
+      <li>Tenere premuto il joystick verso il <strong>BASSO (Down)</strong> e, mantenendolo premuto, reinserire la spina di alimentazione.</li>
+      <li>Mantenere premuto verso il basso finché lo schermo non visualizza il menu testuale <strong>Android Recovery</strong>.</li>
+      <li>⚠️ <strong>ATTENZIONE:</strong> usare SOLO la direzione BASSO. <strong>NON premere il joystick al centro (OK/Conferma)</strong>: la combinazione fallirebbe e la TV si avvierebbe normalmente senza entrare in Recovery.</li>
+      <li>Con il joystick scorrere su <em>"Wipe data / factory reset"</em> e confermare per formattare la memoria interna e ripristinare il firmware di fabbrica.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--                     BRAND 5: PANASONIC                         -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="section-divider sd-tv">
+  <span class="section-icon">5️⃣</span>
+  <div>
+    <h2>5. Panasonic — Master OLED &amp; Core LED</h2>
+    <p>OLED MZ2000, LZ2000, Z95A, JZ, HZ, GZ · My Home Screen OS, Google TV e Fire TV (2024–2026)</p>
+  </div>
+</div>
+
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-pan">PAN</span>
+    <div>
+      <div class="brand-title">Panasonic — Piattaforma Video Cinema &amp; Calibrazione Hollywood</div>
+      <div class="brand-series">Serie Z95A, MZ, LZ, JZ, HZ, GZ OLED · Serie LED MX, LX, HX · Piattaforme My Home Screen e Fire TV</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Accesso al Service Mode Panasonic (Combinazione TV + Telecomando)</div>
+    <div class="step-line"><span class="step-num">1</span> Accendere il televisore.</div>
+    <div class="step-line"><span class="step-num">2</span> Individuare il tasto fisico <strong>[VOLUME -]</strong> sul lato destro o posteriore dello chassis della TV e tenerlo premuto.</div>
+    <div class="step-line"><span class="step-num">3</span> Continuando a tenere premuto [Vol -] sulla TV, premere sul telecomando per <strong>3 volte consecutive il tasto [0] (zero)</strong> (oppure il tasto <em>[AV / INPUT]</em> su alcune serie) entro 2 secondi.</div>
+    <div class="step-line"><span class="step-num">4</span> Sullo schermo compare il <strong>Service Menu Panasonic (SRV-TOOL)</strong>.</div>
+    <div class="step-line"><span class="step-num">5</span> <strong>Lettura Ore Pannello OLED:</strong> entrare nel menu <em>SRV-TOOL</em> ➔ spostarsi sul riquadro in basso a destra per evidenziare la riga <span class="hl">PTCT: TIME</span>. <strong>I valori non appaiono automaticamente</strong>: tenere premuto il tasto <span class="hl-k">MUTE</span> sul telecomando per <strong>3–5 secondi</strong> finché le ore (TIME) e i cicli di accensione (COUNT) appaiono in colore rosso.</div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🏨 Hotel Mode / Blocco Modalità Esposizione</div>
+    Tenere premuto il tasto <strong>[VOLUME -] sul televisore</strong> e premere per <strong>3 volte consecutive il tasto [AV] sul telecomando</strong> (sui modelli recenti usare <strong>[INPUT]</strong> invece di AV): compare a schermo il menu <em>Hotel Mode</em> (On/Off, sorgente fissa di avvio, volume massimo, blocco tasti telecomando).
+    <div class="callout-info" style="margin-top:5px; margin-bottom:0;">
+      <div class="callout-info-title">ℹ️ Modelli Panasonic Re-brand Vestel (Fascia Bassa)</div>
+      Sui TV Panasonic di fascia bassa prodotti da Vestel (identificabili dal numero modello), il menu Hotel si apre con la combinazione: <span class="hl-k">MENU</span> + codice <span class="hl-k">7 9 3 5</span> sul telecomando (invece della sequenza Vol- + AV×3).
+    </div>
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">🚨 Self-Check &amp; Factory Hard Reset Panasonic</div>
+    <strong>Accesso Self-Check rapido (modelli 2014 in poi):</strong> accessibile direttamente dal menu utente standard <em>Menu → Aiuto → TV Self-test</em> senza codici.<br>
+    <strong>Metodo legacy (combo fisica):</strong> a TV accesa, tenere premuto il tasto <strong>[VOLUME -] sulla TV</strong> e premere contemporaneamente il tasto <strong>[MENU] sul telecomando per oltre 4 secondi</strong>: sullo schermo compare la tabella diagnostica grigia (SELF CHECK) che testa i bus I2C di Tuner, Audio, Video IC e memoria EEPROM. Per forzare il reset totale alle impostazioni di fabbrica: selezionare la voce <em>"Shipping"</em> o tenere premuto il tasto Power sulla TV per 4 secondi finché non si spegne.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--                       BRAND 6: TCL                             -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-divider sd-tv">
+  <span class="section-icon">6️⃣</span>
+  <div>
+    <h2>6. TCL Technology — Google TV Nativo</h2>
+    <p>QD-Mini LED Serie C (C645, C745, C805, C845, C855, C955) · Premium X955 · Piattaforma MediaTek Pentonic &amp; Realtek</p>
+  </div>
+</div>
+
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-tcl">TCL</span>
+    <div>
+      <div class="brand-title">TCL — Google TV &amp; Android TV</div>
+      <div class="brand-series">Chassis RT51M, MT9615, Pentonic 700 (T653T01) · Serie C645, C745, C805, C845, C855, C955, X955</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 I 4 Menu Segreti TCL (Metodo "Contrasto")</div>
+    <div class="step-line"><span class="step-num">1</span> Accendere la TV ed entrare in <strong>Impostazioni (icona ingranaggio) ➔ Immagine ➔ Impostazioni Avanzate</strong>.</div>
+    <div class="step-line"><span class="step-num">2</span> Posizionare il cursore evidenziando la voce <strong>Contrasto</strong> (Contrast), <strong>senza premere OK</strong> per modificarla.</div>
+    <div class="step-line"><span class="step-num">3</span> Digitare rapidamente sul telecomando uno dei seguenti codici a 4 cifre:</div>
+    <table style="margin-top:4px;">
+      <thead><tr><th>Codice IR</th><th>Menu Aperto</th><th>Funzioni Disponibili</th></tr></thead>
+      <tbody>
+        <tr><td><span class="hl-k">1 9 5 0</span></td><td><strong>Design Menu / Factory Menu</strong></td><td>Test pattern RGB a pieno schermo (verifica pixel bruciati o blooming Mini LED), calibrazione bilanciamento bianco, informazioni telaio/firmware.</td></tr>
+        <tr><td><span class="hl-k">6 4 2 5</span></td><td><strong>Service Menu Avanzato</strong></td><td>Controllo zone local dimming, parametri audio equalizzatore DSP, configurazione HDMI 2.1 e VRR. Mostra anche il Running Time del pannello.</td></tr>
+        <tr><td><span class="hl-k">6 4 0 5</span></td><td><strong>Hotel Mode Setup</strong></td><td>Attivazione Hospitality Mode, blocco tasti e volume massimo impostabile.</td></tr>
+        <tr><td><span class="hl-k">9 7 3 5</span></td><td><strong>Factory Menu Alternativo</strong></td><td>Usato su chassis specifici (es. serie P con processore Realtek) per forzare il ripristino EEPROM.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🧹 Reset di Fabbrica da Factory Menu (Shop Reset)</div>
+    Nel Design Menu (codice 1950) e nel Service Menu (codice 6425), selezionare la voce <strong>"Reset All"</strong> o <strong>"Shop Reset"</strong> e confermare con OK: azzera tutte le partizioni utente della memoria e riallinea i registri del firmware.
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">🚨 Forced Hard Reset da Pulsante Fisico Telaio (Unbrick TV / Android Recovery)</div>
+    Sui TV TCL dotati di un unico pulsante fisico posizionato sotto il logo centrale o sul retro:
+    <ol style="margin-top:3px;">
+      <li>Staccare il cavo di alimentazione dalla presa.</li>
+      <li>Tenere premuto il pulsante fisico unico sul telaio della TV.</li>
+      <li>Reinserire la spina di alimentazione continuando a tenere premuto il pulsante per <strong>15–20 secondi</strong>.</li>
+      <li>Sui modelli Google TV / Android TV recenti (chassis MediaTek Pentonic / Realtek), il risultato è l'avvio della vera <strong>Android Recovery Mode</strong> (schermata con robottino Android). Da qui selezionare <em>"Wipe Data / Factory Reset"</em> con i tasti fisici del TV per un reset completo.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--                     BRAND 7: HISENSE                           -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="section-divider sd-tv">
+  <span class="section-icon">7️⃣</span>
+  <div>
+    <h2>7. Hisense — VIDAA OS</h2>
+    <p>ULED Mini LED (U6K, U7K, U8K, U7N, U8N, UX) · Laser TV a tiro ultra-corto (L9G, L5H) · Sistema proprietario VIDAA OS</p>
+  </div>
+</div>
+
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-his">HIS</span>
+    <div>
+      <div class="brand-title">Hisense — Piattaforma VIDAA OS</div>
+      <div class="brand-series">VIDAA U4, U5, U6, U7, U8 · Serie U6/U7/U8/UX ULED Mini LED · Laser TV 4K/8K (L9, L5)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Accesso al Factory Menu Hisense (Metodo Audio Balance "1969")</div>
+    <div class="step-line"><span class="step-num">1</span> Accendere la TV ed entrare nel menu <strong>Impostazioni (icona ingranaggio)</strong>.</div>
+    <div class="step-line"><span class="step-num">2</span> Navigare su <strong>Suono (Audio) ➔ Impostazioni Avanzate</strong>.</div>
+    <div class="step-line"><span class="step-num">3</span> Selezionare la voce <strong>Bilanciamento (Balance)</strong> e assicurarsi che sia impostata sul valore <span class="hl">0</span> (zero).</div>
+    <div class="step-line"><span class="step-num">4</span> Digitare rapidamente sul telecomando la sequenza: <span class="hl-k">1</span> ➔ <span class="hl-k">9</span> ➔ <span class="hl-k">6</span> ➔ <span class="hl-k">9</span>.</div>
+    <div class="step-line"><span class="step-num">5</span> Sullo schermo in alto a sinistra compare una grande lettera <strong>"M"</strong> di colore verde o azzurro: indica che la <strong>Modalità Factory è attiva</strong>.</div>
+    <div class="step-line"><span class="step-num">6</span> Premere il tasto <strong>[MENU]</strong> sul telecomando per visualizzare il menu a discesa Factory Mode.</div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Funzionalità Chiave Factory Mode Hisense</div>
+    <ul>
+      <li><strong>Clean Chip / EEPROM Reset:</strong> resetta integralmente il processore di immagine e la memoria non volatile risolvendo blocchi del tuner DVB-T2 o crash di VIDAA OS.</li>
+      <li><strong>Aging Mode:</strong> avvia il ciclo di test a schermo intero con schermate bianche, rosse, verdi e blu cicliche (utilissimo per verificare pixel bruciati o uniformità pannello). <strong>Uscita di emergenza:</strong> se la TV rimane bloccata in Aging Mode, digitare <span class="hl-k">8 0 8 7</span> per forzare l'uscita dalla modalità.</li>
+      <li><strong>Uscita dalla modalità Factory:</strong> il metodo più sicuro è <strong>spegnere e riaccendere</strong> il TV (Power Cycle). In alternativa riaprire il menu Factory e selezionare <em>Factory Exit</em>.</li>
+    </ul>
+  </div>
+
+  <div class="callout-warn">
+    <div class="callout-warn-title">⚠️ Laser TV a Tiro Ultra-Corto: Ore Laser e Allineamento Geometrico</div>
+    Nei proiettori Laser TV Hisense (L9G/L5H), il menu di servizio tramite sequenza 1969 consente di accedere al contatore delle <strong>ore effettive della sorgente Laser Trichroma</strong>. L'allineamento geometrico (Keystone/Geometric Correction) è invece esposto direttamente nel <strong>menu utente standard</strong> (<em>Impostazioni → Schermo / Installazione</em>), perché l'utente finale deve poterlo regolare senza invalidare la garanzia.
+    <div class="callout-danger" style="margin-top:6px; margin-bottom:0;">
+      <div class="callout-danger-title">🚨 ATTENZIONE: Codici MStar/MediaTek NON Validi su VIDAA OS</div>
+      I codici <span class="hl-r">9735</span>, <span class="hl-r">8893</span> e <span class="hl-r">0000</span> derivano dai SoC MStar/MediaTek e funzionano su Android TV (TCL, Haier, ecc.) ma <strong>NON funzionano sui televisori Hisense con VIDAA OS</strong> (firmware proprietario). L'unico codice corretto per VIDAA OS è <span class="hl-g">1969</span>.
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--                       BRAND 8: HAIER                           -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-divider sd-tv">
+  <span class="section-icon">8️⃣</span>
+  <div>
+    <h2>8. Haier — Android TV &amp; Google TV</h2>
+    <p>Smart TV 4K QLED Serie K7000, S8000, Serie P, OLED · Piattaforme MStar / MediaTek Android TV 11</p>
+  </div>
+</div>
+
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-hai">HAI</span>
+    <div>
+      <div class="brand-title">Haier Smart Home — Smart TV Android / Google TV</div>
+      <div class="brand-series">Serie K7000, S8000, P-Series, H-Series · Piattaforme MStar/MediaTek Smart DTV</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 I 2 Metodi di Accesso al Factory Menu Haier</div>
+    <div class="step-line"><span class="step-num">Metodo A</span> <strong>Da Sorgente TV (DTV / Antenna):</strong></div>
+    <div style="margin-left:22px; font-size:7.8pt;">
+      Posizionarsi sulla sorgente Canali TV ➔ premere il tasto <strong>[MENU]</strong> del telecomando ➔ digitare rapidamente la sequenza <span class="hl-k">8 8 9 3</span> oppure <span class="hl-k">1 1 4 7</span> (il codice standard delle schede madri cinesi MStar/MediaTek integrate da Haier).
+    </div>
+    <div class="step-line" style="margin-top:5px;"><span class="step-num">Metodo B</span> <strong>Da Menu Immagine (Contrasto):</strong></div>
+    <div style="margin-left:22px; font-size:7.8pt;">
+      Andare in <em>Impostazioni</em> ➔ <em>Immagine</em> ➔ evidenziare <em>Contrasto</em> ➔ digitare <span class="hl-k">9 7 3 5</span> oppure <span class="hl-k">1 9 5 0</span>.
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Voci di Servizio e Correzione Pannello Flip/Mirror</div>
+    <ul>
+      <li><strong>General Setting ➔ Factory Reset:</strong> ripristina la scheda madre alle condizioni vergini di fabbrica.</li>
+      <li><strong>Panel Setting ➔ Mirror Mode / Flip:</strong> indispensabile per i tecnici dopo aver sostituito una scheda Main Board o T-Con su TV Haier se l'immagine appare <strong>capovolta o a colori sfasati (solarizzati / LVDS Jeida/Vesa)</strong>.</li>
+      <li><strong>Burning Mode:</strong> test a schermo intero per verificare difetti di retroilluminazione o uniformità QLED.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--                  TABELLA MATRICE COMPARATIVA FINALE            -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div style="background:#1e1b4b; color:#fff; border-radius:8px; padding:8px 14px; margin-bottom:10px;">
+  <strong style="font-size:9pt; color:#fff;">📊 Matrice Tecnica Comparativa — Accesso Menu Segreti e Hard Reset Smart TV</strong>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th style="width:13%;">Brand</th>
+      <th style="width:12%;">Piattaforma OS</th>
+      <th style="width:25%;">Sequenza Accesso Menu Servizio</th>
+      <th style="width:25%;">Hard Reset / Bootloop Recovery</th>
+      <th style="width:25%;">Funzioni Tecniche Speciali</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Samsung</strong></td>
+      <td>Tizen OS</td>
+      <td>Da Standby: <span class="hl-k">Mute-1-8-2-Power</span> (globale) / <span class="hl-k">Info-Menu-Mute-Power</span> (EU)</td>
+      <td><strong>Power Drain</strong> (scarica condensatori): stacco spina → tasto Power fisico → riattacco spina per 15-20s. Per factory reset software usare Option→Factory Reset dal Service Menu</td>
+      <td>Lettura ore pannello (SVC→SVC Info→Panel Display Time), auto-dimming QD-OLED gestito da tecnici autorizzati, Hotel Mode (Mute-1-1-9-Enter)</td>
+    </tr>
+    <tr>
+      <td><strong>LG</strong></td>
+      <td>webOS (1.0–24)</td>
+      <td>Telecomando servizio: <span class="hl-k">IN-START</span> / <span class="hl-k">EZ-ADJUST</span> (pass: <strong>0413</strong> o 0000/7777/3195/8741) · Standard: Canali ➔ <span class="hl-k">1-1-1-1-1</span></td>
+      <td><strong>Power Cycle</strong> (solo scarica condensatori, NON factory reset). Factory reset completo: <span class="hl-k">IN-STOP</span> + password 0413 con telecomando servizio</td>
+      <td>TPC/GSR su C9/CX/C1/C2 (non su C3+), Host Diagnostics SNR/BER, Hotel Mode Settings 7-10s → 1105+OK (o 1234+OK)</td>
+    </tr>
+    <tr>
+      <td><strong>Sony</strong></td>
+      <td>Google TV / Android TV</td>
+      <td>Con tastierino: <span class="hl-k">Display(i+) ➔ 5 ➔ Vol+ ➔ Power</span><br>Smart Remote (2021+): <span class="hl-k">HOME ➔ Select ➔ Vol+ ➔ Power</span></td>
+      <td>Stacco spina → premere <span class="hl-k">Power + Vol-</span> fisici → riattacco spina finché LED diventa <strong>VERDE</strong></td>
+      <td>Self-Check Table errori, diagnostica lampeggi LED rosso (2-8x, 4x=Overtemp o driver LED), lettura ore pannello</td>
+    </tr>
+    <tr>
+      <td><strong>Philips</strong></td>
+      <td>Titan OS / Google TV / Saphi</td>
+      <td>CSM: <span class="hl-k">1-2-3-6-5-4</span> (info/ore)<br>SAM: <span class="hl-k">0-6-2-5-9-6-Info</span><br>SDM: <span class="hl-k">0-6-2-5-9-6-Menu</span></td>
+      <td>Stacco spina → joystick telaio BASSO (non premere OK) → riattacco spina → Android Recovery → Wipe Data</td>
+      <td>Operation Hours in CSM, allineamento SAM, SDM parametri default laboratorio (Titan OS: parzialmente disabilitato)</td>
+    </tr>
+    <tr>
+      <td><strong>Panasonic</strong></td>
+      <td>My Home Screen / Fire TV / Google TV</td>
+      <td>TV accesa: tenere premuto <span class="hl-k">Vol-</span> su TV + premere <span class="hl-k">0-0-0</span> (o AV/INPUT x3) su telecomando</td>
+      <td>Legacy: <span class="hl-k">Vol-</span> TV + <span class="hl-k">MENU</span> telecomando 4s → Self Check → opzione Shipping. Moderni: Menu → Aiuto → TV Self-test</td>
+      <td>Ore OLED PTCT (premere MUTE 3-5s per visualizzare), Hotel Mode Vol-TV + AVx3 (Vestel: Menu+7935)</td>
+    </tr>
+    <tr>
+      <td><strong>TCL</strong></td>
+      <td>Google TV nativo</td>
+      <td>Impostazioni Immagine → <strong>Contrasto</strong> → digitare <span class="hl-k">1 9 5 0</span> (o 6425, 6405, 9735)</td>
+      <td>Stacco spina → tasto fisico premuto → riattacco spina per 15-20s → Android Recovery Mode → Wipe Data</td>
+      <td>Design Menu: test pattern RGB, calibrazione Mini LED. Shop Reset in 1950 e 6425. Running Time pannello in 6425</td>
+    </tr>
+    <tr>
+      <td><strong>Hisense</strong></td>
+      <td>VIDAA OS</td>
+      <td>Impostazioni Audio → Bilanciamento a 0 → digitare <span class="hl-k">1 9 6 9</span> (appare lettera "M"). ⚠️ Codici MStar (9735/8893) NON validi su VIDAA</td>
+      <td>Menu Factory → Clean Chip / EEPROM Reset. Blocco Aging Mode: digitare <span class="hl-k">8 0 8 7</span></td>
+      <td>Aging Mode per test burn-in/colori, ore sorgente Laser TV, allineamento geometrico Laser TV dal menu utente standard</td>
+    </tr>
+    <tr>
+      <td><strong>Haier</strong></td>
+      <td>Android TV / Google TV</td>
+      <td>Sorgente TV: <span class="hl-k">Menu ➔ 8 8 9 3</span> (o 1147 o 2580)<br>Immagine: Contrasto ➔ <span class="hl-k">9 7 3 5</span></td>
+      <td>Menu Factory → General Setting → Factory Reset</td>
+      <td>Panel Setting per Mirror Mode/Flip (immagine capovolta/solarizzata dopo cambio scheda LVDS), Burning Mode</td>
+    </tr>
+  </tbody>
+
+</table>
+
+<div class="footer">
+  Supporto Tecnico IT — Procedura Operativa 09: Menu Segreti, Diagnostica, Factory Mode e Hard Reset Smart TV &nbsp;|&nbsp; Verificata su Piattaforme Hardware Ufficiali — Ottobre 2026
+</div>
+
+</body>
+</html>
