@@ -1,0 +1,920 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Procedura 10 – Menu Segreti, Diagnostica, Test Mode e Reset Piccoli Elettrodomestici (PED)</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    @page { size: A4 portrait; margin: 10mm 10mm 10mm 10mm; }
+
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 8.2pt; line-height: 1.46; color: #1e293b; background: #ffffff; margin: 0; padding: 0;
+    }
+
+    /* ─── HEADER ─── */
+    .doc-header {
+      background: linear-gradient(135deg, #0f172a 0%, #1e293b 35%, #0369a1 75%, #0284c7 100%);
+      color: #fff; padding: 16px 20px; border-radius: 10px; margin-bottom: 12px;
+      box-shadow: 0 4px 12px rgba(15,23,42,.15);
+    }
+    .header-badge {
+      display: inline-block; background: rgba(255,255,255,.2); padding: 3px 10px;
+      border-radius: 20px; font-size: 7pt; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .8px; margin-bottom: 7px;
+    }
+    .header-title { font-size: 13.5pt; font-weight: 800; line-height: 1.25; margin: 0 0 5px 0; color: #fff; }
+    .header-subtitle { font-size: 8pt; color: #e2e8f0; margin: 0 0 8px 0; font-weight: 400; line-height: 1.45; }
+    .header-meta {
+      display: flex; flex-wrap: wrap; gap: 12px; font-size: 7pt; color: #cbd5e1;
+      border-top: 1px solid rgba(255,255,255,.2); padding-top: 6px;
+    }
+
+    /* ─── SECTION DIVIDER ─── */
+    .section-divider {
+      border-radius: 8px; padding: 8px 14px; margin: 16px 0 8px 0;
+      display: flex; align-items: center; gap: 10px; page-break-after: avoid;
+    }
+    .section-divider h2 { margin: 0; font-size: 10pt; font-weight: 800; color: #fff; }
+    .section-divider p { margin: 1px 0 0 0; font-size: 7.2pt; color: rgba(255,255,255,.9); }
+    .section-icon { font-size: 18pt; }
+    .sd-robot { background: linear-gradient(90deg, #0369a1, #0284c7); }
+    .sd-vaccum { background: linear-gradient(90deg, #4338ca, #6366f1); }
+    .sd-coffee { background: linear-gradient(90deg, #78350f, #b45309); }
+    .sd-matrix { background: linear-gradient(90deg, #0f172a, #334155); }
+
+    /* ─── BRAND BLOCK ─── */
+    .brand-block {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 9px;
+      padding: 10px 14px; margin-bottom: 10px; page-break-inside: avoid;
+    }
+    .brand-header {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 7px; padding-bottom: 6px; border-bottom: 2px solid #f1f5f9;
+    }
+    .brand-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; min-width: 26px; height: 26px; border-radius: 50%;
+      font-size: 8.5pt; font-weight: 800; flex-shrink: 0;
+    }
+    .bb-dreame   { background: #0284c7; }
+    .bb-roborock { background: #e11d48; }
+    .bb-irobot   { background: #16a34a; }
+    .bb-ecovacs  { background: #2563eb; }
+    .bb-ezviz    { background: #0d9488; }
+    .bb-mova     { background: #7c3aed; }
+    .bb-rowenta  { background: #b91c1c; }
+    .bb-dyson    { background: #4f46e5; }
+    .bb-hoover   { background: #dc2626; }
+    .bb-miele    { background: #881337; }
+    .bb-delonghi { background: #1e3a8a; }
+    .bb-philips  { background: #0284c7; }
+
+    .brand-title { font-size: 9.5pt; font-weight: 800; color: #0f172a; margin: 0; line-height: 1.3; }
+    .brand-series { font-size: 7pt; color: #64748b; font-style: italic; margin: 1px 0 0 0; }
+
+    /* ─── CALLOUT VARIANTS ─── */
+    .callout-proc {
+      background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid #16a34a;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px;
+      page-break-inside: avoid; font-size: 7.8pt;
+    }
+    .callout-proc-title { font-weight: 700; color: #15803d; font-size: 8pt; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
+
+    .callout-warn {
+      background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #d97706;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px; font-size: 7.8pt; color: #92400e;
+      page-break-inside: avoid;
+    }
+    .callout-warn-title { font-weight: 700; color: #b45309; font-size: 7.5pt; text-transform: uppercase; margin-bottom: 3px; }
+
+    .callout-danger {
+      background: #fff1f2; border: 1px solid #fecdd3; border-left: 4px solid #dc2626;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px; font-size: 7.8pt; color: #7f1d1d;
+      page-break-inside: avoid;
+    }
+    .callout-danger-title { font-weight: 700; color: #dc2626; font-size: 7.5pt; text-transform: uppercase; margin-bottom: 3px; }
+
+    .callout-ref {
+      background: #faf5ff; border: 1px solid #e9d5ff; border-left: 4px solid #9333ea;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px; font-size: 7.8pt;
+      page-break-inside: avoid;
+    }
+    .callout-ref-title { font-weight: 700; color: #7e22ce; font-size: 7.5pt; text-transform: uppercase; margin-bottom: 3px; }
+
+    .callout-info {
+      background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid #2563eb;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px; font-size: 7.8pt;
+      page-break-inside: avoid;
+    }
+    .callout-info-title { font-weight: 700; color: #1d4ed8; font-size: 7.5pt; text-transform: uppercase; margin-bottom: 3px; }
+
+    /* ─── HIGHLIGHT TAGS ─── */
+    .hl   { background: #e0f2fe; color: #0369a1; padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+    .hl-r { background: #fff1f2; color: #be123c; padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+    .hl-g { background: #f0fdf4; color: #15803d; padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+    .hl-o { background: #fff7ed; color: #c2410c; padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+    .hl-p { background: #faf5ff; color: #6d28d9; padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+    .hl-k { background: #0f172a; color: #f8fafc; padding: 1px 5px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.4pt; font-weight: 600; }
+
+    /* ─── TABLES ─── */
+    table { width: 100%; border-collapse: collapse; font-size: 7.5pt; margin: 5px 0 8px 0; }
+    th { background: #0f172a; color: #fff; padding: 4px 7px; text-align: left; font-weight: 600; font-size: 7pt; }
+    td { padding: 4px 7px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+    tr:nth-child(even) td { background: #f8fafc; }
+
+    /* ─── MISC ─── */
+    .page-break { page-break-before: always; }
+    ul, ol { margin: 3px 0 5px 0; padding-left: 16px; }
+    li { margin-bottom: 2px; line-height: 1.45; }
+    p { margin: 2px 0 5px 0; }
+    strong { color: #0f172a; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+
+    .index-box {
+      background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
+      padding: 9px 13px; margin-bottom: 12px; font-size: 7.5pt;
+    }
+    .index-title { font-weight: 800; font-size: 8pt; color: #0f172a; margin-bottom: 6px; }
+    .index-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px 14px; }
+    .index-cat { font-weight: 700; font-size: 6.8pt; text-transform: uppercase; letter-spacing: .5px; color: #fff; padding: 2px 6px; border-radius: 3px; margin: 3px 0; display: inline-block; }
+    .index-item { color: #334155; padding: 1.5px 0; }
+
+    .footer {
+      text-align: center; font-size: 6.8pt; color: #94a3b8;
+      margin-top: 14px; padding-top: 6px; border-top: 1px solid #e2e8f0;
+    }
+
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #0f172a; color: #fff; min-width: 16px; height: 16px; border-radius: 50%;
+      font-size: 6.8pt; font-weight: 700; flex-shrink: 0; margin-right: 4px;
+    }
+    .step-line { display: flex; align-items: flex-start; gap: 5px; margin-bottom: 3px; font-size: 7.8pt; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════ HEADER ══ -->
+<div class="doc-header">
+  <div class="header-badge">Procedura Operativa 10 — Piccoli Elettrodomestici (PED) &amp; Smart Cleaning</div>
+  <h1 class="header-title">Menu Segreti, Diagnostica, Test Mode e Hard Reset — Piccoli Elettrodomestici</h1>
+  <p class="header-subtitle">
+    Manuale tecnico di laboratorio per tecnici riparatori, centri assistenza e smart home specialist. 
+    Procedure ufficiali per sbloccare bootloop da firmware corrotto, accedere alle modalità di Test Hardware (Test Mode / BIST), 
+    eseguire la diagnostica dei sensori ottici/LiDAR e BMS delle batterie, calibrare i sistemi latte/vapore e manutenere gruppi infusori e macine per:
+    <strong>Robot Aspirapolvere (Dreame, Roborock, iRobot Roomba, Ecovacs Deebot, Ezviz, Mova, Rowenta), Scope Elettriche &amp; Wet/Dry (Dyson, Rowenta, Hoover, Miele, Dreame) e Macchine da Caffè Automatiche &amp; Manuali Assistite (De'Longhi Magnifica/Dinamica/Eletta Explore, De'Longhi La Specialista, Philips LatteGo Serie 1200–5500).</strong>
+  </p>
+  <div class="header-meta">
+    <div><strong>Sezioni:</strong> 🤖 A — Robot Aspirapolvere &nbsp;|&nbsp; 🧹 B — Scope Elettriche &amp; Wet/Dry &nbsp;|&nbsp; ☕ C — Macchine Caffè Automatiche</div>
+    <div><strong>Livello:</strong> Tecnico Riparatore Hardware &amp; IT Help Desk Specialist</div>
+    <div><strong>Revisione Ufficiale:</strong> Aggiornamento Completo — Ottobre 2026</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ INDICE ══ -->
+<div class="index-box">
+  <div class="index-title">📋 Indice Rapido delle Categorie e Produttori</div>
+  <div class="index-cols">
+    <div>
+      <span class="index-cat" style="background:#0284c7;">🤖 Sezione A — Robot Aspirapolvere</span>
+      <div class="index-item">A1 · <strong>Dreame</strong> (L10s, L20, L40 Ultra, X30/X40/X50 Ultra, Aqua Ultra, Roller, Matrix 10)</div>
+      <div class="index-item">A2 · <strong>Roborock</strong> (S7, S8, Q Revo, S8 MaxV Ultra, Saros)</div>
+      <div class="index-item">A3 · <strong>iRobot Roomba</strong> (Combo 105/205/505/705/775, AutoWash Combo Max)</div>
+      <div class="index-item">A4 · <strong>Ecovacs Deebot</strong> (T9, T10, T20, X1/X2 Omni)</div>
+      <div class="index-item">A5 · <strong>Ezviz</strong> (RC3, RE4, RE5 Plus, RS20)</div>
+      <div class="index-item">A6 · <strong>Mova</strong> (L600, Z500, E30 Ultra)</div>
+      <div class="index-item">A7 · <strong>Rowenta</strong> (X-Plorer 75, 95, 120, 130 AI)</div>
+    </div>
+    <div>
+      <span class="index-cat" style="background:#4338ca;">🧹 Sezione B — Scope &amp; Wet/Dry</span>
+      <div class="index-item">B1 · <strong>Dyson</strong> (V8, V10, V11, V12, V15, V16 Animal, Gen5detect)</div>
+      <div class="index-item">B2 · <strong>Rowenta</strong> (X-Force Flex 8.60, 11.60, 14.60, 15.60)</div>
+      <div class="index-item">B3 · <strong>Hoover</strong> (H-Free 100/300/500, HF9 Anti-Twist)</div>
+      <div class="index-item">B4 · <strong>Miele</strong> (Triflex HX1/HX2, Complete C3, Boost CX1)</div>
+      <div class="index-item">B5 · <strong>Dreame</strong> (H12 Pro, H13 Pro, H14/H15 Ultra, R20, T30)</div>
+    </div>
+    <div>
+      <span class="index-cat" style="background:#78350f;">☕ Sezione C — Macchine Caffè</span>
+      <div class="index-item">C1 · <strong>De'Longhi Automatiche</strong> (Magnifica S/Start/Plus/Evo, Dinamica/Plus, Eletta Explore)</div>
+      <div class="index-item">C2 · <strong>De'Longhi La Specialista</strong> (Arte, Prestigio, Maestro – Smart Tamping)</div>
+      <div class="index-item">C3 · <strong>Philips LatteGo</strong> (Serie 1200, 2200, 3200, 4300, 5400, 5500)</div>
+      <span class="index-cat" style="background:#0f172a;">📊 Sezione D — Matrice Comparativa</span>
+      <div class="index-item">D1 · Tabella Sinottica Master Reset &amp; Test Mode</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--       SEZIONE A — ROBOT ASPIRAPOLVERE E LAVAPAVIMENTI          -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="section-divider sd-robot">
+  <span class="section-icon">🤖</span>
+  <div>
+    <h2>Sezione A — Robot Aspirapolvere e Lavapavimenti Smart</h2>
+    <p>Reset Wi-Fi, Golden Firmware Rollback, Test Mode BIST, taratura torrette LiDAR LDS, ToF, sensori di dislivello e stazioni base Omni</p>
+  </div>
+</div>
+
+<!-- A1 — DREAME -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-dreame">DR</span>
+    <div>
+      <h3 class="brand-title">A1 · Dreame Technology</h3>
+      <div class="brand-series">Serie L10s Ultra, L20 Ultra, <strong>L40 Ultra, X30/X40/X50 Ultra, Aqua Ultra, Roller, Matrix 10</strong>, D9 Max, D10s Plus, L10 Prime</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Procedura Reset Wi-Fi e Configurazione di Rete</div>
+    <div class="step-line"><span class="step-num">1</span>A robot acceso e rimosso dalla base di ricarica, aprire il coperchio superiore incernierato.</div>
+    <div class="step-line"><span class="step-num">2</span>Premere e tenere premuti contemporaneamente il tasto <span class="hl-k">Spot (Pulizia circoscritta)</span> e il tasto <span class="hl-k">Dock (Ritorno alla base)</span> per <strong>3 secondi</strong>.</div>
+    <div class="step-line"><span class="step-num">3</span>Rilasciare i tasti quando la voce guida recita: <em>"Reimpostazione Wi-Fi in corso" ("Resetting Wi-Fi")</em> e il LED indicatore Wi-Fi inizia a lampeggiare blu lentamente.</div>
+    <div class="step-line"><span class="step-num">4</span>Aprire l'applicazione <strong>Dreamehome</strong> (o Xiaomi Home) per associare nuovamente il dispositivo alla frequenza a 2.4 GHz (WPA2-PSK).</div>
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">⚠️ Hard Reset Hardware &amp; Ripristino Firmware di Fabbrica (Partizione di Recovery)</div>
+    <p>Da utilizzare in caso di brick, bootloop causato da aggiornamento OTA interrotto, o perdita totale di risposta ai tasti. <em>Nota tecnica: il termine "Golden Firmware/Image" è usato dalla community; Dreame lo chiama ufficialmente "restore factory settings" via dreametech.com.</em></p>
+    <div class="step-line"><span class="step-num">1</span>Sollevare il coperchio superiore del robot. Individuare il micro-foro con la dicitura <span class="hl">RESET</span> adiacente all'indicatore LED Wi-Fi.</div>
+    <div class="step-line"><span class="step-num">2</span>Mantenere premuto con il pollice il tasto fisico <span class="hl-k">Dock (Home)</span> sullo chassis.</div>
+    <div class="step-line"><span class="step-num">3</span>Contemporaneamente, inserire uno spillo o una graffetta nel foro <span class="hl">RESET</span> e premere il microswitch interno per <strong>3-5 secondi</strong>.</div>
+    <div class="step-line"><span class="step-num">4</span>Rilasciare il pulsante di reset quando l'altoparlante emette il messaggio: <em>"Inizio ripristino delle impostazioni di fabbrica" ("Starting to restore factory settings")</em>, continuando a tenere premuto il tasto Dock per altri 2 secondi.</div>
+    <div class="step-line"><span class="step-num">5</span>Il robot si riavvierà eseguendo il rollback dell'immagine di sistema alla partizione protetta di fabbrica (tempo stimato: circa 4-5 minuti). Non spegnere né spostare il robot finché non suona il chime di completamento.</div>
+  </div>
+
+  <div class="callout-info">
+    <div class="callout-info-title">🛠️ Menu Segreto Engineering / Debug Mode &amp; Manutenzione Avanzata</div>
+    <ul>
+      <li><strong>Abilitazione Log di Rete &amp; Debug Mode:</strong> Nell'app <em>Dreamehome</em>, andare in <code>Impostazioni Dispositivo ➔ Informazioni sul dispositivo</code>. Toccare per <strong>7 volte consecutive</strong> la riga <em>"Versione Plugin"</em> o <em>"Versione Firmware"</em> per sbloccare la console sviluppatore con invio dump log di navigazione e dati grezzi SLAM.</li>
+      <li><strong>Calibrazione Torretta Laser LDS:</strong> Se il robot genera "Errore 1 - Radar Laser bloccato", verificare la rotazione della torretta arancione. Spesso polvere o peli si attorcigliano sull'alberino motore: rimuovere con cura la calotta protettiva e far compiere 10 giri manuali in senso orario; insufflare aria decompressa a 2 bar nell'ottica del prisma riflettente.</li>
+      <li><strong>Sblocco Stazione Omni (Errore Serbatoio Reflui Pieno Falso):</strong> All'interno del vano raccolta acqua sporca è presente un galleggiante con sensore magnetico Reed. Se calcare o depositi di detersivo lo bloccano sul fondo o verso l'alto, la stazione blocca il lavaggio panni. Smontare il galleggiante, risciacquare con acqua demineralizzata calda e verificare il corretto scorrimento verticale.</li>
+      <li><strong>Azzeramento Contatori Vita Utile:</strong> Dopo aver sostituito il filtro HEPA, la spazzola principale o i mop, accedere a <code>Gestione Manutenzione Accessori</code> su app e toccare <em>"Reimposta"</em> su ciascun componente per resettare il timer ore motore.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- A2 — ROBOROCK -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-roborock">RR</span>
+    <div>
+      <h3 class="brand-title">A2 · Roborock (Beijing Roborock Technology)</h3>
+      <div class="brand-series">Serie S7, S7 MaxV, S8, S8 Pro Ultra, Q Revo, Q7 Max, S8 MaxV Ultra, <strong>Saros Z70, Saros 10R</strong></div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Procedura Reset Wi-Fi</div>
+    <div class="step-line"><span class="step-num">1</span>Aprire il coperchio superiore del robot.</div>
+    <div class="step-line"><span class="step-num">2</span>Tenere premuti contemporaneamente il tasto <span class="hl-k">Spot Clean</span> e il tasto <span class="hl-k">Dock</span> per <strong>3 secondi</strong>.</div>
+    <div class="step-line"><span class="step-num">3</span>Rilasciare quando il sintetizzatore vocale esclama <em>"Resetting Wi-Fi"</em> e la spia luminosa Wi-Fi lampeggia lentamente.</div>
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">⚠️ Rollback al Firmware di Fabbrica — "Restore Factory Version" (Fonte: roborock.com)</div>
+    <p>Procedura verificata su roborock.com per ripristinare il robot in caso di mancata connessione perenne o blocco post-aggiornamento. Riporta il firmware alla versione installata in fabbrica ("golden firmware" nella terminologia community):</p>
+    <div class="step-line"><span class="step-num">1</span>Con il robot acceso, sollevare il coperchio del contenitore polvere.</div>
+    <div class="step-line"><span class="step-num">2</span>Tenere premuto saldamente il tasto <span class="hl-k">Dock (Home)</span> e NON rilasciarlo.</div>
+    <div class="step-line"><span class="step-num">3</span>Con uno spillo, premere una volta sola per 1 secondo il pulsante <span class="hl">Reset</span> nel foro vicino al LED Wi-Fi, quindi estrarre lo spillo.</div>
+    <div class="step-line"><span class="step-num">4</span><strong>Mantenere premuto il tasto Dock per altri 5 secondi</strong> finché il pulsante Power non inizia a pulsare e la voce non annuncia: <em>"Restoring the factory version. This will take about five minutes, please wait"</em>.</div>
+    <div class="step-line"><span class="step-num">5</span>Rilasciare il tasto Dock. Il robot cancellerà integralmente mappe, partizioni utente e ripristinerà il firmware stock di fabbrica originale.</div>
+  </div>
+
+  <div class="callout-ref">
+    <div class="callout-ref-title">🔍 Tabella Codici Errore Diagnostici Roborock</div>
+    <table>
+      <thead>
+        <tr><th>Codice Errore</th><th>Descrizione Errore</th><th>Causa Tecnica Hardware</th><th>Procedura di Risoluzione</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="hl-r">Error 1</span></td>
+          <td>Torretta Laser LDS bloccata</td>
+          <td>Corpo estraneo nell'ingranaggio torretta o cinghia di trasmissione del motore laser allentata</td>
+          <td>Ruotare manualmente il radar laser; verificare con multimetro la tensione di 5V sul motore brushless LDS; pulire prisma ottico</td>
+        </tr>
+        <tr>
+          <td><span class="hl-r">Error 2</span></td>
+          <td>Bumper paraurti bloccato</td>
+          <td>Microinterruttore finecorsa paraurti incastrato da sporco o molla di richiamo sganciata</td>
+          <td>Battere delicatamente lungo tutto il bordo del bumper frontale; controllare il clic meccanico dei microswitch sinistro e destro</td>
+        </tr>
+        <tr>
+          <td><span class="hl-r">Error 3</span></td>
+          <td>Ruote motrici sospese</td>
+          <td>Sensore ottico di depressione carrello ruota ostruito o robot bloccato su soglia rialzata</td>
+          <td>Riposizionare a terra; pulire l'alloggiamento delle forcelle delle ruote telescopiche con aria compressa</td>
+        </tr>
+        <tr>
+          <td><span class="hl-r">Error 4</span></td>
+          <td>Sensori di dislivello (Cliff) sporchi</td>
+          <td>Lenti fotodiodi a infrarossi sul fondo coperte di polvere o assorbimento IR su moquette nera</td>
+          <td>Pulire i 4-6 sensori ottici inferiori con panno in microfibra asciutto. Su pavimenti scuri applicare zone virtuali No-Go da app</td>
+        </tr>
+        <tr>
+          <td><span class="hl-r">Error 10</span></td>
+          <td>Filtro ostruito o bagnato</td>
+          <td>Sensore barometrico di pressione negativa rileva caduta di portata aria nella turbina d'aspirazione</td>
+          <td>Lavare il filtro HEPA e farlo asciugare per ALMENO 24 ore; MAI montare il filtro ancora umido (danneggia la ventola Nidec)</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<!-- A3 — IROBOT ROOMBA NUOVA SERIE COMBO -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-irobot">iR</span>
+    <div>
+      <h3 class="brand-title">A3 · iRobot (Roomba — Nuova Serie Combo)</h3>
+      <div class="brand-series"><strong>Combo 105, 205, 505, 705, 775, AutoWash Combo Max</strong> — Architettura con doppio rullo MRS (Mop Retract System) e stazione AutoWash</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Factory Reset e Reboot — Nuova Architettura Combo</div>
+    <p>Applicare la procedura corretta in base alla serie hardware. Distinzione fondamentale: <strong>Reboot</strong> (riavvio, senza perdita dati) vs <strong>Factory Reset</strong> (cancella tutto incluse mappe e Wi-Fi):</p>
+    <ul>
+      <li><strong>Roomba Combo 105 / 205 / 505 (Factory Reset — Fonte ufficiale irobot.com):</strong> <span class="hl-r">Rimuovere obbligatoriamente il cassetto raccogli polvere prima di procedere.</span> Tenere premuto il pulsante <span class="hl-k">CLEAN per 7 secondi</span> finché il robot emette un tono di conferma. <strong>Rilasciare il tasto</strong>, poi premere <span class="hl-k">CLEAN una seconda volta</span> per confermare il ripristino. L'anello LED inizierà a girare in bianco durante il reset.</li>
+      <li><strong>Roomba Combo 705 / 775 / AutoWash Combo Max (Factory Reset):</strong> Tenere premuti contemporaneamente i tasti <span class="hl-k">HOME + SPOT CLEAN + CLEAN</span> per <strong>10 secondi</strong> finché l'anello LED non inizia a girare in bianco. Il robot emetterà una melodia di conferma al completamento del ripristino.</li>
+      <li><strong>⚠️ Distinzione fondamentale — Reboot vs Factory Reset:</strong> Tenere premuto CLEAN per 20 secondi esegue un semplice <strong>Reboot</strong> (riavvio del sistema operativo) senza cancellare mappe o impostazioni. Usarlo come primo intervento diagnostico prima del factory reset.</li>
+    </ul>
+  </div>
+
+  <div class="callout-warn">
+    <div class="callout-warn-title">🛠️ Sistema MRS (Mop Retract System) e AutoWash — Diagnostica Avanzata</div>
+    <ul>
+      <li><strong>Errore Sollevamento Mop MRS:</strong> Sui modelli Combo, il sistema MRS solleva automaticamente i mop di 5,5 mm quando rileva tappeti (via sensore capacitivo). Se il mop resta abbassato anche su moquette, verificare che i sensori capacitivi anteriori non siano contaminati da acqua o detergente. Pulire con panno asciutto e riavviare (Reboot).</li>
+      <li><strong>AutoWash Combo Max — Errore Ciclo Lavaggio Mop Falso:</strong> La stazione AutoWash usa acqua calda a pressione per pulire i mop dopo ogni sessione. Se il ciclo di lavaggio non parte o si interrompe, verificare il galleggiante del serbatoio acqua pulita (stessa logica sensore Reed magnetico) e pulire il filtro interno della pompa di lavaggio.</li>
+      <li><strong>Menu Diagnostico BIST (Built-In Self-Test):</strong> A robot spento e sollevato da terra, tenere premuti i tasti <span class="hl-k">DOCK</span> e <span class="hl-k">SPOT</span>, poi premere <span class="hl-k">CLEAN per 3 volte</span>. Il robot attiverà in sequenza: LED e buzzer, sensori cliff, ricevitore RCON, dirt detect, motori ruote, rulli, turbina e sistema MRS.</li>
+    </ul>
+  </div>
+
+  <div class="callout-info">
+    <div class="callout-info-title">🔋 Reset BMS Batteria Litio Roomba Combo</div>
+    <p>Se il robot manifesta "Errore Ricarica 1" o scarica precoce: rimuovere la batteria svitando le viti del pannello inferiore. Ispezionare i contatti dorati su scheda e batteria e pulire con alcol isopropilico. Posizionare il robot sulla stazione AutoWash / Home Base e forzare una carica ininterrotta di <strong>12 ore continue</strong> per consentire al BMS di riallineare la tensione delle celle.</p>
+  </div>
+</div>
+
+<!-- A4 — ECOVACS DEEBOT -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-ecovacs">EC</span>
+    <div>
+      <h3 class="brand-title">A4 · Ecovacs (Deebot)</h3>
+      <div class="brand-series">Serie X1 Omni, X2 Omni, T10, T20 Omni, T30 Pro, N8 / N10, Serie T9</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Interruttore Meccanico e Reset Wi-Fi</div>
+    <div class="step-line"><span class="step-num">1</span>Sollevare il coperchio superiore del Deebot. Individuare l'interruttore scorrevole rosso di alimentazione generale <span class="hl-k">I / O</span>.</div>
+    <div class="step-line"><span class="step-num">2</span>Verificare che sia acceso (posizione <strong>"I"</strong>). Per sbloccare crash del sistema operativo, portare su "O" per 30 secondi e poi riaccendere.</div>
+    <div class="step-line"><span class="step-num">3</span><strong>Reset Wi-Fi:</strong> Accanto all'interruttore è presente il tastino Wi-Fi. Premere per <strong>1 secondo</strong>: il robot emette un breve bip e il LED Wi-Fi lampeggia lentamente.</div>
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">⚠️ Ripristino di Fabbrica (Hard Reset — Fonte ufficiale ecovacs.com)</div>
+    <div class="step-line"><span class="step-num">1</span>Con l'interruttore in posizione "I" (acceso), individuare il piccolo <strong>tappo in gomma</strong> adiacente all'interruttore di alimentazione o al vano raccoglipolvere: rimuoverlo per scoprire il pulsante di reset incassato.</div>
+    <div class="step-line"><span class="step-num">2</span>Con uno spillo, stuzzicadenti o graffetta, premere e tenere premuto il pulsante di reset incassato per circa <span class="hl">5 secondi</span>.</div>
+    <div class="step-line"><span class="step-num">3</span>Rilasciare quando il robot emette un prompt vocale di conferma seguito dalla melodia musicale di avvio (startup music). Tutte le mappe, barriere virtuali e registri vengono azzerati: stato vergine di fabbrica.</div>
+    <div class="step-line"><span class="step-num">4</span>Reinserire il tappo in gomma e richiudere il coperchio. Attendere <strong>3-5 minuti</strong> per la completa inizializzazione del sistema operativo prima di procedere alla configurazione.</div>
+  </div>
+
+  <div class="callout-info">
+    <div class="callout-info-title">📷 Calibrazione TrueDetect 3D / AIVI &amp; Sblocco Stazione Omni</div>
+    <ul>
+      <li><strong>Pulizia Finestra AIVI &amp; Luce Strutturata:</strong> Se il robot crea zone rosse inesistenti o evita aree libere, pulire accuratamente il vetro frontale con un panno in microfibra imbevuto di acqua demineralizzata. Non usare sgrassatori aggressivi che intorbidiscono il policarbonato trasparente dei sensori 3D ToF.</li>
+      <li><strong>Sblocco Iniezione Acqua Stazione Omni:</strong> Se la stazione non riempie il serbatoio interno del Deebot: verificare il connettore a spillo sul retro del robot; premere con una punta smussata la valvolina di non ritorno a molla per verificare che non sia grippata da calcare.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- A5, A6, A7 — EZVIZ, MOVA, ROWENTA ROBOT -->
+<div class="grid-2">
+  <div class="brand-block">
+    <div class="brand-header">
+      <span class="brand-badge bb-ezviz">EZ</span>
+      <div>
+        <h3 class="brand-title">A5 · Ezviz</h3>
+        <div class="brand-series">Serie RC3, RC3 Plus, RE4, RE5, RE5 Plus, <strong>RS20</strong></div>
+      </div>
+    </div>
+    <div class="callout-proc">
+      <div class="callout-proc-title">🔧 Reset Rete &amp; Hard Reset</div>
+      <p><strong>Reset Wi-Fi:</strong> Tenere premuti contemporaneamente i tasti <span class="hl-k">Power + Home per 4 secondi</span> fino al lampeggio rapido della spia blu e prompt audio.</p>
+      <p><strong>Ripristino Fabbrica:</strong> Inserire uno spillo nel foro <span class="hl">Reset</span> sotto il coperchio per <strong>5 secondi</strong> finché non si ode un doppio bip lungo. Il robot si riavvia ricaricando i parametri predefiniti di fabbrica.</p>
+      <p><strong>Calibrazione IMU/Giroscopio:</strong> In caso di navigazione anomala a cerchi, posizionare il robot su una superficie perfettamente piana a terra e riavviare mantenendo premuto il tasto Power per 10s.</p>
+    </div>
+  </div>
+
+  <div class="brand-block">
+    <div class="brand-header">
+      <span class="brand-badge bb-mova">MV</span>
+      <div>
+        <h3 class="brand-title">A6 · Mova (Ecosistema Dreame)</h3>
+        <div class="brand-series">Serie L600, Z500, E30 Ultra, M1</div>
+      </div>
+    </div>
+    <div class="callout-proc">
+      <div class="callout-proc-title">🔧 Reset Rete &amp; Factory Reset</div>
+      <p><strong>Reset Wi-Fi:</strong> Premere e mantenere premuti i tasti <span class="hl-k">Power + Dock per 3 secondi</span> finché la voce non conferma l'avvio della modalità AP di associazione.</p>
+      <p><strong>Factory Reset Hardware:</strong> Aprire lo sportello superiore, inserire una graffetta nel micro-foro <span class="hl">Reset</span> per <strong>5 secondi continui</strong> finché la sintesi vocale non annuncia: <em>"Restoring factory settings"</em>.</p>
+      <p><strong>Diagnostica vSLAM / Sensore Ottico:</strong> Su modelli a telecamera superiore, pulire la lente da aloni di unto che impediscono il tracciamento dei punti fiduciari del soffitto.</p>
+    </div>
+  </div>
+</div>
+
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-rowenta">RW</span>
+    <div>
+      <h3 class="brand-title">A7 · Rowenta Robot (X-Plorer)</h3>
+      <div class="brand-series">Serie X-Plorer Serie 75, Serie 95, Serie 120 AI, Serie 130 AI</div>
+    </div>
+  </div>
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Reset Wi-Fi e Cold Reset della Scheda Madre</div>
+    <p><strong>Accoppiamento Wi-Fi:</strong> A robot acceso, premere e tenere premuto il tasto <span class="hl-k">Home/Dock per 3-5 secondi</span> (o Power + Home a seconda del modello) finché il LED Wi-Fi non lampeggia rapidamente e il robot emette un bip.</p>
+    <p><strong>Hard Reset Watchdog:</strong> Se il robot non risponde ai comandi o la mappa si blocca: rimuovere il robot dalla base, tenere premuto il pulsante <span class="hl-k">Power per 15-20 secondi consecutivi</span> finché tutti i LED non si spengono completamente. Attendere 1 minuto e riaccendere tenendo premuto Power per 3 secondi.</p>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--         SEZIONE B — SCOPE RICARICABILI E TRADIZIONALI          -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="section-divider sd-vaccum">
+  <span class="section-icon">🧹</span>
+  <div>
+    <h2>Sezione B — Scope Elettriche Ricaricabili e Aspirapolvere</h2>
+    <p>Diagnostica LED batteria BMS, protezione termica, pulsazione motore per ostruzione flusso, piezoelettrico conta-particelle e reset filtri</p>
+  </div>
+</div>
+
+<!-- B1 — DYSON -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-dyson">DY</span>
+    <div>
+      <h3 class="brand-title">B1 · Dyson</h3>
+      <div class="brand-series">Serie V8, Cyclone V10, V11 Absolute, V12 Detect Slim, V15 Detect, <strong>V16 Animal</strong>, Gen5detect, Outsize</div>
+    </div>
+  </div>
+
+  <div class="callout-ref">
+    <div class="callout-ref-title">🔍 Decodifica Segnali LED Batteria (BMS Battery Management System)</div>
+    <table>
+      <thead>
+        <tr><th>Segnalazione LED Batteria</th><th>Stato Tecnico</th><th>Diagnosi di Laboratorio</th><th>Azione Correttiva</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="hl-g">Blu fisso o dissolvenza</span></td>
+          <td>Funzionamento / Ricarica</td>
+          <td>Pacco batteria in assorbimento corretto da alimentatore 30.45V</td>
+          <td>Nessuna anomalia; attendere spegnimento LED per carica 100%</td>
+        </tr>
+        <tr>
+          <td><span class="hl-o">Giallo / Ambra lampeggiante</span></td>
+          <td>Protezione Termica (Over/Under Temp)</td>
+          <td>Sensore NTC rileva cella &gt;65°C (post-Boost) o &lt;3°C ambiente</td>
+          <td>Lasciare raffreddare la batteria per <strong>30-45 minuti</strong> a temperatura ambiente prima di collegare la ricarica</td>
+        </tr>
+        <tr>
+          <td><span class="hl-r">Rosso lampeggiante (&lt;12 volte)</span></td>
+          <td>Allarme Guasto Elettrico</td>
+          <td>Tensione sbilanciata su una singola cella 18650 o assorbimento anomalo</td>
+          <td>Staccare dal caricatore, verificare integrità connettore e riprovare</td>
+        </tr>
+        <tr>
+          <td><span class="hl-r">Rosso lampeggiante (&gt;12 volte continuo)</span></td>
+          <td>Blocco Permanente BMS (Brick)</td>
+          <td>Il microcontrollore del BMS ha registrato cella guasta irreversibile</td>
+          <td><strong>Blocco definitivo di sicurezza</strong>: sostituzione obbligatoria dell'intero pacco batteria</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout-warn">
+    <div class="callout-warn-title">⚠️ Risoluzione Motore a Singhiozzo / Pulsazioni Ritmiche (Pulsing Motor)</div>
+    <p>Il "singhiozzo" ritmico del motore Dyson (on-off rapido per 4-7 volte seguito dallo spegnimento) <strong>NON è un guasto al motore</strong>. È l'intervento della protezione barometrica da depressione causata da ostruzione del flusso d'aria (Airflow Restriction):</p>
+    <div class="step-line"><span class="step-num">1</span><strong>Ispezione Tubo e Spazzola:</strong> Rimuovere il tubo metallico e la spazzola High Torque/Fluffy. Controllare in controluce che non vi siano calzini, tappi o accumuli di polvere incastrati nel raccordo a gomito.</div>
+    <div class="step-line"><span class="step-num">2</span><strong>Valvola di Non Ritorno (Flap in gomma):</strong> Aprire il coperchio del contenitore trasparente; verificare che la guarnizione a levetta in silicone rosso/grigio nel canale di ingresso si apra liberamente e non sia incollata.</div>
+    <div class="step-line"><span class="step-num">3</span><strong>Lavaggio e Asciugatura Filtro HEPA:</strong> Svitare il gruppo filtro ruotando in senso antiorario. Lavare <strong>esclusivamente con acqua fredda di rubinetto</strong> (NO saponi, NO lavastoviglie). Lasciare asciugare all'aria per <strong>ALMENO 24-48 ore</strong>. <em>Attenzione:</em> se il filtro viene montato umido, l'umidità viene risucchiata nei cuscinetti del motore digitale causandone il grippaggio irreversibile per ruggine.</div>
+    <div class="step-line"><span class="step-num">4</span><strong>Reset Segnalazione Filtro su Schermo LCD (V11/V12/V15/Gen5):</strong> Dopo il rimontaggio del filtro asciutto, premere e tenere premuto il pulsante di selezione sotto lo schermo per 3-5 secondi per ricalibrare la baseline del sensore barometrico.</div>
+  </div>
+
+  <div class="callout-info">
+    <div class="callout-info-title">🛠️ Sensore Piezoelettrico Acustico &amp; Rottura Meccanica Grilletto (Trigger Issue)</div>
+    <ul>
+      <li><strong>Sensore Piezoelettrico (V12, V15, Gen5):</strong> Conta e misura le particelle 15.000 volte al secondo. Non pulire MAI con liquidi né cotton fioc imbevuti: usare unicamente aria decompressa per rimuovere il microfilm elettrostatico che riveste il trasduttore all'ingresso dei cicloni.</li>
+      <li><strong>Rottura Grilletto V10 / V11 (Trigger Failure):</strong> Difetto noto in cui la levetta interna in policarbonato si spezza in corrispondenza del perno dell'attuatore microswitch. Sintomo: il grilletto ha corsa vuota e il motore non parte, oppure parte solo premendo con forza in una specifica direzione. Soluzione: sostituzione dell'astina con ricambio rinforzato in alluminio/lega polimerica (richiede smontaggio del vano ciclone e della maniglia).</li>
+    </ul>
+  </div>
+</div>
+
+<!-- B2 — ROWENTA X-FORCE FLEX -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-rowenta">RW</span>
+    <div>
+      <h3 class="brand-title">B2 · Rowenta (X-Force Flex)</h3>
+      <div class="brand-series">Serie X-Force Flex 8.60, 11.60, 14.60, 15.60 Animal / Aqua</div>
+    </div>
+  </div>
+
+  <div class="callout-ref">
+    <div class="callout-ref-title">🔍 Schermo Smart Control — Codici Errore e Risoluzione</div>
+    <table>
+      <thead>
+        <tr><th>Codice Display</th><th>Significato Tecnico</th><th>Causa Hardware</th><th>Intervento Risolutivo</th></tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="hl-r">E1 / E2</span></td>
+          <td>Flusso d'aria bloccato</td>
+          <td>Filtro Easy Wash intasato o ostruzione nel condotto snodato Flex</td>
+          <td>Lavare il filtro in spugna; sbloccare il condotto interno dello snodo estraibile a 90°</td>
+        </tr>
+        <tr>
+          <td><span class="hl-r">E3</span></td>
+          <td>Anomalia termica batteria</td>
+          <td>Surriscaldamento celle post uso prolungato in modalità Max/Boost</td>
+          <td>Estrarre la batteria rimovibile e lasciarla raffreddare per 20 minuti</td>
+        </tr>
+        <tr>
+          <td><span class="hl-r">E4</span></td>
+          <td>Spazzola rotante bloccata</td>
+          <td>Fili o capelli aggrovigliati attorno al rullo motorizzato Deep Power LED</td>
+          <td>Sganciare il blocco laterale del rullo; tagliare fili e pulire i cuscinetti terminali</td>
+        </tr>
+        <tr>
+          <td><span class="hl-r">E5 / E6</span></td>
+          <td>Errore bus comunicazione</td>
+          <td>Falso contatto tra i pin dorati della scheda manico e il motore ciclonico</td>
+          <td>Smontare il vano batteria; pulire i pin con alcol isopropilico ed eseguire Cold Reset</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Procedura Cold Reset Controller Rowenta</div>
+    <p>Rimuovere il pacco batteria sfilabile premendo il pulsante a scatto. Con la batteria rimossa, <strong>tenere premuto il grilletto Boost per 10 secondi</strong> per scaricare la capacità residua dei condensatori sulla scheda di controllo. Reinserire la batteria caricata al 100%.</p>
+  </div>
+</div>
+
+<!-- B3, B4, B5 — HOOVER, MIELE, DREAME -->
+<div class="grid-2">
+  <!-- HOOVER -->
+  <div class="brand-block">
+    <div class="brand-header">
+      <span class="brand-badge bb-hoover">HV</span>
+      <div>
+        <h3 class="brand-title">B3 · Hoover</h3>
+        <div class="brand-series">H-Free 100/300/500, HF9 Anti-Twist</div>
+      </div>
+    </div>
+    <div class="callout-warn">
+      <div class="callout-warn-title">⚠️ LED Batteria &amp; Reset Anti-Twist</div>
+      <p><strong>Lampeggio Rosso Rapido:</strong> Blocco rullo per sovracorrente. Sganciare la finestra trasparente della spazzola Anti-Twist, sfilare il rullo e pulire la boccola.</p>
+      <p><strong>Reset Sovracorrente HF9:</strong> A rullo pulito, rimontare e avviare tenendo premuto il tasto <span class="hl-k">Floor/Carpet per 3s</span>.</p>
+      <p><strong>Reset Spia Manutenzione Filtro:</strong> Tenere premuto il pulsante <span class="hl-k">Turbo per 5 secondi</span> a macchina accesa per azzerare il promemoria ore filtro.</p>
+    </div>
+  </div>
+
+  <!-- MIELE -->
+  <div class="brand-block">
+    <div class="brand-header">
+      <span class="brand-badge bb-miele">ML</span>
+      <div>
+        <h3 class="brand-title">B4 · Miele</h3>
+        <div class="brand-series">Triflex HX1/HX2, Complete C3, Boost CX1</div>
+      </div>
+    </div>
+    <div class="callout-proc">
+      <div class="callout-proc-title">🔧 Reset Termico &amp; Filtro ComfortClean</div>
+      <p><strong>Protezione Termica Triflex:</strong> Se il motore si arresta di colpo, è intervenuto il bimetallo di salvaguardia. Portare il cursore su "0", staccare la batteria VARTA e <strong>attendere 20-30 minuti</strong> per l'autoripristino del bimetallo.</p>
+      <p><strong>Filtro ComfortClean HX1/HX2:</strong> Ruotare la manopola del filtro superiore per 3 giri completi a 360° (si odono scatti secchi) per staccare il particolato fine per via elettrostatica.</p>
+      <p><strong>Complete C3 (Sacco HyClean):</strong> L'indicatore meccanico arancione di sacco pieno lavora a depressione: polvere di intonaco o borotalco ottura i micropori causando falso allarme a sacco vuoto.</p>
+    </div>
+  </div>
+</div>
+
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-dreame">DR</span>
+    <div>
+      <h3 class="brand-title">B5 · Dreame Wet &amp; Dry (Lavapavimenti)</h3>
+      <div class="brand-series">Serie H12 Pro, H12 Dual, H13 Pro, H14 Ultra, <strong>H15 Ultra</strong>, R20, T30</div>
+    </div>
+  </div>
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Diagnostica Display LED, Autopulizia e Sensori Reflui</div>
+    <div class="step-line"><span class="step-num">1</span><strong>Errore Serbatoio Acqua Sporca Pieno Falso:</strong> All'interno del serbatoio reflui sono presenti due elettrodi metallici ad asta. Se si forma una pellicola di calcare o residui viscidi di detergente schiumogeno, la corrente parassita inganna la MCU segnalando vaschetta piena anche se vuota. Pulire con aceto bianco o sgrassatore gli elettrodi e asciugare i contatti sulla scocca.</div>
+    <div class="step-line"><span class="step-num">2</span><strong>Ciclo Forzato di Autopulizia ad Aria Calda:</strong> Posizionare la scopa sulla base di ricarica. Assicurarsi che il serbatoio acqua pulita sia almeno a metà. Premere il tasto con l'icona della goccia d'acqua in cima al manico. Il ciclo lava il rullo a 60°C ed esegue l'asciugatura termica a 360° per 30-60 minuti.</div>
+    <div class="step-line"><span class="step-num">3</span><strong>Hard Reset della Scheda Logica:</strong> Con dispositivo disconnesso dalla base di ricarica, premere contemporaneamente il pulsante <span class="hl-k">Power + Modalità per 8-10 secondi</span> finché il display OLED non si spegne e riavvia.</div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--          SEZIONE C — MACCHINE DA CAFFÈ AUTOMATICHE             -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="section-divider sd-coffee">
+  <span class="section-icon">☕</span>
+  <div>
+    <h2>Sezione C — Macchine da Caffè Automatiche e Manuali Assistite</h2>
+    <p>Leader di vendita assoluti: Gruppi infusori estraibili, regolazione macine, sistemi latte brevettati (LatteCrema Hot/Cool &amp; LatteGo), Test Mode segreto e factory reset</p>
+  </div>
+</div>
+
+<!-- C1 — DE'LONGHI AUTOMATICHE -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-delonghi">DL</span>
+    <div>
+      <h3 class="brand-title">C1 · De'Longhi Macchine da Caffè Automatiche (Bean-to-Cup)</h3>
+      <div class="brand-series">Magnifica (S, Start, Plus, Evo), Dinamica / Dinamica Plus, Eletta Explore (Cold Brew &amp; Cold Extraction)</div>
+    </div>
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">⛔ REGOLA FONDAMENTALE DI ESTRAZIONE E SBLOCCO DEL GRUPPO INFUSORE</div>
+    <p>Il gruppo infusore compatto brevettato De'Longhi è interamente estraibile dal vano laterale destro, ma richiede il rispetto rigoroso della cinematica del motore mandrino:</p>
+    <ul>
+      <li><strong>Estrazione Regolare:</strong> La macchina DEVE essere spenta unicamente tramite il tasto <span class="hl-k">Standby anteriore</span>, lasciando che completi la procedura di risciacquo e riporti il gruppo in <strong>"Home Position" (posizione di riposo inferiore)</strong>. Solo a macchina spenta e gruppo a riposo i due ganci rossi laterali "PUSH" si sbloccano meccanicamente.</li>
+      <li><strong>ERRORE CRITICO (Gruppo Bloccato / Non Estraibile):</strong> Se l'utente estrae la vaschetta o stacca la spina a muro durante l'infusione, il gruppo resta incastrato in alto o a metà corsa. <strong>MAI FORZARE CON CACCIAVITI O LEVE</strong>: si spezzerebbero i montanti in tecno-polimero o la cremagliera!</li>
+      <li><strong>Procedura di Sblocco Cinematismo:</strong> 1) Reinserire cassetto fondi e vaschetta raccogligocce; 2) Chiudere lo sportello laterale; 3) Ricollegare la spina alla rete; 4) Premere il tasto Power/Standby. La scheda elettronica eseguirà il test di home azionando il motore mandrino a 24V DC fino a toccare il microswitch di finecorsa inferiore. Una volta terminata la corsa, spegnere regolarmente dal tasto frontale ed estrarre il gruppo.</li>
+      <li><strong>Manutenzione e Lubrificazione:</strong> Sciacquare il gruppo ogni 15-30 giorni unicamente sotto acqua corrente tiepida (<strong>DIVIETO ASSOLUTO di lavastoviglie o detersivi</strong>). Applicare periodicamente grasso al silicone per uso alimentare (NSF H1) sulle guide laterali e sull'O-ring rosso del pistone.</li>
+    </ul>
+  </div>
+
+  <div class="callout-warn">
+    <div class="callout-warn-title">⚙️ Macine in Acciaio Coniche a 13 Livelli — Regola d'Oro di Calibrazione</div>
+    <p>Le macine coniche in acciaio inox De'Longhi garantiscono una macinatura uniforme su 13 scatti:</p>
+    <ul>
+      <li><strong>REGOLA FERREA (confermata da delonghi.com e delonghigroup.com):</strong> La manopola di regolazione all'interno del contenitore chicchi <strong>DEVE ESSERE RUOTATA ESCLUSIVAMENTE MENTRE IL MACINACAFFÈ È IN FUNZIONE</strong> (durante quei 5-8 secondi in cui il motore sta macinando i chicchi per un caffè). Se ruotata a motore fermo, un chicco tostato intero intrappolato tra i coni fa da cuneo meccanico, deformando l'asse o sgranando il riduttore.</li>
+      <li><strong>Graduazione:</strong> Ruotare di <strong>un solo scatto alla volta</strong>. L'effetto della regolazione sarà visibile solo dopo l'erogazione di almeno 2 caffè successivi.
+        <br>• Livelli 1–2: Macinatura finissima (molto corposo, crema densa e compatta; rischio strozzatura su chicchi oleosi).
+        <br>• Livelli <strong>3–4: Taratura standard di fabbrica</strong> (valore predefinito De'Longhi, adatta alla maggior parte delle miscele espresso bar).
+        <br>• Livelli 5–7: Macinatura grossolana (per caffè lungo, tostatura molto scura o per accelerare erogazione lenta su macinatura sovraestratta).
+      </li>
+    </ul>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Menu di Servizio Segreto / Test Mode Hardware De'Longhi (Magnifica S / Evo / Dinamica)</div>
+    <p>Permette al tecnico di testare singolarmente tutti gli attuatori e sensori senza completare un ciclo di caffè:</p>
+    <div class="step-line"><span class="step-num">1</span>Disinserire la spina di alimentazione dalla presa a muro (macchina totalmente priva di tensione).</div>
+    <div class="step-line"><span class="step-num">2</span>Premere e tenere premuti simultaneamente i tasti frontali: <span class="hl-k">1 Tazza Espresso</span> + <span class="hl-k">Tasto Vapore</span> (su Magnifica S / Evo) oppure <span class="hl-k">1 Espresso + Risciacquo</span>.</div>
+    <div class="step-line"><span class="step-num">3</span>Mantenendo premuti i due tasti, <strong>inserire la spina nella presa elettrica</strong>.</div>
+    <div class="step-line"><span class="step-num">4</span>I LED o le icone del cruscotto si illuminano in sequenza per confermare l'ingresso in <strong>Service Test Mode</strong>. Rilasciare i tasti.</div>
+    <div class="step-line"><span class="step-num">5</span><strong>Mappatura Comandi Hardware in Test Mode:</strong>
+      <br>• Tasto <span class="hl-k">1 Espresso</span>: Aziona il motore gruppo verso l'<strong>ALTO</strong> (posizione di infusione). Il LED caffè si accende quando tocca il microswitch alto.
+      <br>• Tasto <span class="hl-k">2 Espressi</span>: Aziona il motore gruppo verso il <strong>BASSO</strong> (posizione di scarico pastiglia / estrazione). Il LED si accende al microswitch basso.
+      <br>• Tasto <span class="hl-k">Vapore</span>: Attiva la pompa a vibrazione (Ulka 15 bar) per verificare il passaggio acqua e la lettura del flussometro.
+      <br>• Tasto <span class="hl-k">Risciacquo</span>: Attiva il relè della resistenza del Termoblocco (caldaia).
+      <br>• Tasto <span class="hl-k">Grano Caffè / Macinatura</span>: Avvia per 2 secondi il motore del macinacaffè a 230V per test di assorbimento.
+    </div>
+    <div class="step-line"><span class="step-num">6</span>Per uscire dalla modalità di test: staccare la spina di alimentazione.</div>
+  </div>
+
+  <div class="callout-info">
+    <div class="callout-info-title">🥛 Sistemi Latte (LatteCrema Hot &amp; Cool), Eletta Explore e Durezza Acqua</div>
+    <ul>
+      <li><strong>Sistema LatteCrema Hot &amp; Cool:</strong> Caraffa brevettata a effetto Venturi. La manopola sulla caraffa dispone delle posizioni <em>Insert / No Foam / Min Foam / Max Foam</em> e della posizione obbligatoria <strong>CLEAN</strong>. Dopo OGNI sessione di erogazione latte, ruotare su <em>CLEAN</em>: la macchina insuffla vapore secco e acqua bollente nei condotti interni sciogliendo le proteine del latte ed evitando il blocco delle micro-elettrovalvole.</li>
+      <li><strong>Eletta Explore (Cold Extraction):</strong> Specializzata in Cold Brew ed estrazione a freddo pulsata a bassa pressione. Se l'erogazione fredda non parte, verificare il circuito idraulico secondario e la caraffa LatteCrema Cool dedicata (con innesto di colore blu).</li>
+      <li><strong>Falso Guasto "Spia Decalcificazione non si spegne":</strong> Causa tipica: l'utente ha interrotto il risciacquo con acqua pulita prima che il serbatoio fosse completamente vuoto. La macchina azzera il flag EEPROM della decalcificazione SOLO quando il galleggiante magnetico scende a livello di "serbatoio vuoto" durante il ciclo di risciacquo finale. Utilizzare esclusivamente decalcificante naturale a base di acido lattico (<em>EcoDecalk</em>). L'uso di aceto corrode le guarnizioni in EPDM e danneggia la girante del flussometro.</li>
+    </ul>
+  </div>
+</div>
+
+<!-- C2 — DE'LONGHI LA SPECIALISTA -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-delonghi">DL</span>
+    <div>
+      <h3 class="brand-title">C2 · De'Longhi La Specialista (Segmento Manuale Assistito)</h3>
+      <div class="brand-series">La Specialista Arte, La Specialista Prestigio, La Specialista Maestro</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Tecnologie Chiave: Smart Tamping Station, Sensor Grinding &amp; Taratura Pressione</div>
+    <div class="step-line"><span class="step-num">1</span><strong>Smart Tamping Station (Prestigio &amp; Maestro):</strong> Pressatura a leva guidata laterale con pressione costante a 20 kg sul portafiltro innestato. Per manutenere la stazione: rimuovere la protezione frontale e pulire periodicamente i residui di caffè compresso dall'anello di tamping; non lubrificare mai con oli non alimentari la camma di ritorno.</div>
+    <div class="step-line"><span class="step-num">2</span><strong>Sensor Grinding Technology:</strong> Due sensori magnetici di posizione sul macinacaffè regolano con precisione micrometrica la dose polvere macinata (Single o Double). Se la quantità macinata risulta incoerente, eseguire la pulizia delle macine estraendo la macina superiore con l'apposita levetta di sblocco a scatto.</div>
+    <div class="step-line"><span class="step-num">3</span><strong>Interpretazione del Manometro di Pressione:</strong>
+      <br>• <em>Sotto la "Optimal Zone" (&lt;9 bar):</em> Caffè sottoestratto. Causa: macinatura troppo grossa, dose insufficiente o tamping leggero. Aumentare la finezza di macinatura e la manopola dose.
+      <br>• <em>Nella "Optimal Zone" (9–12 bar):</em> Estrazione perfetta, flusso dorato costante e crema densa a nocciola.
+      <br>• <em>Sopra la "Optimal Zone" (&gt;14 bar a fondo scala):</em> Caffè sovraestratto / bruciato a gocce. Macinatura eccessivamente fine o filtro intasato.
+    </div>
+  </div>
+
+  <div class="callout-warn">
+    <div class="callout-warn-title">⚙️ Reset Impostazioni di Fabbrica (Factory Reset La Specialista)</div>
+    <p>Per ripristinare i volumi d'erogazione delle ricette, le temperature e la durezza dell'acqua ai valori di fabbrica:</p>
+    <div class="step-line"><span class="step-num">1</span>A macchina accesa e portafiltro disinserito, tenere premuti contemporaneamente il tasto <span class="hl-k">Dose Singola (1X)</span> e il tasto <span class="hl-k">Vapore</span> per <strong>5 secondi</strong>.</div>
+    <div class="step-line"><span class="step-num">2</span>Tutti i LED dei tasti bevanda lampeggeranno rapidamente per 3 volte per confermare l'avvenuto ripristino di fabbrica della memoria EEPROM.</div>
+  </div>
+</div>
+
+<!-- C3 — PHILIPS LATTIEGO -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-philips">PH</span>
+    <div>
+      <h3 class="brand-title">C3 · Philips Macchine da Caffè Automatiche (LatteGo)</h3>
+      <div class="brand-series">Serie 1200, Serie 2200, Serie 3200, Serie 4300, Serie 5400, Serie 5500</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🥛 Sistema Brevettato LatteGo: Anatomia e Risoluzione Guasti Schiuma</div>
+    <p>Il sistema LatteGo è composto da soli <strong>2 pezzi</strong> privi di tubi interni o cannucce nascoste, lavabile in 15 secondi:</p>
+    <ul>
+      <li><strong>Principio Fisico:</strong> La camera cilindrica laterale miscela vapore ad alta pressione e latte creando un ciclone vorticoso che monta la micro-schiuma direttamente nella tazza.</li>
+      <li><strong>Risoluzione "Il latte non fa schiuma ma esce solo vapore o latte tiepido":</strong>
+        <br><span class="step-num">1</span><em>Aggancio Caraffa:</em> Verificare che i due elementi in plastica trasparente e nera siano saldamente agganciati con un "click" sia in alto che in basso prima di inserirli sulla lancia.
+        <br><span class="step-num">2</span><em>Ostruzione Condotto Vapore:</em> Smontare la caraffa e sciacquare il foro di transito sagomato; grassi del latte disidratati possono ostruire l'ugello Venturi (lavabile in lavastoviglie).
+        <br><span class="step-num">3</span><em>O-ring Lancia Macchina:</em> Ispezionare la guarnizione O-ring in gomma nera montata sul beccuccio di erogazione vapore della macchina. Se secca, lacerata o mancante, si verifica perdita di pressione con aspirazione d'aria parassita. Sostituire e lubrificare con grasso alimentare.
+      </li>
+    </ul>
+  </div>
+
+  <div class="callout-warn">
+    <div class="callout-warn-title">⚙️ Macine al 100% in Ceramica a 12 Livelli &amp; Filtro AquaClean</div>
+    <ul>
+      <li><strong>Macine 100% Ceramica:</strong> La ceramica previene il surriscaldamento del chicco durante la macinazione continua. <strong>Regola tassativa:</strong> Ruotare la manopola a scatti all'interno del vano chicchi <strong>SOLO ED ESCLUSIVAMENTE quando il macinacaffè sta macinando attivamente</strong>, uno scatto alla volta.</li>
+      <li><strong>Filtro AquaClean (Fino a 5.000 tazze senza decalcificare):</strong>
+        <br>• <em>Procedura di Innesco:</em> Prima di inserirlo nel serbatoio, immergere il filtro AquaClean in una bacinella d'acqua a testa in giù e scuoterlo per 30 secondi fino a far uscire tutte le bolle d'aria intrappolate nella resina a scambio ionico.
+        <br>• <em>Attivazione a Display/Tasti:</em> Posizionare il filtro nel serbatoio; tenere premuto il pulsante <strong>AquaClean per 3 secondi</strong> finché l'indicatore mostra 100% o la spia diventa blu fissa.
+        <br>• <em>Allarme Arancione / Spia Calc/Clean:</em> Se l'avviso arancione non viene azzerato in tempo, la macchina inibisce l'attivazione di un nuovo filtro e <strong>obbliga ad eseguire un ciclo completo di decalcificazione</strong> prima di accettare un nuovo AquaClean.
+      </li>
+    </ul>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Gruppo Infusore Saeco/Philips &amp; Menu Segreto / Test Mode Hardware</div>
+    <div class="step-line"><span class="step-num">1</span><strong>Estrazione Gruppo Infusore:</strong> Spegnere la macchina dal tasto frontale. Aprire lo sportello laterale destro. Premere la levetta colorata <span class="hl-k">PUSH</span> verso sinistra ed estrarre orizzontalmente il gruppo. Sciacquare settimanalmente con acqua tiepida; usare pastiglie sgrassanti rimuovi-olio del caffè una volta al mese nel vano pre-macinato.</div>
+    <div class="step-line"><span class="step-num">2</span><strong>Accesso Test Mode Hardware (Serie 1200, 2200, 3200 con cruscotto touch capacitivo):</strong>
+      <br>• Spegnere la macchina dal pulsante di Standby.
+      <br>• Tenere premuti contemporaneamente i tasti: <span class="hl-k">Espresso</span> + <span class="hl-k">Acqua Calda</span>.
+      <br>• Premere il tasto <span class="hl-k">Power (Accensione)</span> continuando a tenere premuti i due tasti per <strong>3-5 secondi</strong>.
+      <br>• I LED del pannello si accendono in modalità matrice: ogni tasto attiva un attuatore (Espresso = Resistenza Termoblocco; Caffè = Elettrovalvola; Vapore = Pompa; Acqua Calda = Gruppo movimento posizione Work; Start/Stop = Gruppo movimento Home).
+    </div>
+    <div class="step-line"><span class="step-num">3</span><strong>Service Display su Serie 4300 / 5400 / 5500 con Schermo TFT:</strong> All'accensione, tenere premuti gli angoli opposti del touchscreen per visualizzare lo storico errori:
+      <br>• <span class="hl-r">Error 01:</span> Macinacaffè bloccato da chicco estraneo o polvere compattata nel condotto.
+      <br>• <span class="hl-r">Error 03:</span> Gruppo infusore sovraccaricato meccanicamente (sforzo motore &gt;1.5A per mancanza lubrificazione guide).
+      <br>• <span class="hl-r">Error 04:</span> Gruppo infusore non posizionato correttamente in sede.
+      <br>• <span class="hl-r">Error 05:</span> Bolla d'aria nel circuito idraulico o flussometro bloccato da calcare (erogare acqua calda per disaerare).
+    </div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--         SEZIONE D — MATRICE COMPARATIVA E REGOLE D'ORO         -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="section-divider sd-matrix">
+  <span class="section-icon">📊</span>
+  <div>
+    <h2>Sezione D — Matrice Comparativa Rapida &amp; 10 Regole d'Oro di Laboratorio</h2>
+    <p>Tabella riassuntiva sinottica delle combinazioni di tasti per tutti i produttori e linee trattate</p>
+  </div>
+</div>
+
+<div class="brand-block">
+  <h3 class="brand-title" style="margin-bottom: 8px;">📋 Tabella Sinottica Master: Reset Wi-Fi, Test Mode e Hard Reset</h3>
+  <table>
+    <thead>
+      <tr>
+        <th style="width:14%;">Marchio &amp; Tipo</th>
+        <th style="width:20%;">Serie Principali</th>
+        <th style="width:26%;">Reset Rete Wi-Fi / Associazione</th>
+        <th style="width:22%;">Hard Reset / Golden Restore</th>
+        <th style="width:18%;">Funzione / Menu Segreto</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Dreame Robot</strong></td>
+        <td>L10s, L20, L40 Ultra, X30/X40/X50, Aqua, Roller, Matrix 10</td>
+        <td><span class="hl-k">Spot + Dock</span> premuti per 3s</td>
+        <td>Tasto <span class="hl-k">Dock</span> + spillo su <span class="hl-k">Reset</span> per 3-5s</td>
+        <td>Debug console tap 7x su versione app; sblocco galleggiante Omni</td>
+      </tr>
+      <tr>
+        <td><strong>Roborock</strong></td>
+        <td>S7, S8, Q Revo, S8 MaxV Ultra, <strong>Saros Z70/10R</strong></td>
+        <td><span class="hl-k">Spot Clean + Dock</span> per 3s</td>
+        <td>Tasto <span class="hl-k">Dock</span> continuo + spillo <span class="hl-k">Reset</span> 1s</td>
+        <td>Rollback "Restore Factory Version" in 5 min; BIST mode</td>
+      </tr>
+      <tr>
+        <td><strong>iRobot Roomba</strong></td>
+        <td>Combo 105/205/505/705/775, AutoWash Combo Max</td>
+        <td>Da app iRobot Home (raccomandato) o <span class="hl-k">CLEAN da app</span></td>
+        <td>Combo 105/205/505: CLEAN 7s → tono → CLEAN 2a volta (senza cassetto)<br>Combo 705/775/Max: Home+Spot+Clean 10s<br>⚠️ CLEAN 20s = Reboot (no dati persi)</td>
+        <td>BIST diagnostico: Dock+Spot + 3x Clean; diagnosi MRS/AutoWash</td>
+      </tr>
+      <tr>
+        <td><strong>Ecovacs</strong></td>
+        <td>T9, T10, T20, X1/X2 Omni</td>
+        <td>Interruttore su "I" ➔ tastino <span class="hl-k">Wi-Fi</span> 1s</td>
+        <td>Rimuovere tappo gomma ➔ spillo su Reset <span class="hl-k">~5s</span> ➔ startup music</td>
+        <td>Hard power cut da slider I/O; sblocco valvola serbatoio interno</td>
+      </tr>
+      <tr>
+        <td><strong>Ezviz &amp; Mova</strong></td>
+        <td>RC3, RE5, L600, E30 Ultra</td>
+        <td><span class="hl-k">Power + Home</span> per 3-4s</td>
+        <td>Spillo nel foro <span class="hl-k">Reset</span> per 5s</td>
+        <td>Riallineamento giroscopio planare IMU su superficie orizzontale</td>
+      </tr>
+      <tr>
+        <td><strong>Rowenta Robot</strong></td>
+        <td>X-Plorer 75, 95, 120, 130 AI</td>
+        <td><span class="hl-k">Power + Home</span> per 3-5s</td>
+        <td>Pressione <span class="hl-k">Power per 20s</span> continuo</td>
+        <td>Cold reset watchdog timer CPU e svuotamento registri di mappa</td>
+      </tr>
+      <tr>
+        <td><strong>Dyson Scope</strong></td>
+        <td>V8, V10, V11, V12, V15, Gen5</td>
+        <td>Non applicabile / BLE su MyDyson</td>
+        <td>Sblocco blocco permanente BMS (&gt;12 flash rossi = cambio batteria)</td>
+        <td>Reset barometrico filtro su LCD per 5s; pulizia sensore piezo</td>
+      </tr>
+      <tr>
+        <td><strong>Rowenta X-Force</strong></td>
+        <td>Flex 8.60, 11.60, 14.60, 15.60</td>
+        <td>Display Smart Control a bordo</td>
+        <td>Rimozione batteria + grilletto Boost per 10s</td>
+        <td>Diagnosi codici E1-E6; pulizia snodo flessibile a 90° e connettori</td>
+      </tr>
+      <tr>
+        <td><strong>Hoover &amp; Miele</strong></td>
+        <td>HF9 Anti-Twist, Triflex HX1/HX2</td>
+        <td>Display / LED di stato</td>
+        <td>Triflex: autoreset bimetallo dopo 30m<br>HF9: Turbo per 5s</td>
+        <td>Sblocco overcurrent Anti-Twist (Floor 3s); filtro ComfortClean</td>
+      </tr>
+      <tr>
+        <td><strong>De'Longhi Auto</strong></td>
+        <td>Magnifica S/Evo, Dinamica, Eletta Explore</td>
+        <td>Connessione Wi-Fi su modelli Eletta Explore</td>
+        <td>Procedura Home Position mandrino prima di estrarre il gruppo</td>
+        <td><strong>Service Test Mode:</strong> Spina staccata ➔ Tasti 1 Tazza + Vapore premuti ➔ inserire spina</td>
+      </tr>
+      <tr>
+        <td><strong>De'Longhi Specialista</strong></td>
+        <td>Arte, Prestigio, Maestro</td>
+        <td>Pannello analogico/digitale con manometro</td>
+        <td>Tasto <span class="hl-k">Dose 1X + Vapore per 5s</span></td>
+        <td>Taratura Smart Tamping Station 20 kg; manometro Optimal Zone 9-12b</td>
+      </tr>
+      <tr>
+        <td><strong>Philips LatteGo</strong></td>
+        <td>Serie 1200, 2200, 3200, 4300, 5400, 5500</td>
+        <td>Touch display capacitivo / TFT a colori</td>
+        <td>Procedura innesco filtro AquaClean (30s subacqueo + tasto 3s)</td>
+        <td><strong>Test Mode:</strong> Spento ➔ Espresso + Acqua Calda premuti + Power per 3s; codici Errore 01-05</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="callout-info">
+  <div class="callout-info-title">💡 Le 10 Regole d'Oro di Laboratorio per Piccoli Elettrodomestici</div>
+  <ol>
+    <li><strong>Regolazione Macine Caffè SOLO in Funzione:</strong> Sia su macine in acciaio (De'Longhi) che in ceramica (Philips), la manopola di regolazione va girata ESCLUSIVAMENTE mentre il macinacaffè sta macinando attivamente. Girarla a motore fermo spezza ingranaggi o disallinea i dischi.</li>
+    <li><strong>Gruppo Infusore SOLO in Home Position:</strong> Non tentare mai di estrarre il gruppo a macchina accesa o durante l'erogazione. Attendere lo spegnimento completo dal tasto Standby con ritorno del pistone al finecorsa inferiore.</li>
+    <li><strong>Niente Detersivi o Lavastoviglie sul Gruppo Infusore:</strong> I gruppi si lavano solo con acqua tiepida. I tensioattivi dei detersivi sciolgono il grasso al silicone alimentare NSF H1 sigillante delle guide e degli steli.</li>
+    <li><strong>Asciugatura Filtri HEPA 24-48 Ore:</strong> I filtri lavabili di scope (Dyson, Rowenta, Hoover) e robot devono asciugare completamente all'aria. Montarli umidi genera muffe nei condotti e brucia i cuscinetti dei motori digitali brushless ad alta velocità.</li>
+    <li><strong>Motore Dyson a Pulsazioni = Ostruzione:</strong> Il motore che singhiozza ritmicamente non è rotto: indica protezione da ostruzione del condotto o filtro intasato.</li>
+    <li><strong>Decalcificazione solo con Acido Lattico / Specifico:</strong> MAI usare aceto nelle macchine da caffè. L'acido acetico attacca le guarnizioni in gomma EPDM/NBR e lascia residui insolubili che intasano elettrovalvole e flussometri.</li>
+    <li><strong>Sblocco Galleggianti Magnetici Reed:</strong> Negli allarmi "Serbatoio pieno falso" di stazioni robot (Dreame, Ecovacs) o "Serbatoio vuoto falso" di macchine caffè, verificare che il magnete nel galleggiante scorra liberamente e non sia bloccato da calcare o alghe.</li>
+    <li><strong>Rollback Golden Firmware su Robot:</strong> Se un robot Roborock o Dreame va in bootloop dopo un OTA, la combinazione hardware con spillo di reset e tasto Dock ripristina la partizione di fabbrica inviolabile.</li>
+    <li><strong>Ricarica Continua 12h per Reset BMS:</strong> Se una batteria litio di Roomba o Dyson segnala carica rapida o esaurimento precoce, eseguire un ciclo ininterrotto di 12h sulla base per permettere al BMS di bilanciare le tensioni delle singole celle.</li>
+    <li><strong>Pulizia Caraffa LatteGo e LatteCrema:</strong> I residui proteici del latte cagliano a 40-50°C formando ostruzioni microscopiche negli ugelli Venturi. Eseguire sempre il ciclo Clean subito dopo l'uso.</li>
+  </ol>
+</div>
+
+<div class="footer">
+  Supporto Tecnico IT — Procedura Operativa 10: Menu Segreti, Diagnostica, Test Mode e Reset Piccoli Elettrodomestici (PED) &nbsp;|&nbsp; Verificata su Manuali Tecnici Ufficiali — Ottobre 2026
+</div>
+
+</body>
+</html>
