@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8">
+  <title>Procedura 06 – Menu Segreti, Diagnostica e Impostazioni Grandi Elettrodomestici</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap');
+
+    @page { size: A4 portrait; margin: 10mm 10mm 10mm 10mm; }
+
+    * { box-sizing: border-box; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 8.2pt; line-height: 1.46; color: #1e293b; background: #ffffff; margin: 0; padding: 0;
+    }
+
+    /* ─── HEADER ─── */
+    .doc-header {
+      background: linear-gradient(135deg, #064e3b 0%, #047857 55%, #059669 100%);
+      color: #fff; padding: 16px 20px; border-radius: 10px; margin-bottom: 12px;
+      box-shadow: 0 4px 10px rgba(15,23,42,.12);
+    }
+    .header-badge {
+      display: inline-block; background: rgba(255,255,255,.22); padding: 3px 10px;
+      border-radius: 20px; font-size: 7pt; font-weight: 700; text-transform: uppercase;
+      letter-spacing: .8px; margin-bottom: 7px;
+    }
+    .header-title { font-size: 14pt; font-weight: 800; line-height: 1.2; margin: 0 0 5px 0; color: #fff; }
+    .header-subtitle { font-size: 8pt; color: #e2e8f0; margin: 0 0 8px 0; font-weight: 400; line-height: 1.45; }
+    .header-meta {
+      display: flex; flex-wrap: wrap; gap: 12px; font-size: 7pt; color: #cbd5e1;
+      border-top: 1px solid rgba(255,255,255,.2); padding-top: 6px;
+    }
+
+    /* ─── SECTION DIVIDER ─── */
+    .section-divider {
+      border-radius: 8px; padding: 7px 14px; margin: 16px 0 8px 0;
+      display: flex; align-items: center; gap: 10px; page-break-after: avoid;
+    }
+    .section-divider h2 { margin: 0; font-size: 10pt; font-weight: 800; color: #fff; }
+    .section-divider p { margin: 1px 0 0 0; font-size: 7pt; color: rgba(255,255,255,.85); }
+    .section-icon { font-size: 18pt; }
+    .sd-lav  { background: linear-gradient(90deg, #0369a1, #0284c7); }
+    .sd-ldv  { background: linear-gradient(90deg, #5b21b6, #7c3aed); }
+    .sd-asc  { background: linear-gradient(90deg, #92400e, #d97706); }
+    .sd-fred { background: linear-gradient(90deg, #064e3b, #059669); }
+
+    /* ─── BRAND BLOCK ─── */
+    .brand-block {
+      background: #fff; border: 1px solid #e2e8f0; border-radius: 9px;
+      padding: 10px 14px; margin-bottom: 10px; page-break-inside: avoid;
+    }
+    .brand-header {
+      display: flex; align-items: center; gap: 8px;
+      margin-bottom: 7px; padding-bottom: 6px; border-bottom: 2px solid #f1f5f9;
+    }
+    .brand-badge {
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; min-width: 26px; height: 26px; border-radius: 50%;
+      font-size: 8.5pt; font-weight: 800; flex-shrink: 0;
+    }
+    .bb-blue   { background: #0369a1; }
+    .bb-purple { background: #6d28d9; }
+    .bb-orange { background: #c2410c; }
+    .bb-green  { background: #15803d; }
+    .bb-red    { background: #be123c; }
+    .bb-teal   { background: #0f766e; }
+    .bb-indigo { background: #4338ca; }
+    .bb-pink   { background: #9d174d; }
+    .bb-slate  { background: #334155; }
+    .bb-amber  { background: #b45309; }
+    .bb-cyan   { background: #0e7490; }
+
+    .brand-title { font-size: 9pt; font-weight: 800; color: #0f172a; margin: 0; line-height: 1.3; }
+    .brand-series { font-size: 7pt; color: #64748b; font-style: italic; margin: 1px 0 0 0; }
+
+    /* ─── CALLOUT VARIANTS ─── */
+    .callout-proc {
+      background: #f0fdf4; border: 1px solid #bbf7d0; border-left: 4px solid #16a34a;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px;
+      page-break-inside: avoid; font-size: 7.8pt;
+    }
+    .callout-proc-title { font-weight: 700; color: #15803d; font-size: 8pt; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
+
+    .callout-warn {
+      background: #fffbeb; border: 1px solid #fde68a; border-left: 4px solid #d97706;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px; font-size: 7.8pt; color: #92400e;
+      page-break-inside: avoid;
+    }
+    .callout-warn-title { font-weight: 700; color: #b45309; font-size: 7.5pt; text-transform: uppercase; margin-bottom: 3px; }
+
+    .callout-danger {
+      background: #fff1f2; border: 1px solid #fecdd3; border-left: 4px solid #dc2626;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px; font-size: 7.8pt; color: #7f1d1d;
+      page-break-inside: avoid;
+    }
+    .callout-danger-title { font-weight: 700; color: #dc2626; font-size: 7.5pt; text-transform: uppercase; margin-bottom: 3px; }
+
+    .callout-ref {
+      background: #faf5ff; border: 1px solid #e9d5ff; border-left: 4px solid #9333ea;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px; font-size: 7.8pt;
+      page-break-inside: avoid;
+    }
+    .callout-ref-title { font-weight: 700; color: #7e22ce; font-size: 7.5pt; text-transform: uppercase; margin-bottom: 3px; }
+
+    .callout-info {
+      background: #eff6ff; border: 1px solid #bfdbfe; border-left: 4px solid #2563eb;
+      border-radius: 0 6px 6px 0; padding: 7px 11px; margin-bottom: 7px; font-size: 7.8pt;
+      page-break-inside: avoid;
+    }
+    .callout-info-title { font-weight: 700; color: #1d4ed8; font-size: 7.5pt; text-transform: uppercase; margin-bottom: 3px; }
+
+    /* ─── CODE BOX ─── */
+    .code-box {
+      background: #0f172a; color: #f8fafc;
+      font-family: 'JetBrains Mono', 'Courier New', monospace; font-size: 7.2pt;
+      padding: 6px 10px; border-radius: 5px; margin: 4px 0 6px 0;
+      white-space: pre-wrap; word-break: break-all; line-height: 1.6;
+    }
+
+    /* ─── HIGHLIGHT ─── */
+    .hl  { background: #e0f2fe; color: #0369a1; padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+    .hl-r { background: #fff1f2; color: #be123c;  padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+    .hl-g { background: #f0fdf4; color: #15803d;  padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+    .hl-o { background: #fff7ed; color: #c2410c;  padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+    .hl-p { background: #faf5ff; color: #6d28d9;  padding: 1px 4px; border-radius: 3px; font-family: 'JetBrains Mono', monospace; font-size: 7.5pt; font-weight: 600; }
+
+    /* ─── TABLE ─── */
+    table { width: 100%; border-collapse: collapse; font-size: 7.5pt; margin: 5px 0 8px 0; }
+    th { background: #0f172a; color: #fff; padding: 4px 7px; text-align: left; font-weight: 600; font-size: 7pt; }
+    td { padding: 4px 7px; border-bottom: 1px solid #e2e8f0; vertical-align: top; }
+    tr:nth-child(even) td { background: #f8fafc; }
+
+    /* ─── MISC ─── */
+    .page-break { page-break-before: always; }
+    ul, ol { margin: 3px 0 5px 0; padding-left: 16px; }
+    li { margin-bottom: 2px; line-height: 1.45; }
+    p { margin: 2px 0 5px 0; }
+    strong { color: #0f172a; }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+
+    .index-box {
+      background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px;
+      padding: 9px 13px; margin-bottom: 12px; font-size: 7.5pt;
+    }
+    .index-title { font-weight: 800; font-size: 8pt; color: #0f172a; margin-bottom: 6px; }
+    .index-cols { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2px 16px; }
+    .index-cat { font-weight: 700; font-size: 7pt; text-transform: uppercase; letter-spacing: .5px; color: #fff; padding: 2px 6px; border-radius: 3px; margin: 5px 0 3px 0; display: block; }
+    .ic-blue   { background: #0369a1; }
+    .ic-purple { background: #6d28d9; }
+    .ic-orange { background: #c2410c; }
+    .ic-green  { background: #15803d; }
+    .index-item { color: #334155; padding: 1.5px 0; }
+
+    .footer {
+      text-align: center; font-size: 6.8pt; color: #94a3b8;
+      margin-top: 14px; padding-top: 6px; border-top: 1px solid #e2e8f0;
+    }
+
+    .step-num {
+      display: inline-flex; align-items: center; justify-content: center;
+      background: #0f172a; color: #fff; min-width: 16px; height: 16px; border-radius: 50%;
+      font-size: 6.8pt; font-weight: 700; flex-shrink: 0; margin-right: 4px;
+    }
+    .step-line { display: flex; align-items: flex-start; gap: 5px; margin-bottom: 3px; font-size: 7.8pt; }
+  </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════ HEADER ══ -->
+<div class="doc-header">
+  <div class="header-badge">Procedura Operativa 06 — Grandi Elettrodomestici &amp; Smart Home</div>
+  <h1 class="header-title">Menu Segreti, Diagnostica e Impostazioni — Grandi Elettrodomestici</h1>
+  <p class="header-subtitle">
+    Guida tecnica verificata su fonti ufficiali per accedere ai menu di servizio, cancellare codici di errore permanenti,
+    eseguire il test hardware dei componenti, calibrare i dosatori automatici e configurare le impostazioni nascoste per:
+    <strong>Miele, AEG, Bosch, Siemens, Liebherr, Smeg, Samsung, LG, Electrolux, Whirlpool, Haier, Hotpoint-Ariston, Hisense, Beko, Candy, Indesit.</strong>
+  </p>
+  <div class="header-meta">
+    <div><strong>Sezioni:</strong> 🔵 Lavatrici &nbsp;|&nbsp; 🟣 Lavastoviglie &nbsp;|&nbsp; 🟠 Asciugatrici &nbsp;|&nbsp; 🟢 Liebherr Freddo</div>
+    <div><strong>Livello:</strong> Tecnico Riparatore &amp; Installatore</div>
+    <div><strong>Verifica:</strong> Ottobre 2026 — Manuali ufficiali + iFixit + ApplianceRepairTalk</div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════ INDICE ══ -->
+<div class="index-box">
+  <div class="index-title">📋 Indice Rapido</div>
+  <div class="index-cols">
+    <div>
+      <span class="index-cat ic-blue">🔵 A — Lavatrici</span>
+      <div class="index-item">A1 · Bosch &amp; Siemens (BSH)</div>
+      <div class="index-item">A2 · Miele W1 / W Classic</div>
+      <div class="index-item">A3 · Electrolux / AEG</div>
+      <div class="index-item">A4 · Whirlpool / Hotpoint / Indesit</div>
+      <div class="index-item">A5 · Samsung AI Control / Bespoke</div>
+      <div class="index-item">A6 · LG AI DD / TurboWash</div>
+      <div class="index-item">A7 · Haier I-Pro Direct Motion</div>
+      <div class="index-item">A8 · Candy Smart Pro / Rapido'</div>
+      <div class="index-item">A9 · Beko ProSmart Inverter</div>
+      <div class="index-item">A10 · Hisense PureJet / WFGA</div>
+      <div class="index-item">A11 · Smeg 50s Style / LST</div>
+    </div>
+    <div>
+      <span class="index-cat ic-purple">🟣 B — Lavastoviglie</span>
+      <div class="index-item">B1 · Bosch &amp; Siemens (BSH)</div>
+      <div class="index-item">B2 · Miele G5000 / G7000</div>
+      <div class="index-item">B3 · Electrolux / AEG</div>
+      <div class="index-item">B4 · Whirlpool / Hotpoint / Indesit</div>
+      <div class="index-item">B5 · Samsung WaterWall / DW60</div>
+      <div class="index-item">B6 · LG QuadWash / TrueSteam</div>
+      <div class="index-item">B7 · Haier / Candy</div>
+      <div class="index-item">B8 · Beko CornerIntense / AquaIntense</div>
+      <div class="index-item">B9 · Hisense HV6 / HS6</div>
+      <div class="index-item">B10 · Smeg Planetario / Orbitale</div>
+    </div>
+    <div>
+      <span class="index-cat ic-orange">🟠 C — Asciugatrici</span>
+      <div class="index-item">C1 · Bosch &amp; Siemens (BSH)</div>
+      <div class="index-item">C2 · Miele T1 / ProfiEco</div>
+      <div class="index-item">C3 · Electrolux / AEG</div>
+      <div class="index-item">C4 · Whirlpool / Hotpoint / Indesit</div>
+      <div class="index-item">C5 · Samsung OptimalDry / Bespoke</div>
+      <div class="index-item">C6 · LG DUAL Inverter Heat Pump</div>
+      <div class="index-item">C7 · Haier / Candy</div>
+      <div class="index-item">C8 · Beko EcoGentle / IronFinish</div>
+      <span class="index-cat ic-green">🟢 D — Liebherr</span>
+      <div class="index-item">D1 · Frigoriferi BioFresh / Monolith</div>
+      <div class="index-item">D2 · Cantinette Vinidor / GrandCru</div>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--                  SEZIONE A — LAVATRICI                        -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="section-divider sd-lav">
+  <span class="section-icon">🔵</span>
+  <div>
+    <h2>Sezione A — Lavatrici</h2>
+    <p>Service Mode, reset errori bloccanti, calibrazione cestello, dosatori automatici e tarature</p>
+  </div>
+</div>
+
+<!-- A1 — BOSCH & SIEMENS -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-blue">A1</span>
+    <div>
+      <div class="brand-title">Bosch &amp; Siemens — Gruppo BSH</div>
+      <div class="brand-series">Bosch Serie 4 / 6 / 8 / HomeProfessional (i-DOS 1.0 e 2.0) · Siemens iQ300 / iQ500 / iQ700 / iQ800 (i-DOS, sensoFresh)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Reset Errori Bloccanti — Modelli CON Manopola Fisica (E18, E21/F21, E17)</div>
+    <div class="step-line"><span class="step-num">1</span> Chiudere l'oblò e posizionare la manopola su <strong>OFF</strong> (spenta).</div>
+    <div class="step-line"><span class="step-num">2</span> Ruotare la manopola a <strong>ore 6</strong> (posizione <em>Scarico / Centrifuga</em>).</div>
+    <div class="step-line"><span class="step-num">3</span> Premere e <strong>mantenere premuto il tasto Centrifuga</strong> (numero di giri).</div>
+    <div class="step-line"><span class="step-num">4</span> Mantenendo premuto, spostare la manopola di uno scatto avanti a <strong>ore 7</strong> (<em>Rapido 15'/30'</em>) e attendere <strong>5 secondi</strong>.</div>
+    <div class="step-line"><span class="step-num">5</span> Rilasciare: il display lampeggia entrando nel <strong>Service Test Mode</strong> e cancella il blocco. Riportare su OFF.</div>
+  </div>
+
+  <div class="callout-warn">
+    <div class="callout-warn-title">⚠️ Modelli Full-Touch SENZA Manopola Fisica</div>
+    La procedura ore 6/7 <strong>non funziona</strong>. La combo alternativa confermata è: macchina spenta → tenere premuti simultaneamente <strong>Temperatura + Centrifuga</strong> → premere <strong>Power</strong>. Se il modello non risponde, la cancellazione errori è riservata al software diagnostico dei centri autorizzati BSH.
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Menu e Configurazione Dosatori i-DOS</div>
+    <ul>
+      <li>Tenere premuto il tasto <span class="hl">i-DOS</span> per <strong>3 secondi</strong> → accesso alla configurazione: dosaggio base in ml (regolabile con tasti +/-) e livello durezza acqua.</li>
+      <li>Per il <strong>lavaggio forzato dei condotti</strong> (detersivo incrostato): rimuovere il cassetto tirando la levetta blu centrale, inserire acqua tiepida 40°C ed eseguire un ciclo di risciacquo serbatoi da menu i-DOS.</li>
+    </ul>
+  </div>
+
+  <div class="callout-ref">
+    <div class="callout-ref-title">📋 Codici Errore Principali</div>
+    <span class="hl-r">E18/F18</span> Pompa scarico (filtro otturato/pompa bloccata) &nbsp;|&nbsp;
+    <span class="hl-r">E21/F21</span> Motore (tachimetrica o spazzole) &nbsp;|&nbsp;
+    <span class="hl-r">E17/F17</span> Timeout carico acqua (rubinetto chiuso, filtro tubo ostruito) &nbsp;|&nbsp;
+    <span class="hl-r">E23</span> Pompa drenaggio difettosa &nbsp;|&nbsp;
+    <span class="hl-r">E57</span> Inverter motore
+  </div>
+</div>
+
+<!-- A2 — MIELE -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-teal">A2</span>
+    <div>
+      <div class="brand-title">Miele</div>
+      <div class="brand-series">Serie W1 (Active / ChromeEdition / WhiteEdition) · TwinDos · PowerWash · CapDosing · Serie W Classic / W 5000</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Accesso Menu Programmazione / Service Mode</div>
+    <div class="step-line"><span class="step-num">1</span> Oblò chiuso, macchina spenta.</div>
+    <div class="step-line"><span class="step-num">2</span> Premere e <strong>tenere premuto il tasto Avvio/Stop</strong>, poi accendere la macchina con il tasto Power (o ruotare la manopola su Cotone).</div>
+    <div class="step-line"><span class="step-num">3</span> Appena il tasto Avvio/Stop inizia a lampeggiare, <strong>rilasciare e premere per 3 volte rapide consecutive</strong>, tenendolo premuto alla 3ª volta per ~3 secondi.</div>
+    <div class="step-line"><span class="step-num">4</span> Il display mostra <span class="hl">P...</span> (Programmazione) — usare Avvio/Stop per scorrere i parametri.</div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Parametri di Programmazione Utente (Funzioni Programmabili)</div>
+    <table>
+      <thead><tr><th>Param.</th><th>Funzione</th><th>Note</th></tr></thead>
+      <tbody>
+        <tr><td><span class="hl-g">P01</span></td><td>Impostazioni base dosatore TwinDos</td><td>ml/ciclo per UltraPhase 1 e UltraPhase 2</td></tr>
+        <tr><td><span class="hl-g">P13</span></td><td>Cicalino tasti (feedback sonoro)</td><td>On/Off segnale pressione tasti</td></tr>
+        <tr><td><span class="hl-g">P14</span></td><td>Anti-piega / Acqua Extra</td><td>Variabile per versione firmware: su alcune = extra risciacquo permanente</td></tr>
+        <tr><td><span class="hl-g">P22</span></td><td>Luminosità display</td><td>Regolazione intensità retroilluminazione</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout-info">
+    <div class="callout-info-title">🧪 TwinDos Care — Pulizia Condotti Dosatori</div>
+    Sul display: <strong>Menu → Manutenzione → Pulizia TwinDos</strong>. Inserire le cartucce speciali <em>TwinDos Care</em> al posto di UltraPhase 1 e 2. Il ciclo flussa i condotti con detergente neutro — <strong>obbligatorio se la macchina non viene usata per oltre 2 mesi</strong> o al cambio di tipologia di detersivo.
+  </div>
+</div>
+
+<!-- A3 — ELECTROLUX / AEG -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-purple">A3</span>
+    <div>
+      <div class="brand-title">Electrolux &amp; AEG — Gruppo Electrolux</div>
+      <div class="brand-series">Electrolux PerfectCare 600 / 700 / 800 / 900 (AutoDose, UltraCare, SensiCare) · AEG 6000 / 7000 / 8000 / 9000 (ProSense, ProSteam, ÖKOMix) · Piattaforme EWM1000/2000, EWX11/13/14</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Service Diagnostic Mode — Lettura Errori e Test Attuatori</div>
+    <div class="step-line"><span class="step-num">1</span> Macchina spenta, oblò chiuso.</div>
+    <div class="step-line"><span class="step-num">2</span> Premere e <strong>tenere premuti contemporaneamente</strong> il tasto <strong>Avvio/Pausa</strong> e il <strong>tasto opzione subito a sinistra</strong> (es. <em>Time Manager</em> o <em>Stirameno</em>, varia per modello).</div>
+    <div class="step-line"><span class="step-num">3</span> Mantenendoli premuti, <strong>accendere la macchina</strong> (o fare 1 scatto di manopola in senso orario).</div>
+    <div class="step-line"><span class="step-num">4</span> I LED scorrono in sequenza (modalità chaser). La manopola seleziona la posizione di test.</div>
+    <div class="step-line"><span class="step-num">5</span> <strong>Posizioni 1–9:</strong> test singoli attuatori (valvole, riscaldatore, motore c.w./c.c.w., pompa scarico, centrifuga). &nbsp;<strong>Posizione 10:</strong> visualizza l'<strong>ultimo codice errore memorizzato</strong>.</div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🗑️ Hard Reset Errori (da Posizione 10)</div>
+    In Posizione 10, tenere premuti contemporaneamente i soliti due tasti (<em>Avvio/Pausa + tasto a sinistra</em>) per <strong>5 secondi continui</strong> finché il display mostra <span class="hl-g">E00</span> → memoria errori cancellata.
+  </div>
+
+  <div class="callout-ref">
+    <div class="callout-ref-title">📋 Codici Errore Principali</div>
+    <span class="hl-r">E20</span> Problema scarico &nbsp;|&nbsp;
+    <span class="hl-r">E41</span> Bloccoporta/interruttore sportello difettoso &nbsp;|&nbsp;
+    <span class="hl-r">E52</span> Tachimetrica motore &nbsp;|&nbsp;
+    <span class="hl-r">E68</span> Dispersione resistenza verso terra &nbsp;|&nbsp;
+    <span class="hl-r">E21</span> Anomalia motore &nbsp;|&nbsp;
+    <span class="hl-r">E11</span> Timeout carico acqua
+  </div>
+</div>
+
+<!-- A4 — WHIRLPOOL / HOTPOINT-ARISTON / INDESIT -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-orange">A4</span>
+    <div>
+      <div class="brand-title">Whirlpool · Hotpoint-Ariston · Indesit — Gruppo Whirlpool EMEA</div>
+      <div class="brand-series">Whirlpool FreshCare+ / Supreme Silence / Zen (Atlantic, Domino, Wave) · Hotpoint ActiveCare / Natis / Aqualtis · Indesit Push&amp;Go / MyTime / Innex</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Reset Universale Guasti Bloccanti (F02, F06, F23)</div>
+    Il reset più affidabile e confermato è: a macchina accesa, tenere premuto <strong>Start/Pausa per 3–5 secondi</strong> continui fino all'avvio della pompa di scarico di sicurezza. In alternativa: scollegare l'alimentazione per <strong>5–10 minuti</strong>.
+    <div class="callout-warn" style="margin-top:6px; margin-bottom:0;">
+      <div class="callout-warn-title">⚠️ Nota Tecnica</div>
+      La sequenza "4 pressioni Reset/Annulla in 5 secondi" varia fortemente in base alla scheda madre montata (Arcadia vs Wave vs Domino). Non è una procedura universale affidabile.
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Sequenza Diagnostica Componenti (Piattaforma Domino / Wave)</div>
+    A macchina accesa in stand-by, premere la sequenza <strong>1-2-3 &nbsp;/&nbsp; 1-2-3 &nbsp;/&nbsp; 1-2-3</strong> (tre cicli completi entro 8 secondi), usando <strong>qualsiasi 3 tasti ausiliari</strong> (esclusi Power e Start/Pausa) in ordine sequenziale. Il ciclo di autodiagnosi <span class="hl">C0–C8</span> testa pressostato, riscaldamento e centrifuga.
+  </div>
+
+  <div class="callout-ref">
+    <div class="callout-ref-title">📋 Codici Errore Principali</div>
+    <span class="hl-r">F02</span> Tempo scarico eccessivo/pompa bloccata &nbsp;|&nbsp;
+    <span class="hl-r">F06</span> Tachimetrica/motore non rilevato &nbsp;|&nbsp;
+    <span class="hl-r">F23</span> Pressostato/cablaggio &nbsp;|&nbsp;
+    <span class="hl-r">F05</span> Scarico incompleto &nbsp;|&nbsp;
+    <span class="hl-r">F08</span> Riscaldamento
+  </div>
+</div>
+
+<!-- A5 — SAMSUNG -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-indigo">A5</span>
+    <div>
+      <div class="brand-title">Samsung Electronics</div>
+      <div class="brand-series">Serie AI Control · Bespoke · AddWash · QuickDrive (display Jog-Dial AI e display classico a segmenti LED)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Menu Funzioni Aggiuntive Nascoste (Tasto "Manina con il +")</div>
+    <ul>
+      <li>A macchina accesa, <strong>tenere premuto per 3 secondi</strong> il tasto <em>Funzioni Aggiuntive</em> (icona manina con <span class="hl">+</span>).</li>
+      <li>Ruotando la ghiera centrale si scorrono le voci:</li>
+    </ul>
+    <table>
+      <thead><tr><th>Voce</th><th>Funzione</th></tr></thead>
+      <tbody>
+        <tr><td><span class="hl-g">Calibrazione (Cb)</span></td><td>Rotazione cestello a vuoto per 3 minuti → tara sensori peso e carico. <strong>Obbligatoria dopo spostamento o sostituzione scheda.</strong></td></tr>
+        <tr><td><span class="hl-g">Eco Pulizia Cestello+</span></td><td>Ciclo speciale 70°C senza detersivo per eliminare muffe e biofilm</td></tr>
+        <tr><td><span class="hl-g">Dosaggio Automatico</span></td><td>Configurazione concentrazione detersivo e ml erogati per ciclo</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Service Test Mode Tecnico</div>
+    A macchina accesa, premere contemporaneamente per <strong>5 secondi</strong> i tasti <em>Centrifuga</em> + <em>Opzioni</em> (o <em>Temperatura + Centrifuga</em> in base al pannello) → compare sul display <span class="hl">tSt</span> o <span class="hl">SPn</span> per avviare il test sequenziale di elettrovalvole e motore.
+  </div>
+
+  <div class="callout-ref">
+    <div class="callout-ref-title">📋 Codici Errore e Risoluzioni</div>
+    <span class="hl-r">5C / E2</span> Scarico bloccato → aprire sportellino basso dx, svuotare tubicino nero, svitare filtro antiorario &nbsp;|&nbsp;
+    <span class="hl-r">UB</span> Sbilanciamento cronico → eseguire Calibrazione Cb a cestello vuoto &nbsp;|&nbsp;
+    <span class="hl-r">SUD/Sd</span> Eccesso schiuma → ridurre dose detersivo e avviare risciacquo extra
+  </div>
+</div>
+
+<!-- A6 — LG -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-red">A6</span>
+    <div>
+      <div class="brand-title">LG Electronics</div>
+      <div class="brand-series">Serie AI DD · Inverter Direct Drive · TurboWash 360 (V3 / V5 / V7 / V9 — pannello touch e manopola)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Service Test Mode Completo — Test Attuatori Passo-Passo</div>
+    <div class="step-line"><span class="step-num">1</span> Macchina spenta, oblò chiuso.</div>
+    <div class="step-line"><span class="step-num">2</span> Tenere premuti contemporaneamente <strong>Centrifuga (Spin)</strong> + <strong>Temperatura (Temp)</strong> (o <em>Spin + Soil Level</em>).</div>
+    <div class="step-line"><span class="step-num">3</span> Mantenendoli premuti, premere il tasto <strong>Power</strong> → 2 bip + tutti i LED del pannello si accendono.</div>
+    <div class="step-line"><span class="step-num">4</span> Ogni pressione di <strong>Avvio/Pausa</strong> attiva il componente successivo in sequenza:</div>
+    <div style="margin-left:22px; font-size:7.8pt;">
+      <div>• Rotazione cestello oraria (lettura RPM reali a display)</div>
+      <div>• Centrifuga a 400 rpm → 800 rpm → max rpm (test ammortizzatori e bilanciamento)</div>
+      <div>• Elettrovalvola lavaggio → prelavaggio → getto doccia TurboWash</div>
+      <div>• Riscaldamento resistenza + sonda NTC → pompa di scarico</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🧪 Tub Clean — Sanificazione Vasca</div>
+    Tenere premuti contemporaneamente per <strong>3 secondi</strong> i due tasti contrassegnati dall'asterisco <span class="hl">*</span> (solitamente <em>Intensivo + Risciacquo</em> o <em>Centrifuga + Antipiega</em>). Compare sul display <span class="hl-g">tcL</span>: avviare senza biancheria a 60°C per rimuovere biofilm e residui.
+  </div>
+
+  <div class="callout-info">
+    <div class="callout-info-title">📱 Smart Diagnosis</div>
+    Accendere la lavatrice → avvicinare il microfono dello smartphone al logo Smart Diagnosis → tenere premuto il tasto <em>Temperatura</em> per <strong>3 secondi</strong> → i toni di telemetria vengono inviati all'app <strong>LG ThinQ</strong> per la diagnosi remota.
+  </div>
+</div>
+
+<!-- A7 — HAIER -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-cyan">A7</span>
+    <div>
+      <div class="brand-title">Haier</div>
+      <div class="brand-series">I-Pro Series 3 / 5 / 7 / 7 Plus — Motore Direct Motion (senza cinghia, trasmissione diretta)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Calibrazione Motore e Test Mode</div>
+    A macchina accesa in stand-by, tenere premuti contemporaneamente i tasti <strong>Delay</strong> + <strong>Temperatura (Temp)</strong> — o in alternativa <strong>Delay + Centrifuga (Spin)</strong> a seconda del pannello — per <strong>4 secondi</strong> finché compare <span class="hl">t-01</span> (autotest componenti) o <span class="hl">CAL</span> (calibrazione sensore peso). Premere <em>Avvio</em> per eseguire la taratura dinamica anti-sbilanciamento del motore a trazione diretta.
+  </div>
+</div>
+
+<!-- A8 — CANDY -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-pink">A8</span>
+    <div>
+      <div class="brand-title">Candy — Gruppo Haier</div>
+      <div class="brand-series">Smart Pro · Rapido' · Nova · GrandÓ (include varianti Hoover)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Ciclo di Autodiagnosi e Lettura Errori</div>
+    <div class="step-line"><span class="step-num">1</span> Macchina spenta.</div>
+    <div class="step-line"><span class="step-num">2</span> Tenere premuto il tasto <strong>Avvio/Pausa</strong> e ruotare il selettore posizionandolo su <em>Cotone 60°</em> (2 scatti in senso orario).</div>
+    <div class="step-line"><span class="step-num">3</span> Mantenere premuto Avvio/Pausa per <strong>5 secondi</strong> finché i LED lampeggiano in sequenza — rilasciare.</div>
+    <div class="step-line"><span class="step-num">4</span> La macchina effettua il test dinamico (carico 4 l, rotazione bidirezionale, scarico, centrifuga 1000 rpm).</div>
+    <div class="step-line"><span class="step-num">5</span> Il codice guasto viene segnalato tramite <strong>numero di lampeggi del LED</strong>: 2=mancato carico, 3=mancato scarico, 8=anomalia tachimetrica/motore.</div>
+  </div>
+</div>
+
+<!-- A9 — BEKO -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-amber">A9</span>
+    <div>
+      <div class="brand-title">Beko — Gruppo Arçelik</div>
+      <div class="brand-series">ProSmart Inverter · SteamCure · AquaWave (Serie WTV / WUX / BM3W)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Service Diagnostic Mode — Test Componenti</div>
+    <div class="step-line"><span class="step-num">1</span> Posizionare il selettore su <strong>Cotone</strong> (ore 12).</div>
+    <div class="step-line"><span class="step-num">2</span> Premere contemporaneamente <strong>Centrifuga (Spin)</strong> + <strong>Temperatura (Temp)</strong> e premere <strong>Power</strong>.</div>
+    <div class="step-line"><span class="step-num">3</span> Sul display compare <span class="hl">P01</span> (o tutti i segmenti accesi).</div>
+    <div class="step-line"><span class="step-num">4</span> Con il tasto <em>Avvio/Pausa</em> si avanzano step singoli: valvole → riscaldatore → pompa → centrifuga.</div>
+    <div class="step-line"><span class="step-num">5</span> <strong>Hard reset errori</strong>: in diagnostica, tenere premuto <em>Avvio</em> per <strong>5 secondi</strong> → cancella la memoria guasti (E01–E18).</div>
+  </div>
+</div>
+
+<!-- A10 — HISENSE -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-slate">A10</span>
+    <div>
+      <div class="brand-title">Hisense</div>
+      <div class="brand-series">PureJet · WavePlus · Serie WFGA · Serie 3S / 5S / 7S</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Service Test Mode — Diagnostica Attuatori</div>
+    Macchina in stand-by: tenere premuti contemporaneamente <strong>Extra Risciacquo</strong> + <strong>Centrifuga</strong> per <strong>3–5 secondi</strong>. Sul display compare <span class="hl">T01</span>. Premendo il tasto <em>Avvio</em> si scorrono i test dei singoli componenti (elettrovalvola, riscaldamento, pompa scarico, rotazione cestello). Per resettare gli allarmi: tenere premuto <em>Avvio</em> per 5 secondi durante T01.
+  </div>
+
+  <div class="callout-ref">
+    <div class="callout-ref-title">📋 Codici Errore</div>
+    <span class="hl-r">F01</span> Timeout carico acqua &nbsp;|&nbsp; <span class="hl-r">F03</span> Timeout scarico &nbsp;|&nbsp; <span class="hl-r">F13</span> Blocco porta / serratura
+  </div>
+</div>
+
+<!-- A11 — SMEG -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-green">A11</span>
+    <div>
+      <div class="brand-title">Smeg</div>
+      <div class="brand-series">50s Style (LBB) · Serie da incasso (LST / WHT) · Serie a carica frontale</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Service Test Mode</div>
+    A macchina spenta: tenere premuti contemporaneamente i tasti <strong>Opzioni</strong> + <strong>Avvio</strong> e premere <strong>Power</strong>. La macchina avvia il test sequenziale: serratura porta → elettrovalvole di carico → motore (lavaggio e centrifuga) → resistenza riscaldamento → pompa di scarico. Per il <strong>hard reset errori</strong>: tenere premuto Avvio per 5 secondi in test mode.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--                  SEZIONE B — LAVASTOVIGLIE                    -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-divider sd-ldv">
+  <span class="section-icon">🟣</span>
+  <div>
+    <h2>Sezione B — Lavastoviglie</h2>
+    <p>Addolcitore, brillantante, AirDry, antiallagamento, dosatori automatici, test circuiti</p>
+  </div>
+</div>
+
+<!-- B1 — BOSCH & SIEMENS -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-blue">B1</span>
+    <div>
+      <div class="brand-title">Bosch &amp; Siemens — Gruppo BSH</div>
+      <div class="brand-series">Bosch Serie 2 / 4 / 6 / 8 (SilencePlus, PerfectDry Zeolith) · Siemens iQ100 / iQ300 / iQ500 / iQ700 (varioSpeed Plus, Zeolith)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Menu Setup Installatore — Accesso e Parametri</div>
+    <div class="step-line"><span class="step-num">1</span> Accendere con il tasto Power.</div>
+    <div class="step-line"><span class="step-num">2</span> Tenere premuto per <strong>3 secondi</strong> il tasto <em>Setup</em> (o <em>Programma A + Start</em> nei modelli con display classico).</div>
+    <div class="step-line"><span class="step-num">3</span> Con il tasto <em>Start</em> si scorrono i parametri:</div>
+    <table style="margin-top:4px;">
+      <thead><tr><th>Parametro</th><th>Funzione</th><th>Range</th></tr></thead>
+      <tbody>
+        <tr><td><span class="hl">H:00–H:07</span></td><td>Durezza acqua (addolcitore e consumo sale)</td><td>H:00 = escluso, H:07 = max</td></tr>
+        <tr><td><span class="hl">r:00–r:06</span></td><td>Dosaggio brillantante</td><td><strong>r:00 = disattivo</strong> (usare con pastiglie all-in-one)</td></tr>
+        <tr><td><span class="hl">d:00–d:01</span></td><td>Extra Dry (riscaldamento finale potenziato)</td><td>d:01 = attivo</td></tr>
+        <tr><td><span class="hl">o:00–o:02</span></td><td>EfficientDry / AutoOpen (apertura automatica sportello)</td><td>o:00 = disattivo ← <strong>usare su top in legno/laminato</strong></td></tr>
+        <tr><td><span class="hl">b:00–b:03</span></td><td>Volume cicalino fine ciclo</td><td>b:00 = muto</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">🚨 Reset Errore E15 — AquaStop (Antiallagamento)</div>
+    <strong>Il tasto Start per 4 secondi resetta il ciclo ma NON elimina E15.</strong> L'allarme AquaStop si azzera SOLO dopo intervento fisico:
+    <ol style="margin-top:4px;">
+      <li>Estrarre la lavastoviglie e aprire lo zoccolino frontale.</li>
+      <li>Asciugare il vassoio di raccolta inferiore (con stracci o aspiraliquidi).</li>
+      <li>Abbassare fisicamente il galleggiante in polistirolo.</li>
+      <li>Trovare e riparare la perdita che ha innescato l'allarme.</li>
+      <li>Solo allora premere Start per 4 secondi per resettare il ciclo bloccato.</li>
+    </ol>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Service Test Mode Lavastoviglie</div>
+    Tenere premuti contemporaneamente il <strong>2° e il 4° tasto da sinistra</strong> (o <em>Start + Power Scrub</em>) mentre si preme il tasto di accensione <strong>ON/OFF</strong>. Test sequenziale: valvola scambio mulinelli, pompa riscaldante BLDC e ventola zeolite.
+  </div>
+</div>
+
+<!-- B2 — MIELE -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-teal">B2</span>
+    <div>
+      <div class="brand-title">Miele</div>
+      <div class="brand-series">Serie G 5000 / G 7000 (AutoDos con PowerDisk, Knock2open, display DirectSensor / M Touch)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Accesso Menu Impostazioni / Diagnostica</div>
+    <div class="step-line"><span class="step-num">1</span> Macchina spenta.</div>
+    <div class="step-line"><span class="step-num">2</span> Premere e <strong>tenere premuto il tasto Programma</strong> (Program), poi accendere con Power.</div>
+    <div class="step-line"><span class="step-num">3</span> Rilasciare e premere <em>Programma</em> per <strong>3 volte rapide</strong>, tenendolo alla terza.</div>
+    <div class="callout-warn" style="margin-top:6px; margin-bottom:0;"><div class="callout-warn-title">⚠️ Attenzione</div>Sulle lavastoviglie Miele si usa il tasto <strong>Programma</strong>, non il tasto Start (quello è riservato a lavatrici e asciugatrici).</div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Impostazioni Accessibili dal Menu</div>
+    <ul>
+      <li><strong>Durezza acqua:</strong> impostazione diretta da 1 a 70 °dH con sensore di conducibilità integrato.</li>
+      <li><strong>Dosaggio brillantante:</strong> da 0 a 6 ml per ciclo (0 = disattivo per uso pastiglie all-in-one).</li>
+      <li><strong>Quantità dosaggio AutoDos:</strong> regolazione della quantità di detersivo erogata per ciclo.</li>
+    </ul>
+  </div>
+
+  <div class="callout-warn">
+    <div class="callout-warn-title">⚠️ PowerDisk — Nessuna "Calibrazione Software"</div>
+    Il sistema PowerDisk è <strong>puramente meccanico</strong>. Non esiste alcuna calibrazione software nel menu. Se non eroga correttamente: 1) pulizia manuale del condotto erogatore ogni 2–3 mesi, 2) verificare impostazione "Quantità dosaggio" nelle opzioni utente standard. In caso di blocco calcare, sciogliere con acido citrico.
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">🚨 Reset Errore F70 — Waterproof System</div>
+    Come per E15 Bosch: <strong>nessun reset software è possibile finché c'è acqua nel vassoio raccogligocce</strong>. Procedura: estrarre la macchina → aprire lo zoccolino → asciugare il fondo con stracci/aspiraliquidi → individuare e riparare la perdita. L'errore scompare automaticamente una volta rimossa l'acqua.
+  </div>
+</div>
+
+<!-- B3 — ELECTROLUX / AEG -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-purple">B3</span>
+    <div>
+      <div class="brand-title">Electrolux &amp; AEG — Gruppo Electrolux</div>
+      <div class="brand-series">Electrolux Serie 300 / 600 / 700 / 900 (QuickSelect, GlassCare, ComfortLift) · AEG 6000 / 7000 / 8000 / 9000 (ProClean, SprayZone, AirDry)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Menu Impostazioni Utente (Basic Settings)</div>
+    <div class="step-line"><span class="step-num">1</span> Macchina in stand-by (accesa).</div>
+    <div class="step-line"><span class="step-num">2</span> Tenere premuti contemporaneamente per ~3 secondi il <strong>1° tasto</strong> (es. ECO) e il <strong>3° tasto</strong> (es. AUTO) → i LED dei tasti 1, 2, 3 lampeggiano.</div>
+    <div class="step-line"><span class="step-num">3</span> Parametri accessibili:</div>
+    <table style="margin-top:4px;">
+      <thead><tr><th>Tasto</th><th>Parametro</th><th>Codici</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Tasto 1</strong></td><td>Livello addolcitore (sale rigenerante)</td><td><span class="hl">L1</span> – <span class="hl">L10</span></td></tr>
+        <tr><td><strong>Tasto 2</strong></td><td>Dosaggio brillantante</td><td><span class="hl">0</span> – <span class="hl">6</span> (0 = disattivo)</td></tr>
+        <tr><td><strong>Tasto 3</strong></td><td>AirDry (apertura automatica porta)</td><td><span class="hl-g">1o</span> = attivo &nbsp;|&nbsp; <span class="hl-r">0o</span> = disattivo ← <strong>usare su top in legno</strong></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout-warn">
+    <div class="callout-warn-title">⚠️ Codici AirDry vs Buzzer — Differenza Critica</div>
+    <span class="hl-g">1o / 0o</span> = AirDry (apertura porta) ON/OFF &nbsp;|&nbsp;
+    <span class="hl">1b / 0b</span> = Avviso acustico fine ciclo (buzzer) ON/OFF.
+    Sono parametri <strong>distinti</strong>: non confondere.
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">🚨 Reset Errore i30 — Acquastop</div>
+    La pressione del tasto Reset resetta il programma in corso, <strong>ma NON elimina i30 se c'è ancora acqua nel vassoio inferiore</strong>. Procedura fisica obbligatoria prima del reset: inclinare la lavastoviglie in avanti o rimuovere l'acqua dal vassoio basamento → poi premere Reset.
+  </div>
+
+  <div class="callout-ref">
+    <div class="callout-ref-title">📋 Codici Errore</div>
+    <span class="hl-r">i10</span> Carico acqua &nbsp;|&nbsp; <span class="hl-r">i20</span> Scarico &nbsp;|&nbsp; <span class="hl-r">i30</span> Antiallagamento &nbsp;|&nbsp; <span class="hl-r">i40</span> Pressostato/trappola aria otturata
+  </div>
+</div>
+
+<!-- B4 — WHIRLPOOL / HOTPOINT / INDESIT -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-orange">B4</span>
+    <div>
+      <div class="brand-title">Whirlpool · Hotpoint-Ariston · Indesit</div>
+      <div class="brand-series">Whirlpool MaxiSpace / PowerClean Pro / 6° Senso (WIO, WFC, WSI) · Hotpoint Maxi / Ultima (HIO, HFC) · Indesit Push&amp;Go / MyTime (DIF, DFE, D2F)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Impostazione Durezza Acqua — Addolcitore</div>
+    Accendere la macchina → spegnerla → tenere premuto il tasto <strong>P (Programma)</strong> o <strong>Start/Pausa</strong> (varia per modello) per <strong>5 secondi</strong> → bip di conferma. Si accende la macchina e il LED del sale lampeggia permettendo la regolazione del livello durezza da <span class="hl">1</span> a <span class="hl">5</span>.
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Scarico Forzato e Reset Guasto Bloccante</div>
+    Tenere premuto il tasto <strong>Start/Pausa</strong> (o tasto Cancel/Drain dedicato) per <strong>3–5 secondi</strong>: il ciclo in corso si interrompe e la pompa di scarico si attiva per circa <strong>60 secondi</strong>, eliminando l'allarme bloccante.
+  </div>
+
+  <div class="callout-ref">
+    <div class="callout-ref-title">📋 Codici Errore</div>
+    <span class="hl-r">F15</span> Pompa lavaggio &nbsp;|&nbsp; <span class="hl-r">F11</span> Scarico &nbsp;|&nbsp; <span class="hl-r">F1</span> Antiallagamento
+  </div>
+</div>
+
+<!-- B5 — SAMSUNG -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-indigo">B5</span>
+    <div>
+      <div class="brand-title">Samsung Electronics</div>
+      <div class="brand-series">WaterWall · Rotary Standard · Serie DW60M / DW60R</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Menu Regolazione Addolcitore e Brillantante</div>
+    A macchina accesa, premere e tenere premuti contemporaneamente per <strong>3 secondi</strong> i tasti <em>Sanitize</em> + <em>Dry</em> (o <em>Delay Start + Sanitize</em> in alcuni mercati):
+    <ul>
+      <li><span class="hl">A1–A6</span>: Livello durezza acqua / rigenerazione sale</li>
+      <li><span class="hl">b1–b5</span>: Dosaggio brillantante</li>
+    </ul>
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">🚨 Errore LC / LE — Perdita Acqua (Reset Fisico Obbligatorio)</div>
+    <strong>Non esiste reset da tastiera per LC/LE.</strong> Il sensore antiallagamento sul fondo ha rilevato acqua. Procedura obbligatoria:
+    <ol style="margin-top:4px;">
+      <li>Staccare la spina dalla presa di corrente.</li>
+      <li>Estrarre la lavastoviglie e inclinarla in avanti <strong>a circa 45°</strong> per svuotare il vassoio inferiore.</li>
+      <li>Asciugare fisicamente il sensore a contatti metallici con stracci asciutti.</li>
+      <li>Individuare e riparare la perdita (guarnizione sportello, tubi, pompa).</li>
+      <li>Ricollegare la spina: l'errore scompare automaticamente.</li>
+    </ol>
+  </div>
+</div>
+
+<!-- B6 — LG -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-red">B6</span>
+    <div>
+      <div class="brand-title">LG Electronics</div>
+      <div class="brand-series">QuadWash · TrueSteam · Serie DB / DF (Motore Inverter Direct Drive)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Menu Impostazioni Fabbrica</div>
+    A macchina accesa, tenere premuti contemporaneamente per <strong>3 secondi</strong> i tasti <em>Dual Zone</em> + <em>Half Load</em>:
+    <ul>
+      <li><span class="hl">H0–H4</span>: Durezza acqua (addolcitore)</li>
+      <li><span class="hl">L0–L4</span>: Dosaggio brillantante</li>
+      <li><strong>AutoOpen Door:</strong> On/Off apertura automatica porta</li>
+    </ul>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Service/Factory Test Mode</div>
+    Combinazione <strong>Delay Start + Half Load + Power</strong>: test della pompa lavaggio, pompa scarico, generatore vapore TrueSteam e tutti e 4 i bracci QuadWash.
+  </div>
+</div>
+
+<!-- B7 — HAIER & CANDY -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-cyan">B7</span>
+    <div>
+      <div class="brand-title">Haier &amp; Candy — Gruppo Haier</div>
+      <div class="brand-series">Candy Rapido' / Brava / CDCP · Haier I-Pro Shine / Washlens Series</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Regolazione Durezza Acqua</div>
+    Macchina spenta: tenere premuto il tasto <strong>Programma</strong> e premere <strong>Power</strong> per 3 secondi. Il display mostra da <span class="hl">d1</span> a <span class="hl">d8</span> (regolazione con il tasto P). Spegnere per salvare.
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Diagnostica Componenti Candy</div>
+    Sequenza di test dinamico: elettrovalvola a membrana (test apertura/chiusura) e lettura codici errore tramite conteggio lampeggi del LED del programma attivo.
+  </div>
+</div>
+
+<!-- B8 — BEKO -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-amber">B8</span>
+    <div>
+      <div class="brand-title">Beko — Gruppo Arçelik</div>
+      <div class="brand-series">CornerIntense · AquaIntense · AutoDose (Serie DIN / DFN)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Impostazione Addolcitore (Durezza Acqua)</div>
+    Macchina spenta: tenere premuti contemporaneamente <strong>Time Delay (Partenza Ritardata)</strong> + <strong>P (Programmi)</strong> — oppure <strong>pressione prolungata del solo tasto P</strong> all'accensione — finché compare <span class="hl">r1</span>–<span class="hl">r5</span>:
+    <ul>
+      <li><span class="hl-g">r1</span> = nessun consumo di sale (acqua dolcissima)</li>
+      <li><span class="hl-r">r5</span> = massima rigenerazione (acqua oltre 50°fH)</li>
+    </ul>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Test Mode di Servizio</div>
+    Sequenza per forzare la rotazione del braccio a stella CornerIntense e test pompa BLDC: consultare il manuale di servizio del modello specifico per la combo tasti.
+  </div>
+</div>
+
+<!-- B9 — HISENSE -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-slate">B9</span>
+    <div>
+      <div class="brand-title">Hisense</div>
+      <div class="brand-series">Serie HV6 / HS6 (display a scomparsa e comandi frontali touch)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Regolazione Parametri Utente Avanzati</div>
+    Macchina accesa in stand-by: tenere premuti per <strong>5 secondi</strong> i tasti <strong>Programma</strong> + <strong>Funzioni</strong>. Accesso ai parametri di regolazione del sale (addolcitore) e del brillantante.
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Autotest Diagnostico</div>
+    Avvio ciclo forzato per la verifica del sensore ottico di torbidità (Aquasensor) e del motoriduttore cassetto pastiglia.
+  </div>
+</div>
+
+<!-- B10 — SMEG -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-green">B10</span>
+    <div>
+      <div class="brand-title">Smeg</div>
+      <div class="brand-series">Sistema di lavaggio Planetario e Orbitale (Serie ST / PL / STL / 50s Style BLV2)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Menu Regolazione Addolcitore e Brillantante</div>
+    Tenere premuto il tasto <strong>Programmi</strong> per <strong>5 secondi</strong> (su alcuni modelli con lo sportello socchiuso o premendo <em>Programmi + Power</em> all'accensione) finché non compare il menu di setup. Il display o i LED mostrano:
+    <ul>
+      <li><span class="hl">H0–H5</span>: Durezza acqua (H0 = addolcitore escluso)</li>
+      <li><span class="hl">b0–b5</span>: Dosaggio brillantante</li>
+    </ul>
+    Chiudere lo sportello per confermare le impostazioni.
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Diagnostica Linea di Montaggio</div>
+    Sequenza tasti <strong>P1-P4</strong>: avvia il ciclo rapido di 6 minuti con test pressostato a membrana, resistenza a tunnel e verifica rotazione mulinelli.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--                  SEZIONE C — ASCIUGATRICI                     -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-divider sd-asc">
+  <span class="section-icon">🟠</span>
+  <div>
+    <h2>Sezione C — Asciugatrici a Pompa di Calore</h2>
+    <p>Taratura sensori umidità, manutenzione condensatore, test compressore e pompa condensa</p>
+  </div>
+</div>
+
+<!-- C1 — BOSCH & SIEMENS -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-blue">C1</span>
+    <div>
+      <div class="brand-title">Bosch &amp; Siemens — Gruppo BSH</div>
+      <div class="brand-series">Bosch Serie 4 / 6 / 8 / HomeProfessional (SelfCleaning Condenser, AutoDry) · Siemens iQ300 / iQ500 / iQ700 / iQ800</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🧹 Ciclo Lavaggio Forzato Condensatore (CP1 / CP2)</div>
+    Per sciogliere la lanugine incrostata nel condensatore autopulente non estraibile:
+    <div class="step-line" style="margin-top:5px;"><span class="step-num">1</span> Posizionare la manopola su <strong>Cotoni</strong> (posizione 1).</div>
+    <div class="step-line"><span class="step-num">2</span> Tenere premuto il tasto <strong>Livello Asciugatura</strong> e ruotare simultaneamente la manopola verso <strong>CP1</strong> (posizione 5 circa, varia per modello).</div>
+    <div class="step-line"><span class="step-num">3</span> <strong>CP1</strong> = ciclo base (solo acqua). <strong>CP2</strong> = ciclo intensivo (con detergente specifico). Richiede di versare acqua (o detergente CP2) nel vano filtro o contenitore condensa prima dell'avvio.</div>
+    <p style="margin-top:4px; font-size:7.5pt; color:#92400e;">⚠️ Il messaggio <span class="hl-o">CrE</span> (Care Reminder) sul display indica che il ciclo CP è necessario.</p>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Regolazione Grado di Asciugatura Permanente (da -3 a +3)</div>
+    Accessibile dal tasto dedicato <em>Livello Asciugatura</em> (o <em>Fine-Tuning</em>) tenuto premuto per ~3 secondi → aggiungere o sottrarre gradi per compensare acque dolci che sottostimano l'umidità residua. L'impostazione viene salvata in memoria per tutti i lavaggi successivi.
+  </div>
+</div>
+
+<!-- C2 — MIELE -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-teal">C2</span>
+    <div>
+      <div class="brand-title">Miele</div>
+      <div class="brand-series">Serie T1 (EcoSpeed · SteamFinish · FragranceDos) · Motore ProfiEco</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Accesso Service Mode (identico alle lavatrici W1)</div>
+    Oblò chiuso → tenere premuto <strong>Avvio/Stop</strong> → accendere con Power → rilasciare e premere <em>Avvio/Stop</em> per <strong>3 volte rapide</strong> tenendolo alla terza.
+  </div>
+
+  <div class="callout-warn">
+    <div class="callout-warn-title">⚠️ Sensori Umidità Residua — Soluzione Corretta</div>
+    Il problema di "capi ancora umidi" su acque dolci <strong>non è risolvibile con calibrazione software</strong>. Soluzioni verificate:
+    <ol>
+      <li>Impostare correttamente la <strong>durezza dell'acqua</strong> nelle Funzioni Programmabili (agisce sulla conducibilità attesa).</li>
+      <li><strong>Pulizia fisica</strong> delle barrette metalliche del sensore nel cestello: rimuovere la patina isolante di calcare e ammorbidente con un panno umido.</li>
+    </ol>
+  </div>
+
+  <div class="callout-warn">
+    <div class="callout-warn-title">⚠️ Spia "Pulire Filtro" (F066) — Nessun Reset Software</div>
+    Il messaggio scompare <strong>solo dopo pulizia fisica approfondita</strong>: filtro porta + filtro zoccolo inferiore + vano interno. Se persiste dopo pulizia perfetta → sospettare difetto al pressostato di flusso aria o al sensore termico.
+  </div>
+</div>
+
+<!-- C3 — ELECTROLUX / AEG -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-purple">C3</span>
+    <div>
+      <div class="brand-title">Electrolux &amp; AEG — Gruppo Electrolux</div>
+      <div class="brand-series">Electrolux PerfectCare 700 / 800 / 900 (GentleCare, CycloneCare) · AEG 7000 / 8000 / 9000 (SensiDry, AbsoluteCare)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Diagnostica Pompa di Calore — Accesso Service Mode</div>
+    Procedura <strong>identica alle lavatrici</strong>: macchina spenta → tenere premuti <em>Avvio/Pausa + tasto opzione a sinistra</em> → accendere. Componenti testabili in sequenza:
+    <ul>
+      <li>Rotazione motore cestello c.w. e c.c.w.</li>
+      <li>Pompa sollevamento condensa verso serbatoio superiore</li>
+      <li>Compressore frigorifero e ventilatore raffreddamento scambiatore</li>
+    </ul>
+  </div>
+
+  <div class="callout-ref">
+    <div class="callout-ref-title">📋 Codici Errore Specifici Asciugatura</div>
+    <span class="hl-r">E32</span> Problema lettura sensore umidità (spesso richiede pulizia spazzole metalliche del cestello) &nbsp;|&nbsp;
+    <span class="hl-r">E60</span> Errore riscaldamento (termostati/flusso aria)
+  </div>
+</div>
+
+<!-- C4 — WHIRLPOOL / HOTPOINT / INDESIT -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-orange">C4</span>
+    <div>
+      <div class="brand-title">Whirlpool · Hotpoint-Ariston · Indesit</div>
+      <div class="brand-series">Whirlpool FreshCare+ / 6° Senso (AutoCleaning Condenser) · Hotpoint ActiveCare NT M11 · Indesit a pompa di calore</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Taratura Sensore 6° Senso (Livello Asciugatura Permanente)</div>
+    A macchina in stand-by: tenere premuto il tasto <strong>Livello Asciugatura</strong> (o <em>Dryness</em>) per circa <strong>6 secondi</strong>. Permette di regolare la sensibilità e il livello base di umidità residua target (livelli 0–4 a seconda del modello).
+    <p style="margin-top:4px; font-size:7.5pt; color:#92400e;">⚠️ Prima di regolare il sensore software, pulire fisicamente le barre metalliche da residui di ammorbidente che creano una pellicola isolante.</p>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Diagnostica Componenti (incluso test pompa condensa)</div>
+    Stessa sequenza diagnostica delle lavatrici: <strong>1-2-3 / 1-2-3 / 1-2-3</strong>. Dal menu di test è possibile attivare in sequenza: motore, resistenza (o compressore pompa di calore), microinterruttore galleggiante vaschetta condensa e pompa di sollevamento.
+  </div>
+</div>
+
+<!-- C5 — SAMSUNG -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-indigo">C5</span>
+    <div>
+      <div class="brand-title">Samsung Electronics</div>
+      <div class="brand-series">OptimalDry · AI Control · Bespoke a pompa di calore · QuickDrive Dryer</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Taratura Livello Asciugatura AI e Test Sensori Umidità</div>
+    Dal menu funzioni (tasto <em>Opzioni /</em> manina <span class="hl">+</span>): personalizzazione dell'offset di asciugatura da livello 1 a 4 per compensare acque dolci o usurate dei sensori. Il <strong>test dei sensori di umidità</strong> verifica in tempo reale i microvolt generati dai due sensori a strisciamento sul filtro lanugine.
+  </div>
+</div>
+
+<!-- C6 — LG -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-red">C6</span>
+    <div>
+      <div class="brand-title">LG Electronics</div>
+      <div class="brand-series">DUAL Inverter Heat Pump · Eco Hybrid (RH80 / RH90 con condensatore Auto Cleaning)</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Test Mode Pompa di Calore</div>
+    Da macchina spenta: tenere premuti <strong>More Time (+)</strong> + <strong>Less Time (-)</strong> (i tasti + e - del timer) → premere <strong>Power</strong>. In alternativa su alcuni pannelli: <strong>Time Dry + Anti Crease + Power</strong>. Test manuale delle frequenze operative dell'inverter a doppio cilindro.
+    <div class="callout-warn" style="margin-top:5px; margin-bottom:0;"><div class="callout-warn-title">⚠️ Nota</div>La combinazione tasti varia in base alla serie. Verificare il pannello del proprio modello specifico.</div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🧹 Ciclo Pulizia Condensatore</div>
+    Tenere premuto per <strong>3 secondi</strong> il tasto dedicato <em>Condenser Care</em> (o combinazione con asterisco *) per avviare il risciacquo automatico del condensatore con acqua dal serbatoio.
+  </div>
+</div>
+
+<!-- C7 — HAIER & CANDY -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-cyan">C7</span>
+    <div>
+      <div class="brand-title">Haier &amp; Candy — Gruppo Haier</div>
+      <div class="brand-series">Candy Smart Pro / Rapido' a pompa di calore · Haier I-Pro HD90 / HD100</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Diagnostica e Test Circuito Frigorifero</div>
+    Test di inversione periodica del senso di marcia del cestello per prevenire l'aggrovigliamento dei capi. Per il test del circuito refrigerante (R290 o R134a): consultare il manuale di servizio del modello specifico — richiede strumenti di analisi del circuito frigorifero.
+  </div>
+</div>
+
+<!-- C8 — BEKO -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-amber">C8</span>
+    <div>
+      <div class="brand-title">Beko — Gruppo Arçelik</div>
+      <div class="brand-series">EcoGentle · IronFinish (Serie B5T / B3T) — a pompa di calore</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔬 Service Test Mode</div>
+    A macchina spenta: tenere premuto <strong>Start/Pausa</strong> e premere <strong>Power</strong> (o tenere premuti <em>Start + Tempo</em> all'accensione). Test del sensore NTC temperatura compressore e della pompa di recupero acqua condensa.
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Reset Allarme Filtro Condensatore</div>
+    Su quasi tutti i modelli Beko la spia filtro si resetta automaticamente dopo la pulizia, oppure premendo <strong>Start/Pausa per 3 secondi</strong> con lo sportellino del condensatore correttamente chiuso. Se persiste → controllare il sensore di posizione del pannello filtro.
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--       SEZIONE D — LIEBHERR — REFRIGERAZIONE & CANTINETTE      -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-divider sd-fred">
+  <span class="section-icon">🟢</span>
+  <div>
+    <h2>Sezione D — Liebherr: Refrigerazione, BioFresh &amp; Cantinette Vino</h2>
+    <p>Demo Mode, calibrazione sonde, Sabbath Mode, IceMaker e sbrinamento forzato NoFrost</p>
+  </div>
+</div>
+
+<!-- D1 + D2 — LIEBHERR -->
+<div class="brand-block">
+  <div class="brand-header">
+    <span class="brand-badge bb-green">D1</span>
+    <div>
+      <div class="brand-title">Liebherr — Specialista Freddo</div>
+      <div class="brand-series">Frigoriferi BluPerformance / BioFresh / Monolith (Peak, Prime, Plus, Pure) · Cantinette Vinidor / GrandCru / Sommelier</div>
+    </div>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">🔧 Accesso al Customer Service Menu</div>
+    A display acceso, premere e <strong>tenere premuto per 5 secondi</strong> il tasto <strong>SuperFrost</strong>. Sui modelli con display touch recenti: combinazione di swipe o pressione prolungata del tasto <em>Menu / Ventilazione</em>. Il display mostra le opzioni come lettere minuscole.
+  </div>
+
+  <div class="callout-danger">
+    <div class="callout-danger-title">🚨 PARAMETRO D — Demo Mode (Showroom Mode) — Caso Più Frequente di Falso Guasto</div>
+    È la causa <strong>numero 1 di chiamata per "frigorifero che non raffredda"</strong> appena installato da negozio o dopo tocco involontario del pannello.
+    <table style="margin-top:5px;">
+      <thead><tr><th>Valore</th><th>Stato</th><th>Effetto</th></tr></thead>
+      <tbody>
+        <tr><td><span class="hl-r">d 1</span></td><td><strong>Demo Mode ATTIVA</strong></td><td>Display e luci funzionano ✓ — Compressore e ventole SPENTI ✗ — Nessun raffreddamento</td></tr>
+        <tr><td><span class="hl-g">d 0</span></td><td><strong>Modalità NORMALE</strong></td><td>Funzionamento completo ripristinato</td></tr>
+      </tbody>
+    </table>
+    <p style="margin-top:4px;"><strong>→ Impostare sempre d 0 dopo ogni installazione.</strong></p>
+  </div>
+
+  <div class="callout-proc">
+    <div class="callout-proc-title">⚙️ Parametri del Menu di Servizio</div>
+    <table>
+      <thead><tr><th>Parametro</th><th>Funzione</th><th>Valori</th></tr></thead>
+      <tbody>
+        <tr><td><span class="hl">d</span></td><td>Demo / Showroom Mode</td><td><span class="hl-r">d1</span> = attiva (SPENTO compressore) &nbsp;|&nbsp; <span class="hl-g">d0</span> = normale ← <strong>impostare sempre</strong></td></tr>
+        <tr><td><span class="hl">E</span></td><td>Calibrazione / Offset Sonde Temperatura</td><td>Da <span class="hl">E1</span> a <span class="hl">E9</span>: taratura fine sonda NTC BioFresh (0°C) e ripiani cantinetta vino. Allineare con termometro sonda campione tarato.</td></tr>
+        <tr><td><span class="hl">c</span></td><td>Child Lock (Blocco Tastiera)</td><td><span class="hl">c1</span> = blocco attivo &nbsp;|&nbsp; <span class="hl">c0</span> = sbloccato</td></tr>
+        <tr><td><span class="hl">S</span></td><td>Sabbath Mode</td><td>Spegne display, cicalini e luci interne all'apertura porta (uso religioso)</td></tr>
+        <tr><td><span class="hl">h</span></td><td>Brightness (Luminosità display)</td><td>Da <span class="hl">h1</span> (minima) a <span class="hl">h5</span> (massima)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout-ref">
+    <div class="callout-ref-title">🧊 Test IceMaker e Sbrinamento Forzato NoFrost</div>
+    Lo sbrinamento forzato e il test dell'IceMaker si trovano nei <strong>sottomenu avanzati</strong> (tipicamente contraddistinti da <span class="hl">H</span> o <span class="hl">I</span>) accessibili sempre dal menu tecnico (SuperFrost 5s). Tasti specifici:
+    <ul>
+      <li><strong>Sbrinamento evaporatore:</strong> attiva la resistenza di sbrinamento per verificare l'assorbimento e il corretto drenaggio verso il vassoio sopra il compressore.</li>
+      <li><strong>IceMaker test:</strong> su alcuni modelli si avvia girando l'interruttore dell'IceMaker OFF→ON oppure tenendo premuto il tasto specifico sulla vaschetta cubetti per 3 secondi.</li>
+    </ul>
+  </div>
+
+  <div class="callout-info">
+    <div class="callout-info-title">🍷 Cantinette Vino — Calibrazione Ripiani a Temperatura Differenziata</div>
+    Sulle cantinette Vinidor e GrandCru con zone a temperatura indipendente, utilizzare il parametro <span class="hl">E</span> per calibrare ogni zona. Misurare la temperatura reale con un <strong>termometro a pozzetto certificato</strong> posizionato al centro del ripiano per almeno 2 ore, poi correggere l'offset (es. se il display indica 12°C ma il termometro legge 13°C, impostare E-1).
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════════════════════════════ -->
+<!--                  TABELLA RIEPILOGATIVA FINALE                  -->
+<!-- ══════════════════════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div style="background:#0f172a; color:#fff; border-radius:8px; padding:8px 14px; margin-bottom:10px;">
+  <strong style="font-size:9pt; color:#fff;">📊 Matrice Riepilogativa Rapida — Accesso Menu Segreto per Brand e Categoria</strong>
+</div>
+<table>
+  <thead>
+    <tr>
+      <th style="width:18%;">Brand / Gruppo</th>
+      <th style="width:27%;">🔵 Lavatrici</th>
+      <th style="width:27%;">🟣 Lavastoviglie</th>
+      <th style="width:28%;">🟠 Asciugatrici</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Bosch / Siemens</strong></td>
+      <td>Manopola ore 6 + Centrifuga tenuto + ore 7 + 5s (con manopola) · Touch: Temp+Spin+Power</td>
+      <td>Setup 3s → H/r/d/o/b · Reset E15: intervento fisico + Start 4s</td>
+      <td>CP1/CP2 dal menu livello asciugatura · Offset -3/+3</td>
+    </tr>
+    <tr>
+      <td><strong>Miele</strong></td>
+      <td>Start tenuto + Power + 3x Start → P... (TwinDos Care da menu Manutenzione)</td>
+      <td>Programma tenuto + Power + 3x Programma · No calibrazione PowerDisk · F70: fisico</td>
+      <td>Identico lavatrici · Pulizia fisica sensori · Spia filtro: solo pulizia</td>
+    </tr>
+    <tr>
+      <td><strong>Electrolux / AEG</strong></td>
+      <td>Start/Pausa + tasto sx → Power · Pos.1-9 test, Pos.10 errore, reset E00</td>
+      <td>Tasto 1+3 → L1-10 (sale), 1o/0o (AirDry). Reset i30: fisico prima</td>
+      <td>Identico lavatrici · E32=sensori, E60=riscaldamento</td>
+    </tr>
+    <tr>
+      <td><strong>Whirlpool / Hotpoint / Indesit</strong></td>
+      <td>Start/Pausa 3-5s (reset) · 1-2-3 x3 (diagnostica C0-C8)</td>
+      <td>Tasto P 5s → livello 1-5 (sale) · Start/Pausa 5s → scarico 60s</td>
+      <td>Tasto Livello Asciug. 6s · Diagnostica 1-2-3 x3 (test pompa condensa)</td>
+    </tr>
+    <tr>
+      <td><strong>Samsung</strong></td>
+      <td>Manina+ 3s → Cb/Cestello+/Dosaggio · Spin+Opzioni 5s → tSt</td>
+      <td>Sanitize+Dry 3s → A1-6/b1-5 · LC/LE: inclinare 45° fisicamente</td>
+      <td>Menu + → offset 1-4 · Test sensori umidità real-time</td>
+    </tr>
+    <tr>
+      <td><strong>LG</strong></td>
+      <td>Spin+Temp+Power → 2 bip → step Start (rot./valv./risc./pompa) · tcL 3s</td>
+      <td>Dual Zone+Half Load 3s → H0-4/L0-4/AutoOpen</td>
+      <td>More Time+Less Time+Power · Condenser Care 3s</td>
+    </tr>
+    <tr>
+      <td><strong>Haier</strong></td>
+      <td>Delay+Temp (o Delay+Spin) 4s → t-01/CAL</td>
+      <td>Programma+Power 3s → d1-d8 (durezza)</td>
+      <td>Test circuito R290/R134a — manuale servizio specifico</td>
+    </tr>
+    <tr>
+      <td><strong>Candy</strong></td>
+      <td>Start tenuto + 2 scatti Cotone 60° → 5s → LED chaser → codice lampeggi</td>
+      <td>Come Haier · Test elettrovalvola a membrana</td>
+      <td>Test inversione cestello — manuale servizio</td>
+    </tr>
+    <tr>
+      <td><strong>Beko</strong></td>
+      <td>Cotone + Spin+Temp+Power → P01 → step Start · Reset E01-18: Start 5s</td>
+      <td>Time Delay+P → r1-r5 (sale) · Test braccio CornerIntense</td>
+      <td>Start+Power → test NTC compressore · Reset filtro: Start 3s</td>
+    </tr>
+    <tr>
+      <td><strong>Hisense</strong></td>
+      <td>Extra Risciacquo+Spin 3-5s → T01 → step Avvio</td>
+      <td>Programma+Funzioni 5s → parametri sale/brillantante</td>
+      <td>— (manuale servizio specifico)</td>
+    </tr>
+    <tr>
+      <td><strong>Smeg</strong></td>
+      <td>Opzioni+Avvio+Power → test sequ. porta/valvole/motore/resist./pompa</td>
+      <td>Programmi 5s (o Programmi+Power) → H0-5/b0-5</td>
+      <td>— (manuale servizio specifico)</td>
+    </tr>
+    <tr>
+      <td><strong>Liebherr</strong></td>
+      <td colspan="2" style="text-align:center; color:#64748b; font-style:italic;">Non applicabile (specialista freddo)</td>
+      <td style="background:#f0fdf4;"><strong>SuperFrost 5s → Menu segreto</strong><br>d0=Normale / d1=Demo OFF<br>E=Offset sonda / c=Lock / S=Sabbath</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="footer">
+  Supporto Tecnico IT — Procedura Operativa 06: Menu Segreti, Diagnostica e Impostazioni Grandi Elettrodomestici (Lavatrici · Lavastoviglie · Asciugatrici · Liebherr) &nbsp;|&nbsp; Verificata su fonti ufficiali — Ottobre 2026
+</div>
+
+</body>
+</html>
